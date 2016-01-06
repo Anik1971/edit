@@ -1,0 +1,13 @@
+@import "reset";
+@import "colors";
+@import "profileimage";
+@import "profiledetails";
+
+
+* , *::after, *::before {
+    box-sizing: border-box;
+}
+body {
+    background-color: #d5d6d9;
+    font-family: 'Open Sans', sans-serif;
+}

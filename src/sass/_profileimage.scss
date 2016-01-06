@@ -1,0 +1,26 @@
+$profile-image-cover-height: 160px;
+$profile-image-size: 100px;
+$profile-image-offset: 20px;
+
+#profile-image-cover {
+    height: $profile-image-cover-height;
+    width: 100%;
+    background-size: cover;
+    background-image: url(http://lorempixel.com/400/160);
+    position: relative;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+    margin-bottom: $profile-image-offset;
+    
+    #profile-image {
+        position: absolute;
+        width: $profile-image-size;
+        height: $profile-image-size;
+        background-image: url(http://lorempixel.com/100/100);
+        bottom: (-$profile-image-offset);
+        border: 2px solid white;
+        border-radius: 5px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+    }
+}

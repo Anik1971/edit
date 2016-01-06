@@ -1,0 +1,26 @@
+$profile-detail-min-height : 100px;
+
+#profile-detail {
+    min-height: $profile-detail-min-height;
+    margin-top: (-$profile-image-offset);
+    padding-top: $profile-image-offset;
+    background: white;
+    
+    .profile-name {
+        text-align : center;
+        padding: 4px 0px;
+        font-weight: 600;
+        font-size: 14px;
+        color: gray;
+    }
+    .business-name {
+        text-align : center;
+        padding: 10px 0px;
+        font-weight: 600;
+        font-size: 20px;
+    }
+}
+
+    .profile-tabs > div {
+        background-color: #f7f3f3 !important;
+    }
