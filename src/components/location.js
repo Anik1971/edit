@@ -1,5 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/lib/text-field';
+import { Link } from 'react-router'
 class Location extends React.Component {
 	constructor(props){
 		super(props);	
@@ -12,6 +13,7 @@ class Location extends React.Component {
                         floatingLabelText="Locality" />
                     <TextField fullWidth={true}
                         floatingLabelText="Address" />
+                    <Link  to="/timings" >Timings</Link>
                   </div>
                 );
 	}
