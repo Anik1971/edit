@@ -81,6 +81,13 @@ table {
 .profile-tabs > div {
   background-color: #f7f3f3 !important; }
 
+.specialCategoryCheckList {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 15px; }
+  .specialCategoryCheckList .checkBox {
+    margin-top: 10px; }
+
 *, *::after, *::before {
   box-sizing: border-box; }
 
