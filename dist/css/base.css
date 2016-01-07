@@ -84,6 +84,13 @@ table {
 #store-timings {
   background-color: #fff; }
 
+.specialCategoryCheckList {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 15px; }
+  .specialCategoryCheckList .checkBox {
+    margin-top: 10px; }
+
 *, *::after, *::before {
   box-sizing: border-box; }
 
