@@ -81,6 +81,9 @@ table {
 .profile-tabs > div {
   background-color: #f7f3f3 !important; }
 
+#store-timings {
+  background-color: #fff; }
+
 *, *::after, *::before {
   box-sizing: border-box; }
 

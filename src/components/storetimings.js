@@ -4,9 +4,9 @@ class StoreTimings extends React.Component {
 		super(props);	
 	}	
 	render(){
-		return (<div> StoreTimings
-                  </div>
-                );
+		return (<div id="store-timings"> 
+                    
+                </div>);
 	}
 }
 export default StoreTimings;
