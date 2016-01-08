@@ -41,6 +41,7 @@
     "react-dom": "^0.14.5",
     "react-router": "^1.0.3",
     "react-swipeable-views": "^0.3.5",
-    "react-tap-event-plugin": "^0.2.1"
+    "react-tap-event-plugin": "^0.2.1",
+    "react-geosuggest": "~1.14.0"
   }
 }
