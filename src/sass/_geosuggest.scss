@@ -30,10 +30,16 @@
 	    font: inherit;
 	    box-sizing: border-box;
 	    margin-top: 14px;
-	    border-bottom: solid 1px #CCC;
+	    border: none;
+	    border-bottom: solid 2px;
+	    border-color: #e0e0e0;
+	    box-sizing: content-box;
 	}
 	.GeoSuggestinput:focus{
-	    border-bottom: solid 1px #e0e0e0;
+	    border-style: none none solid;
+	    border-bottom-width: 2px;
+	    border-color: rgb(0, 188, 212);
+	    box-sizing: content-box;
 	}
 	ul{
 		width: 100%;

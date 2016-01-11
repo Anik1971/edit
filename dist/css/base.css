@@ -123,9 +123,15 @@ table {
     font: inherit;
     box-sizing: border-box;
     margin-top: 14px;
-    border-bottom: solid 1px #CCC; }
+    border: none;
+    border-bottom: solid 2px;
+    border-color: #e0e0e0;
+    box-sizing: content-box; }
   .GeoSuggestList .GeoSuggestinput:focus {
-    border-bottom: solid 1px #e0e0e0; }
+    border-style: none none solid;
+    border-bottom-width: 2px;
+    border-color: #00bcd4;
+    box-sizing: content-box; }
   .GeoSuggestList ul {
     width: 100%;
     margin-left: 0%;
