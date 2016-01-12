@@ -6,6 +6,7 @@ import ProfileDetail from './components/profiledetails';
 import Gallery from './components/gallery';
 import BusinessDetail from './components/businessdetails';
 import StoreTimings from './components/storetimings';
+import SupplierProfile from './components/profile/supplierProfile';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 
@@ -35,6 +36,7 @@ ReactDOM.render(
         <Route path="/" component={App}>
           <IndexRoute component={Index}/>
           <Route path="/timings" component={StoreTimings}/>
+          <Route path="/profile" component={SupplierProfile}/>
         </Route>
     </Router>,
     document.getElementById('app')
