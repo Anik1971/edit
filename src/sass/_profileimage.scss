@@ -15,6 +15,7 @@ $profile-image-offset: 20px;
         position: absolute;
         width: $profile-image-size;
         height: $profile-image-size;
+        min-width: $profile-image-size;
         background-image: url(http://lorempixel.com/100/100);
         bottom: (-$profile-image-offset);
         border: 2px solid white;

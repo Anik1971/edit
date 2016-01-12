@@ -6,6 +6,8 @@
 @import "category";
 @import "geosuggest";
 @import "Timings";
+@import "delivery";
+@import "dialogues/profilePic";
 
 
 * , *::after, *::before {
@@ -14,4 +16,8 @@
 body {
     background-color: #d5d6d9;
     font-family: 'Open Sans', sans-serif;
+}
+.row{
+	margin-top: 24px;
+	width: 100%;
 }

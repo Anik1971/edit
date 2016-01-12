@@ -18,7 +18,7 @@ const styles = {
         fontWeight: 400,
     },
     slide: {
-        minHeight: 500,
+        minHeight: 600,
         padding: 10,
         backgroundColor: "white"
     },

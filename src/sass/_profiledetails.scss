@@ -7,7 +7,7 @@ $profile-detail-min-height : 100px;
     background: white;
     
     .profile-name {
-        text-align : center;
+        text-align : left;
         padding: 4px 0px;
         font-weight: 600;
         font-size: 14px;
@@ -18,6 +18,9 @@ $profile-detail-min-height : 100px;
         padding: 10px 0px;
         font-weight: 600;
         font-size: 20px;
+        display: block;
+        width: 70%;
+        margin: auto;
     }
 }
 
