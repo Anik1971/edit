@@ -18,7 +18,7 @@ class Delivery extends React.Component {
                    className="row"/>
                 <div className="row">
                     Delivery Pricing
-                    <RadioButtonGroup name="shipSpeed" defaultSelected="not_light">
+                    <RadioButtonGroup name="shipSpeed" defaultSelected="standard">
                         <RadioButton
                           value="standard"
                           label="Standard"
@@ -33,6 +33,9 @@ class Delivery extends React.Component {
                     floatingLabelText="Delivery Pricing" />
                 <TextField fullWidth={true}
                     floatingLabelText="Business Long Description" />
+                <div className="row">
+                    Select2 box for Delivery areas
+                </div>
               </div>
             );
 	}

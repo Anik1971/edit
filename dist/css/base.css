@@ -162,6 +162,12 @@ table {
   background-color: transparent;
   font-family: Roboto, sans-serif; }
 
+.locationIcon {
+  magin: 10px; }
+
+.device_location_searching:before {
+  content: 'device_location_searching'; }
+
 .Timings {
   width: 100%;
   height: 72px;
@@ -178,6 +184,14 @@ table {
 .profileBtn {
   float: right; }
 
+.imageUploadButton {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0; }
+
 *, *::after, *::before {
   box-sizing: border-box; }
 
@@ -186,5 +200,5 @@ body {
   font-family: 'Open Sans', sans-serif; }
 
 .row {
-  margin-top: 24px;
+  padding-top: 24px;
   width: 100%; }

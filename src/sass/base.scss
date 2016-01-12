@@ -8,6 +8,8 @@
 @import "Timings";
 @import "delivery";
 @import "dialogues/profilePic";
+@import "payments";
+@import "gallery";
 
 
 * , *::after, *::before {
@@ -18,6 +20,6 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 .row{
-	margin-top: 24px;
+	padding-top: 24px;
 	width: 100%;
 }

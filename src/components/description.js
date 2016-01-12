@@ -187,9 +187,8 @@ class Description extends React.Component {
 	            	specialCategoriesCheckList={specialCategoriesCheckList}
 	            	categoryCount={categoryCount} />
 	            <TextField fullWidth={true}
-	                floatingLabelText="Business Phone" />
-	          </div>
-	        );
+	                floatingLabelText="Business Phone [Auto grown]" />	            
+	        </div>);
 	}
 }
 

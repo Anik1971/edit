@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import ProfileImage from './components/profileimage';
 import ProfileDetail from './components/profiledetails';
+import Gallery from './components/gallery';
 import BusinessDetail from './components/businessdetails';
 import StoreTimings from './components/storetimings';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
@@ -23,6 +24,7 @@ class Index extends React.Component {
         <ProfileImage />
         <ProfileDetail />
         <BusinessDetail />
+        <Gallery></Gallery>             
     </div>
     );
   }

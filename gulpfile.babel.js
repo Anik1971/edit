@@ -5,6 +5,7 @@ import source from "vinyl-source-stream";
 import buffer from "vinyl-buffer";
 import uglify from "gulp-uglify";
 import gzip from "gulp-gzip";
+import nodemon from "gulp-nodemon";
 
 gulp.task("js", () => {
   return browserify("src/app.js")
@@ -34,4 +35,13 @@ gulp.task("build", ["js", "sass"]);
 gulp.task("default", ["build"], () => {
   gulp.watch(['src/sass/**/*.scss'], ['sass']);
   gulp.watch(['src/**/*.js'], ['js']);
+});
+
+gulp.task('nodemon', function () {
+  nodemon({
+    exec: 'gulp default'
+  , ext: 'js scss html'
+  , env: { 'NODE_ENV': 'development' }
+  , watch: ['src/**.*', 'gulpfile.babel.js']
+  }).on('restart', []);
 });

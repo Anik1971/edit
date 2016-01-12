@@ -70,3 +70,9 @@
     background-color: transparent;
     font-family: Roboto, sans-serif;
 }
+.locationIcon{
+	magin:10px;
+}
+.device_location_searching:before{
+	content:'device_location_searching';
+}

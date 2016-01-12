@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/lib/text-field';
-import FlatButton from 'material-ui/lib/flat-button';
+import RaisedButton from 'material-ui/lib/raised-button';
 class Payments extends React.Component {
     constructor(props){
         super(props);   
@@ -18,12 +18,20 @@ class Payments extends React.Component {
                     <TextField fullWidth={true}
                         floatingLabelText="Bank Acc" />
                     <TextField fullWidth={true}
-                        floatingLabelText="IFSE" />
+                        floatingLabelText="IFSC" />
                     <TextField fullWidth={true}
                         floatingLabelText="VAT/TIN/Sevice Taxa" />
-                    <FlatButton primary={true} label="Upload Documents">
-                      <input type="file" id="imageButton" />
-                    </FlatButton>
+                    <div className="row">
+                        <RaisedButton
+                            secondary={true}
+                            fullWidth={true} 
+                            label="Upload Documents">
+                          <input 
+                            className="imageUploadButton" 
+                            type="file" 
+                            id="imageButton" />
+                        </RaisedButton>
+                    </div>
                   </div>
                 );
     }

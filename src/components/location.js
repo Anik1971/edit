@@ -3,6 +3,9 @@ import TextField from 'material-ui/lib/text-field';
 import { Link } from 'react-router';
 import Geosuggest from 'react-geosuggest';
 import RaisedButton from 'material-ui/lib/raised-button';
+import Colors from 'material-ui/lib/styles/colors';
+import FontIcon from 'material-ui/lib/font-icon';
+
 class Location extends React.Component {
 	constructor(props){
 		super(props);	
@@ -85,7 +88,7 @@ class Location extends React.Component {
         } 
     }
 
-    //Locality Selection
+    //Locality Selection 
     getLocatlitySuggestLabel(suggest){
         console.log('locality Label:',suggest);
         let locality = [],termsLength = 0;
@@ -140,9 +143,13 @@ class Location extends React.Component {
                         floatingLabelText="Address" />
                     <div className={"pickLocation"}>
                         <RaisedButton 
-                            primary={true} 
+                            secondary={true} 
                             label="PICK LOCATION"
-                            onTouchTap={this.onPickLocation.bind(this)} />
+                            onTouchTap={this.onPickLocation.bind(this)}
+                            labelPosition="after">
+                            <FontIcon className="material-icons">
+                            </FontIcon>
+                        </RaisedButton>
                     </div>
                     <div className={"Timings"}>
                         <Link  to="/timings" >Timings</Link>
