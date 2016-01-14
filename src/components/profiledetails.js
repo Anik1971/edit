@@ -8,7 +8,7 @@ class ProfileDetail extends React.Component {
     render() {
         return (
         <div id="profile-detail">
-            <div className="business-name">Store Name</div>
+            <div className="business-name">{this.props.bData.businessName}</div>
 	        <div className="">
 				<List>
 			      <ListItem

@@ -19,8 +19,7 @@ class ProfileImage extends React.Component {
 		};
         return (
         <div styles={styles.profile_image_cover} id="profile-image-cover">
-            <div styles={styles.profile_image} id="profile-image">
-            </div>
+            <div styles={styles.profilePicUrl} id="profile-image"></div>
         </div>);
     }
 }

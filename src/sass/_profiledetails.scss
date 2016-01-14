@@ -22,8 +22,43 @@ $profile-detail-min-height : 100px;
         width: 70%;
         margin: auto;
     }
+    .business-shortDescription{
+        text-align : center;
+        padding: 4px 0px 0px 0px;
+        font-size: 14px;
+        width: 100%;
+        margin: auto;
+    }
+    .business-bussinessID{
+        text-align : center;
+        padding: 4px 0px 0px 0px;
+        font-size: 12px;
+        width: 100%;
+        margin: auto;
+        color: #6D6565;
+    }
+}
+.business-card{
+    margin-top: 10px;
+}
+.business-cardHeader{
+    background-color: rgba(247, 243, 243, 0.48);
+    box-shadow: 0px 1px 9px rgb(118, 209, 242);
+    span{
+        color: rgb(118, 209, 242);
+    }
+}
+.deliveryDivide{
+    width: 30%;
+    float: left;
+    margin:0px;
+    padding: 0px;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 6px; 
+}
+.profile-tabs > div {
+    background-color: #f7f3f3 !important;
 }
 
-    .profile-tabs > div {
-        background-color: #f7f3f3 !important;
-    }
+

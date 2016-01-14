@@ -43,6 +43,8 @@
     "react-router": "^1.0.3",
     "react-swipeable-views": "^0.3.5",
     "react-tap-event-plugin": "^0.2.1",
-    "react-geosuggest": "~1.14.0"
+    "react-geosuggest": "~1.14.0",
+    "react-dropzone": "~3.3.2",
+    "superagent": "~1.6.1"
   }
 }

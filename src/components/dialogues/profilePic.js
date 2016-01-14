@@ -12,12 +12,16 @@ import CardTitle from 'material-ui/lib/card/card-title';
 import CardText from 'material-ui/lib/card/card-text';
 import Avatar from 'material-ui/lib/avatar';
 import TextField from 'material-ui/lib/text-field';
+import Dropzone from 'react-dropzone';
+import Request from 'superagent';
 
 export default class ProfilePic extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      image: this.props.profileImage,
+      businessName: this.props.bData.businessName
     };
   }
   updateProfilePic(){
@@ -26,13 +30,34 @@ export default class ProfilePic extends React.Component {
       open:true 
     });
   };
-  startProfilePicUpload(){
-    console.log('Start Profile Pic Uploading');
-    this.setState({open: false});
+  startProfilePicUpload(files) {
+      console.log('Received files: ', files);
+      Request
+       .post('http://chat.tsepak.com/api/image_resize/')
+       .send({ image: files.preview})
+       .end(function(err, res){
+         if (err || !res.ok) {
+           alert('Oh no! error');
+         } else {
+           alert('yay got ' + JSON.stringify(res.body));
+         }
+       });
   };
   cancelProfilePicUpload(){
     console.log('Canceled Profile Pic Uploading');
     this.setState({open: false});
+  };
+  onNameChange(name){
+    console.log('onChange',name.target.value);
+    this.setState({
+      businessName: name.target.value
+    });
+  };
+  updateProfile(){
+    console.log(this);
+    this.props.putBusiData({
+      businessName: this.state.businessName
+    });
   };
   render() {
     const actions = [
@@ -44,7 +69,7 @@ export default class ProfilePic extends React.Component {
         label="Update"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.startProfilePicUpload.bind(this)} />,
+        onTouchTap={this.updateProfile.bind(this)} />,
     ];
 
     return (
@@ -65,16 +90,29 @@ export default class ProfilePic extends React.Component {
           onRequestClose={this.handleClose}>
           <Card zDepth={1}>
             <CardMedia>
-              <img src="http://lorempixel.com/600/337/nature/"/>
+              <img src={this.state.image}/>
             </CardMedia>
-            <CardActions>
-              <FlatButton className="profileBtn" label="CHANGE"  secondary={true}/>
+            <CardActions>              
+              <div className="row">              
+                  <RaisedButton
+                      className="profilePicChangeBtn"
+                      secondary={true}                      
+                      label="CHANGE">                    
+                    <Dropzone 
+                      className="imageUploadButton"
+                      id="profilePicUploadButton"
+                      onDrop={this.startProfilePicUpload.bind(this)}>
+                      <div>Try dropping some files here, or click to select files to upload.</div>
+                    </Dropzone>
+                  </RaisedButton>              
+              </div>
             </CardActions>
           </Card>
           <div>
             <TextField fullWidth={true}
-              floatingLabelText="Profile Name" 
-              defaultValue="Existing Name"/>
+              floatingLabelText="Business Name" 
+              defaultValue={this.state.businessName}
+              onChange={this.onNameChange.bind(this)}/>
           </div>
         </Dialog>
       </div>

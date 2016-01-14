@@ -28,9 +28,7 @@ class Delivery extends React.Component {
                           label="Custom"
                           className="subContent"/>                    
                     </RadioButtonGroup>
-                </div>
-                <TextField fullWidth={true}
-                    floatingLabelText="Delivery Pricing" />
+                </div>                
                 <TextField fullWidth={true}
                     floatingLabelText="Business Long Description" />
                 <div className="row">

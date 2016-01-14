@@ -9,16 +9,16 @@ class ProfileDetail extends React.Component {
         return (
         <div id="profile-detail">
             <div className="business-name">{this.props.bData.businessName}</div>
-	        <div className="">
-				<List>
-			      <ListItem
-			      	className="profile-name"
-			        primaryText={this.props.bData.userName}
-			        leftAvatar={
-				        <Avatar src="http://lorempixel.com/100/100" />
-				    }/>
-			    </List>
-			</div>
+            <div className="business-shortDescription">{this.props.bData.businessType}</div>
+            <div className="business-bussinessID">{"GOODBOX ID: "+this.props.bData.businessHandle}</div>
+			<List>
+		      <ListItem
+		      	className="profile-name"
+		        primaryText={this.props.bData.userName}
+		        leftAvatar={
+			        <Avatar src={this.props.bData.userImage} />
+			    }/>
+		    </List>
         </div>);
     }
 }
