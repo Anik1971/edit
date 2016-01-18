@@ -21,10 +21,13 @@ class App extends React.Component {
 class Index extends React.Component {
   constructor(props) {
       super(props);
+      let bData = bData_dummy;
+      if(window.Android)
+        bData = JSON.parse(window.Android.getBusinessData());
       this.state = {
-          bData: bData_dummy,
-          sample: 'old temp'
+          bData:  bData
       };
+      console.log(bData_dummy);
   }
   getBusiData(){
     if(window.Android){
@@ -33,20 +36,31 @@ class Index extends React.Component {
       });
     }
   }
-  componentWillReceiveProps(json) {
+  putBusiData(json) {
     console.log('putting app.js ',json);
     console.log('state  before (app.js) ',this.state);
+    let bData = this.state.bData;
+    for(let key in json){
+      bData[key]=json[key];
+    }    
     this.setState({
-      bData:json,
-      sample: 'new temp'
-    });
-    if(window.Android){
-      //code for saving the json to android preference variable
-      this.setState({
-        //set bData in callback() of android js interface call
-      });
-    }
-    console.log('state  after (app.js) ',this.state);
+      bData
+    },function(){
+       if(window.Android){
+          //code for saving the json to android preference variable
+          let convertToStringBusinessProfileObj = JSON.stringify(this.state.bData);
+          try {
+            let status = window.Android.saveBusinessData(convertToStringBusinessProfileObj);
+            console.log("....................save business data status............");
+            console.log(status);
+
+          } catch (e) {
+            console.log("....................save business data failed due to crash............");
+            console.log(e);
+          }          
+        }     
+        console.log('state  after (app.js) ',this.state);
+    });   
   }
   render() {
     return (
@@ -54,7 +68,7 @@ class Index extends React.Component {
         <ProfileImage 
           bData={this.state.bData} 
           getBusiData={this.getBusiData.bind(this)}
-          putBusiData={this.componentWillReceiveProps.bind(this)} />
+          putBusiData={this.putBusiData.bind(this)} />
         <ProfileDetail 
           bData={this.state.bData} 
           getBusiData={this.getBusiData}

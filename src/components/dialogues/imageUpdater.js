@@ -14,58 +14,54 @@ import Avatar from 'material-ui/lib/avatar';
 import TextField from 'material-ui/lib/text-field';
 import Dropzone from 'react-dropzone';
 import Request from 'superagent';
+import CircularProgress from 'material-ui/lib/circular-progress';
 
-export default class ProfilePic extends React.Component {
+export default class ImageUpdater extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      image: this.props.profileImage,
-      businessName: this.props.bData.businessName
+      image: this.props.image || 'http://www.mp3alive.com/no_photo.jpg',
+      loader: 'hidden'
     };
   }
-  updateProfilePic(){
-    console.log('ProfilePic');
+  editImage(){
     this.setState({
       open:true 
     });
   };
-  startProfilePicUpload(files) {
+  startImageUpload(files) {
       console.log('Received files: ', files);
       let _this = this;
+      this.setState({
+        loader:''
+      });
       Request
        .post('http://testchat.tsepak.com/goodbox/image_resize')
        .attach('image', files[0],files[0].name)
        .end(function(err, res){
          if (err || !res.ok) {
-           alert('Oh no! error');
+           _this.setState({
+            loader:'hidden'
+           });
          } else {
            let response = JSON.parse(res.text);
-           debugger;
            if(response.status == 0){
             _this.setState({
-              image: response.url
+              image: response.url,
+              loader:'hidden'
             });
            }
          }
        });
   };
-  cancelProfilePicUpload(){
+  cancelImageUpload(){
     console.log('Canceled Profile Pic Uploading');
     this.setState({open: false});
   };
-  onNameChange(name){
-    console.log('onChange',name.target.value);
-    this.setState({
-      businessName: name.target.value
-    });
-  };
-  updateProfile(){
+  updateImage(){
     console.log(this);
-    this.props.putBusiData({
-      businessName: this.state.businessName,
-      profilePicUrl: this.state.image
-    });
+    this.props.postUpload(this.state.image);
     this.setState({
       open: false
     });
@@ -75,12 +71,12 @@ export default class ProfilePic extends React.Component {
       <FlatButton
         label="Cancel"
         secondary={true}
-        onTouchTap={this.cancelProfilePicUpload.bind(this)} />,
+        onTouchTap={this.cancelImageUpload.bind(this)} />,
       <FlatButton
         label="Update"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.updateProfile.bind(this)} />,
+        onTouchTap={this.updateImage.bind(this)} />,
     ];
 
     return (
@@ -88,7 +84,8 @@ export default class ProfilePic extends React.Component {
         <FlatButton 
           secondary={true} 
           labelPosition="after"
-          onTouchTap = {this.updateProfilePic.bind(this)} >
+          className="imageUpdaterButton"
+          onTouchTap = {this.editImage.bind(this)} >
           <EditIcon 
             className="editIcon" 
             color={Colors.white} />
@@ -101,7 +98,7 @@ export default class ProfilePic extends React.Component {
           onRequestClose={this.handleClose}>
           <Card zDepth={1}>
             <CardMedia>
-              <img src={this.state.image}/>
+              <img width="auto" src={this.state.image}/>
             </CardMedia>
             <CardActions>              
               <div className="row">              
@@ -112,22 +109,20 @@ export default class ProfilePic extends React.Component {
                     <Dropzone 
                       className="imageUploadButton"
                       id="profilePicUploadButton"
-                      onDrop={this.startProfilePicUpload.bind(this)}>
+                      onDrop={this.startImageUpload.bind(this)}>
                       <div>Try dropping some files here, or click to select files to upload.</div>
                     </Dropzone>
-                  </RaisedButton>              
+                  </RaisedButton>  
+                  <CircularProgress 
+                    className={this.state.loader} 
+                    mode="indeterminate" 
+                    size={.5} />         
               </div>
             </CardActions>
-          </Card>
-          <div>
-            <TextField fullWidth={true}
-              floatingLabelText="Business Name" 
-              defaultValue={this.state.businessName}
-              onChange={this.onNameChange.bind(this)}/>
-          </div>
+          </Card>          
         </Dialog>
       </div>
     );
   }
 }
-export default ProfilePic;
+export default ImageUpdater;
