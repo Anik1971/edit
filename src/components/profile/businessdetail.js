@@ -9,11 +9,6 @@ import FlatButton from 'material-ui/lib/flat-button';
 import FontIcon from 'material-ui/lib/font-icon';
 import CardText from 'material-ui/lib/card/card-text';
 import Gallery from './gallery';
-const styles={
-	card_shadow:{
-		boxShadow: '0 1px 6px rgba(118, 209, 242, 0.12), 0 1px 4px rgba(118, 209, 242, 0.24)'
-	}
-}
 const deliveryOptions = ['Home delivery','Pre-Order','Parcel/Take Away'
 ];
 const deliveryIcons = {

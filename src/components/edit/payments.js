@@ -3,7 +3,15 @@ import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 class Payments extends React.Component {
     constructor(props){
-        super(props);   
+        super(props);  
+        let paymentStatus = 'Disabled';
+        if(this.props.bData.paymentEnabled){
+            paymentStatus = 'Enabled';
+        }
+        this.state = {
+            paymentEnabled : this.props.bData.paymentEnabled,
+            paymentStatus : paymentStatus
+        } 
     }   
     render(){
         return (<div style={this.props.styles.slide}>
@@ -11,7 +19,7 @@ class Payments extends React.Component {
                         hintText="Status"
                         disabled={true}
                         fullWidth={true}
-                        defaultValue="Disabled"
+                        defaultValue={this.state.paymentStatus}
                         floatingLabelText="Status" />
                     <TextField fullWidth={true}
                         floatingLabelText="PAN" />

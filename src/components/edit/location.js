@@ -9,12 +9,16 @@ import FontIcon from 'material-ui/lib/font-icon';
 class Location extends React.Component {
 	constructor(props){
 		super(props);	
+        let address = JSON.parse(this.props.bData.businessAddress);
         this.state = {
             gmap: {},
             selCity: {},
             citySuggest:[],
             selLocality:{},
-            selAddress:''
+            selAddress:'',
+            city:address.city || '',
+            locality:address.locality || '',
+            address:address.address || ''
         };
 	}	
     onCitySuggestSelect(location){
@@ -123,13 +127,14 @@ class Location extends React.Component {
                         placeholder={"City"}
                         className={"GeoSuggestList"}
                         inputClassName={"GeoSuggestinput"}
-                        autoActivateFirstSuggest={true}
+                        autoActivateFirstSuggest={false}
                         country={"in"}
                         getSuggestLabel={this.getCitySuggestLabel.bind(this)}
                         skipSuggest={this.skipCitySuggest.bind(this)}
                         onChange={this.cityOnChange.bind(this)}
                         onBlur={this.cityOnBlur.bind(this)}
-                        onSuggestSelect={this.onCitySuggestSelect.bind(this)} />
+                        onSuggestSelect={this.onCitySuggestSelect.bind(this)}
+                        initialValue={this.state.city} />
                     <Geosuggest 
                         placeholder={"Locality"}
                         className={"GeoSuggestList"}
@@ -138,9 +143,11 @@ class Location extends React.Component {
                         country={"in"}
                         getSuggestLabel={this.getLocatlitySuggestLabel.bind(this)}
                         skipSuggest={this.skipLocalitySuggest.bind(this)}
-                        onSuggestSelect={this.onLocalitySuggestSelect.bind(this)} />
+                        onSuggestSelect={this.onLocalitySuggestSelect.bind(this)} 
+                        initialValue = {this.state.locality} />
                     <TextField fullWidth={true}
-                        floatingLabelText="Address" />
+                        floatingLabelText="Address"
+                        value={this.state.address} />
                     <div className={"pickLocation"}>
                         <RaisedButton 
                             secondary={true} 

@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import ProfileImage from './components/profileimage';
-import ProfileDetail from './components/profiledetails';
-import Gallery from './components/gallery';
-import BusinessDetail from './components/businessdetails';
-import StoreTimings from './components/storetimings';
+import ProfileImage from './components/edit/profileimage';
+import ProfileDetail from './components/edit/profiledetails';
+import Gallery from './components/edit/gallery';
+import BusinessDetail from './components/edit/businessdetails';
+import StoreTimings from './components/edit/storetimings';
 import SupplierProfile from './components/profile/supplierProfile';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
-import bData_dummy from './components/dummyData';
+import bData_dummy from './components/edit/dummyData';
+import uData_dummy from './components/edit/dummyUserData';
+import Card from 'material-ui/lib/card/card';
+import CardMedia from 'material-ui/lib/card/card-media';
+import CardTitle from 'material-ui/lib/card/card-title';
 
 injectTapEventPlugin();
 
@@ -17,17 +21,32 @@ class App extends React.Component {
         return <div>{this.props.children}</div>;
     }
 }
-
+const styles={
+  card_shadow:{
+    boxShadow: '0 1px 6px rgba(118, 209, 242, 0.12), 0 1px 4px rgba(118, 209, 242, 0.24)'
+  }
+}
 class Index extends React.Component {
   constructor(props) {
       super(props);
       let bData = bData_dummy;
-      if(window.Android)
+      let uData = uData_dummy;
+      console.log('UserData',uData);
+      if(window.Android){
+        console.info('GOT NATIVE DATA');
         bData = JSON.parse(window.Android.getBusinessData());
+      }
+      /*for(let key in bData){
+        let _currData = bData[key];
+        console.log(key,_currData);
+        if(_currData.indexOf('{') >= 0){
+          bData[key] = JSON.parse(_currData);
+        }
+      }*/
       this.state = {
           bData:  bData
       };
-      console.log(bData_dummy);
+      console.log(bData);
   }
   getBusiData(){
     if(window.Android){
@@ -77,10 +96,19 @@ class Index extends React.Component {
           bData={this.state.bData} 
           getBusiData={this.getBusiData}
           putBusiData={this.putBusiData} />
-        <Gallery 
-          bData={this.state.bData} 
-          getBusiData={this.getBusiData}
-          putBusiData={this.putBusiData} ></Gallery>             
+        <Card
+          style={styles.card_shadow}
+          className="business-card">            
+            <CardTitle
+            className="business-cardHeader"
+            title="Photos"/>            
+            <CardMedia>
+              <Gallery 
+                bData={this.state.bData} 
+                getBusiData={this.getBusiData}
+                putBusiData={this.putBusiData} ></Gallery>
+            </CardMedia>  
+        </Card>         
     </div>
     );
   }

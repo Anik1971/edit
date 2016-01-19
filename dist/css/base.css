@@ -221,11 +221,6 @@ table {
 .imageUpdaterButton {
   float: right; }
 
-.hidden {
-  display: none !important;
-  visibility: hidden;
-  opacity: 0; }
-
 .imageUploadButton {
   opacity: 0;
   width: 100%;
@@ -253,3 +248,8 @@ strong {
 
 i {
   font-style: italic; }
+
+.hidden {
+  display: none !important;
+  visibility: hidden;
+  opacity: 0; }

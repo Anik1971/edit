@@ -86,13 +86,25 @@ class BusinessDetail extends React.Component {
                   onChangeIndex={this.handleChange.bind(this)}
                 >
                   <Description 
-                    styles={styles} />
+                    styles={styles}
+                    bData={this.props.bData} 
+                    getBusiData={this.props.getBusiData.bind(this)}
+                    putBusiData={this.props.putBusiData.bind(this)} />
                   <Location 
-                    styles={styles} />
+                    styles={styles} 
+                    bData={this.props.bData} 
+                    getBusiData={this.props.getBusiData.bind(this)}
+                    putBusiData={this.props.putBusiData.bind(this)} />
                   <Delivery
-                    styles={styles} />
+                    styles={styles} 
+                    bData={this.props.bData} 
+                    getBusiData={this.props.getBusiData.bind(this)}
+                    putBusiData={this.props.putBusiData.bind(this)} />
                   <Payments 
-                    styles={styles} />
+                    styles={styles} 
+                    bData={this.props.bData} 
+                    getBusiData={this.props.getBusiData.bind(this)}
+                    putBusiData={this.props.putBusiData.bind(this)} />
                 </SwipeableViews>
             </div>
         );

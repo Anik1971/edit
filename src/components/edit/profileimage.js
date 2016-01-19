@@ -1,7 +1,7 @@
 import React from 'react';
 import Colors from 'material-ui/lib/styles/colors';
-import ProfilePic from './dialogues/profilePic';
-import ImageUpdater from './dialogues/imageUpdater';
+import ProfilePic from './../dialogues/profilePic';
+import ImageUpdater from './../dialogues/imageUpdater';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 
 
