@@ -49,14 +49,28 @@ class CategoryAutoComplete extends React.Component{
 	constructor(props)
 	{
 		super(props);
+		console.log('props',props);
 		this.state = {
 			dynamicVals:
 				[{
 					categories: categories,
 		            specialCategoriesCheckList: [],
-		            selectedCategory: ''
+		            selectedCategory: this.props.bData.category
 		        }],
 		    allCategories: categories		   	
+        }
+        if(typeof this.props.bData.category == 'object' && this.props.bData.category){
+        	console.log('Category is there');
+        	for(let i in this.props.bData.category){
+        		this.state.dynamicVals.push(
+	        		{
+						categories: [],
+			            specialCategoriesCheckList: []
+			        }
+	        	);
+	        	this.props.categoryCount.push('category'+(this.props.categoryCount+1));
+        	}
+        	
         }
 	}
 	onCategoryRequest(index, category) {
@@ -184,6 +198,7 @@ class Description extends React.Component {
 			        <MenuItem value={3} primaryText="Others"/>
 			    </SelectField>
 	          	<CategoryAutoComplete 
+	          		bData={this.props.bData}
 	          		categories={categories}
 	          		specialCategories={specialCategories}
 	            	specialCategoriesCheckList={specialCategoriesCheckList}

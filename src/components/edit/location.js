@@ -9,7 +9,7 @@ import FontIcon from 'material-ui/lib/font-icon';
 class Location extends React.Component {
 	constructor(props){
 		super(props);	
-        let address = JSON.parse(this.props.bData.businessAddress);
+        let address = this.props.bData.businessAddress;
         this.state = {
             gmap: {},
             selCity: {},

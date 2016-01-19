@@ -8,11 +8,23 @@ class SupplierProfile extends React.Component {
 		super(props);	
 	}	
 	getBusiData(){
+		let _bData_dummy;
+		let bData = bData_dummy;
 		if(window.Android){
-			return(window.Android.getBusinessData());
-		}else{
-			return bData_dummy;
+			bData = JSON.parse(window.Android.getBusinessData());
 		}
+
+	      //converting level 1 nested json strings to Object
+	      for(let key in bData){
+	        let _currData = bData[key];        
+	        try{
+	          bData[key] = JSON.parse(_currData);          
+	        }catch(e){
+	          bData[key] = _currData;          
+	        }        
+	      }
+	      console.log('bData',bData);
+	    return bData;
 	}
 	render(){
 		return (

@@ -36,17 +36,20 @@ class Index extends React.Component {
         console.info('GOT NATIVE DATA');
         bData = JSON.parse(window.Android.getBusinessData());
       }
-      /*for(let key in bData){
-        let _currData = bData[key];
-        console.log(key,_currData);
-        if(_currData.indexOf('{') >= 0){
-          bData[key] = JSON.parse(_currData);
-        }
-      }*/
+
+      //converting level 1 nested json strings to Object
+      for(let key in bData){
+        let _currData = bData[key];        
+        try{
+          bData[key] = JSON.parse(_currData);          
+        }catch(e){
+          bData[key] = _currData;          
+        }        
+      }
       this.state = {
           bData:  bData
       };
-      console.log(bData);
+      console.log('converted bData:',bData); 
   }
   getBusiData(){
     if(window.Android){

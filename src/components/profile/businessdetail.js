@@ -16,6 +16,11 @@ const deliveryIcons = {
 	'Pre-Order':'http://nasirnobin.xtgem.com/torbd_icons_nasir/clock.png',
 	'Parcel/Take Away':'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_local_shipping_48px-128.png'
 }
+const styles={
+  card_shadow:{
+    boxShadow: '0 1px 6px rgba(118, 209, 242, 0.12), 0 1px 4px rgba(118, 209, 242, 0.24)'
+  }
+}
 class BusinessDetail extends React.Component {
 	constructor(props){
 		super(props);	
@@ -38,13 +43,13 @@ class BusinessDetail extends React.Component {
 			 	</Card>	;
 		}
 		let addressCard = <CardText><strong>{"Address: "}</strong><i>Yet to be published.</i></CardText>;
-		if(this.props.bData.businessAddressLine1!='' || this.props.bData.businessAddressLine2!='' || this.props.bData.businessAddressLine3!=''){
+		if(this.props.bData.businessAddress.address!='' || this.props.bData.businessAddress.locality!='' || this.props.bData.businessAddress.city!=''){
 			addressCard=
 					<CardText>
 				    	<strong>{"Address: "}</strong>
-				    	{this.props.bData.businessAddressLine1}{", "}
-				    	{this.props.bData.businessAddressLine2}{", "}
-				    	{this.props.bData.businessAddressLine3}
+				    	{this.props.bData.businessAddress.address}{", "}
+				    	{this.props.bData.businessAddress.locality}{", "}
+				    	{this.props.bData.businessAddress.city}
 				    </CardText>;
 		}
 		let storeTimingsCard = <CardText><strong>{"Store Timings: "}</strong><i>Yet to be published.</i></CardText>;
