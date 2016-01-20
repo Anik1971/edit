@@ -4,7 +4,7 @@ let bData_dummy =
   "activeFavouriteCount": 2,
   "activityTabHeader": "",
   "appExtras": "{\"businessImageCover\":\"\",\"businessImage\":\"\"}",
-  "businessAddress": "{\"address\":\"1122\",\"locality\":\"HSR Layout\",\"placeId\":\"ChIJfVMt45EUrjsRPFkE3PLPKkk\",\"city\":\" Bengaluru\"}",
+  "businessAddress": "{\"address\":\"1122\",\"locality\":\"zzzzxxx\",\"placeId\":\"ChIJfVMt45EUrjsRPFkE3PLPKkk\",\"city\":\" Mangalore\"}",
   "businessAddressLine1": "1122",
   "businessAddressLine2": "HSR Layout",
   "businessAddressLine3": "Bengaluru",
@@ -12,7 +12,7 @@ let bData_dummy =
   "businessHandle": "",
   "businessName": "Mahesh Newstore",
   "businessType": "One Line Descriptipn",
-  "category": "",
+  "category": "", 
   "categoryHeader": "",
   "consumerInviteLink": "",
   "consumerInviteText": "",
@@ -37,5 +37,23 @@ let bData_dummy =
   "totalFavouriteCount": 3,
   "languageType": "None",
   "userPayHidden": false
+};
+let bData = {};
+if(window.Android){
+  console.info('GOT NATIVE DATA');
+  bData = JSON.parse(window.Android.getBusinessData());
+}else{
+  console.info('USING DUMMY DATA');
+  bData = bData_dummy;
 }
-export default bData_dummy;
+
+//converting level 1 nested json strings to Object
+for(let key in bData){
+  let _currData = bData[key];        
+  try{
+    bData[key] = JSON.parse(_currData);          
+  }catch(e){
+    bData[key] = _currData;          
+  }        
+}
+export default bData;

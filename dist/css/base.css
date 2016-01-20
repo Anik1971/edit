@@ -253,3 +253,11 @@ i {
   display: none !important;
   visibility: hidden;
   opacity: 0; }
+
+.floatingBtn {
+  position: fixed;
+  right: 4px;
+  bottom: 4px;
+  width: auto;
+  height: auto;
+  z-index: 1; }

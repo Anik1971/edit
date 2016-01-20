@@ -2,7 +2,7 @@ import React from 'react';
 import ProfileImage from './profileimage';
 import ProfileDetail from './profiledetails';
 import BusinessDetail from './businessdetail';
-import bData_dummy from './../edit/dummyData';
+import bData_dummy from './../data/businessData';
 class SupplierProfile extends React.Component {
 	constructor(props){
 		super(props);	

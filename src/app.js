@@ -8,8 +8,8 @@ import BusinessDetail from './components/edit/businessdetails';
 import StoreTimings from './components/edit/storetimings';
 import SupplierProfile from './components/profile/supplierProfile';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
-import bData_dummy from './components/edit/dummyData';
-import uData_dummy from './components/edit/dummyUserData';
+import bData from './components/data/businessData';
+import uData_dummy from './components/data/dummyUserData';
 import Card from 'material-ui/lib/card/card';
 import CardMedia from 'material-ui/lib/card/card-media';
 import CardTitle from 'material-ui/lib/card/card-title';
@@ -29,25 +29,13 @@ const styles={
 class Index extends React.Component {
   constructor(props) {
       super(props);
-      let bData = bData_dummy;
       let uData = uData_dummy;
       console.log('UserData',uData);
-      if(window.Android){
-        console.info('GOT NATIVE DATA');
-        bData = JSON.parse(window.Android.getBusinessData());
-      }
-
-      //converting level 1 nested json strings to Object
-      for(let key in bData){
-        let _currData = bData[key];        
-        try{
-          bData[key] = JSON.parse(_currData);          
-        }catch(e){
-          bData[key] = _currData;          
-        }        
-      }
+      
       this.state = {
-          bData:  bData
+          bData:  bData,
+          saveBtn: 'hidden',
+          saveData: {}
       };
       console.log('converted bData:',bData); 
   }
@@ -84,6 +72,24 @@ class Index extends React.Component {
         console.log('state  after (app.js) ',this.state);
     });   
   }
+  manageSave(task,field,value){
+    if(task == 'show'){
+      this.setState({
+        saveBtn:''
+      });
+    }else{
+      this.setState({
+        saveBtn:'hidden'
+      });
+    }
+    let saveData = this.state.saveData;
+    saveData[field]=value;
+    this.setState({
+      saveData: saveData
+    },function(){
+      console.log('state',this.state.saveData);
+    });
+  }
   render() {
     return (
      <div>
@@ -98,7 +104,9 @@ class Index extends React.Component {
         <BusinessDetail 
           bData={this.state.bData} 
           getBusiData={this.getBusiData}
-          putBusiData={this.putBusiData} />
+          putBusiData={this.putBusiData} 
+          saveBtn={this.state.saveBtn} 
+          manageSave={this.manageSave.bind(this)} />
         <Card
           style={styles.card_shadow}
           className="business-card">            

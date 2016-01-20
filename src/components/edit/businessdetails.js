@@ -10,6 +10,8 @@ import Description from './description';
 import Location from './location';
 import Delivery from './delivery';
 import Payments from './payments';
+import FloatingActionButton from 'material-ui/lib/floating-action-button';
+import SaveIcon from 'material-ui/lib/svg-icons/content/save';
 const styles = {
     headline: {
         fontSize: 24,
@@ -34,6 +36,9 @@ const styles = {
     },
     tab: {
         textTransform: "uppercase"
+    },
+    floatRight: {
+        float: "right"
     }
 };
 
@@ -89,23 +94,34 @@ class BusinessDetail extends React.Component {
                     styles={styles}
                     bData={this.props.bData} 
                     getBusiData={this.props.getBusiData.bind(this)}
-                    putBusiData={this.props.putBusiData.bind(this)} />
+                    putBusiData={this.props.putBusiData.bind(this)} 
+                    manageSave={this.props.manageSave} />
                   <Location 
                     styles={styles} 
                     bData={this.props.bData} 
                     getBusiData={this.props.getBusiData.bind(this)}
-                    putBusiData={this.props.putBusiData.bind(this)} />
+                    putBusiData={this.props.putBusiData.bind(this)}
+                    manageSave={this.props.manageSave} />
                   <Delivery
                     styles={styles} 
                     bData={this.props.bData} 
                     getBusiData={this.props.getBusiData.bind(this)}
-                    putBusiData={this.props.putBusiData.bind(this)} />
+                    putBusiData={this.props.putBusiData.bind(this)}
+                    manageSave={this.props.manageSave} />
                   <Payments 
                     styles={styles} 
                     bData={this.props.bData} 
                     getBusiData={this.props.getBusiData.bind(this)}
-                    putBusiData={this.props.putBusiData.bind(this)} />
+                    putBusiData={this.props.putBusiData.bind(this)}
+                    manageSave={this.props.manageSave} />
                 </SwipeableViews>
+                <div className="floatingBtn">
+                    <FloatingActionButton 
+                      className={this.props.saveBtn} 
+                      styles={styles.floatRight}>
+                      <SaveIcon />
+                    </FloatingActionButton>
+                </div>
             </div>
         );
     }

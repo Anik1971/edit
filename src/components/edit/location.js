@@ -5,20 +5,21 @@ import Geosuggest from 'react-geosuggest';
 import RaisedButton from 'material-ui/lib/raised-button';
 import Colors from 'material-ui/lib/styles/colors';
 import FontIcon from 'material-ui/lib/font-icon';
-
+import Popover from 'material-ui/lib/popover/popover';
 class Location extends React.Component {
 	constructor(props){
 		super(props);	
         let address = this.props.bData.businessAddress;
         this.state = {
-            gmap: {},
             selCity: {},
             citySuggest:[],
             selLocality:{},
             selAddress:'',
             city:address.city || '',
             locality:address.locality || '',
-            address:address.address || ''
+            address:address.address || '',
+            activePopover: 'notPop',
+            gpsUpdateText: 'UPDATE'
         };
 	}	
     onCitySuggestSelect(location){
@@ -38,18 +39,43 @@ class Location extends React.Component {
     }
 
     onPickLocation(){
+        this.setState({
+            gpsUpdateText: 'PLEASE WAIT...'
+        });
         if (navigator.geolocation) {
             let _this = this;
-            console.log(_this);
             let position = navigator.geolocation.getCurrentPosition(function(position){
                 console.log(position);
                 let map = new google.maps.Map(document.getElementById('map'), {
                     center: {lat: position.coords.latitude, lng: position.coords.longitude},
                     zoom: 6
                 }); 
-                _this.setState({
-                    gmap:map
-                });
+                let geocoder = new google.maps.Geocoder;
+                let infowindow = new google.maps.InfoWindow;                
+                let latlng = {
+                    lat: position.coords.latitude, 
+                    lng: position.coords.longitude
+                };
+                geocoder.geocode({'location': latlng}, function(results, status) {
+                    if(results[0]){
+                        let formatted_address = results[0].formatted_address.split(',');
+                        let city = formatted_address[formatted_address.length-3];
+                        let locality = formatted_address[formatted_address.length-4];
+                        let address = [];
+                        for(let i = 0;i<formatted_address.length-4;i++){
+                            address.push(formatted_address[i]);
+                        }
+                        address = address.join();
+                        _this.setState({ 
+                            gmap: map,                           
+                            city: city,
+                            locality: locality,
+                            address:address,
+                            activePopover:'notPop',
+                            gpsUpdateText:'UPDATE'
+                        });
+                    }
+                });                
             });
           } else {
             // Browser doesn't support Geolocation\
@@ -120,7 +146,18 @@ class Location extends React.Component {
             return true; //blocking localities outside the city boundary
         }
     }
-    
+    showPop(key,e){
+        this.setState({
+            activePopover:'pop',
+            anchorEl:e.currentTarget,
+            gpsUpdateText:'UPDATE'
+        });
+    }
+    closePopover(){
+        this.setState({
+            activePopover:'notPop'
+        });
+    }
 	render(){
 		return (<div style={this.props.styles.slide}>
                     <Geosuggest 
@@ -128,7 +165,7 @@ class Location extends React.Component {
                         className={"GeoSuggestList"}
                         inputClassName={"GeoSuggestinput"}
                         autoActivateFirstSuggest={false}
-                        country={"in"}
+                        country={"in"}                        
                         getSuggestLabel={this.getCitySuggestLabel.bind(this)}
                         skipSuggest={this.skipCitySuggest.bind(this)}
                         onChange={this.cityOnChange.bind(this)}
@@ -140,7 +177,7 @@ class Location extends React.Component {
                         className={"GeoSuggestList"}
                         inputClassName={"GeoSuggestinput"}
                         autoActivateFirstSuggest={true}
-                        country={"in"}
+                        country={"in"}                        
                         getSuggestLabel={this.getLocatlitySuggestLabel.bind(this)}
                         skipSuggest={this.skipLocalitySuggest.bind(this)}
                         onSuggestSelect={this.onLocalitySuggestSelect.bind(this)} 
@@ -151,12 +188,28 @@ class Location extends React.Component {
                     <div className={"pickLocation"}>
                         <RaisedButton 
                             secondary={true} 
-                            label="PICK LOCATION"
-                            onTouchTap={this.onPickLocation.bind(this)}
-                            labelPosition="after">
+                            fullWidth={true}
+                            label="UPDATE STORE ADDRESS USING GPS"                            
+                            labelPosition="after"
+                            onClick={this.showPop.bind(this, "pop")} >
                             <FontIcon className="material-icons">
                             </FontIcon>
                         </RaisedButton>
+                        <Popover 
+                          anchorEl = {this.state.anchorEl}
+                          canAutoPosition = { true }
+                          open={this.state.activePopover === 'pop'}                          
+                          onRequestClose={this.closePopover.bind(this, 'pop')} >
+                          <div style={{padding:20}}>
+                            <h2>WARNING:</h2><br />
+                            <p>This update the store location to the current location</p><br />
+                            <RaisedButton 
+                                fullWidth = { true}
+                                secondary={true} 
+                                label={this.state.gpsUpdateText}
+                                onTouchTap={this.onPickLocation.bind(this)} />
+                          </div>
+                        </Popover>
                     </div>
                     <div className={"Timings"}>
                         <Link  to="/timings" >Timings</Link>
