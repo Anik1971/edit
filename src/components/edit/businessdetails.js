@@ -118,7 +118,8 @@ class BusinessDetail extends React.Component {
                 <div className="floatingBtn">
                     <FloatingActionButton 
                       className={this.props.saveBtn} 
-                      styles={styles.floatRight}>
+                      styles={styles.floatRight}
+                      onTouchTap={this.props.executeSave.bind(this)}>
                       <SaveIcon />
                     </FloatingActionButton>
                 </div>

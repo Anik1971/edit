@@ -26,16 +26,17 @@ class Location extends React.Component {
         console.log('onCitySuggestSelect',location); 
         this.setState({
             selCity:location
+        },function(){
+            this.props.manageSave('show','businessAddress.city',this.state.city);
         });      
     }
     onLocalitySuggestSelect(location){
         console.log('onLocalitySuggestSelect',location);
         this.setState({
             selLocality:location
+        },function(){
+            this.props.manageSave('show','businessAddress.locality',this.state.locality);
         });
-        if(!this.state.selCity.label){
-            console.log('city not set');
-        }
     }
 
     onPickLocation(){
@@ -46,7 +47,7 @@ class Location extends React.Component {
             let _this = this;
             let position = navigator.geolocation.getCurrentPosition(function(position){
                 console.log(position);
-                let map = new google.maps.Map(document.getElementById('map'), {
+                let map = new google.maps.Map(document.getElementById('storeMap'), {
                     center: {lat: position.coords.latitude, lng: position.coords.longitude},
                     zoom: 6
                 }); 
@@ -57,21 +58,29 @@ class Location extends React.Component {
                     lng: position.coords.longitude
                 };
                 geocoder.geocode({'location': latlng}, function(results, status) {
-                    if(results[0]){
+                    if(results[0]){                        
                         let formatted_address = results[0].formatted_address.split(',');
                         let city = formatted_address[formatted_address.length-3];
                         let locality = formatted_address[formatted_address.length-4];
                         let address = [];
+
                         for(let i = 0;i<formatted_address.length-4;i++){
                             address.push(formatted_address[i]);
                         }
                         address = address.join();
+                        //marker
+                        map.setZoom(20);
+                        let marker = new google.maps.Marker({
+                          position: latlng,
+                          map: map
+                        });
+                        infowindow.setContent(address);
+                        infowindow.open(map, marker);
                         _this.setState({ 
-                            gmap: map,                           
-                            city: city,
-                            locality: locality,
-                            address:address,
-                            activePopover:'notPop',
+                            _gmap: map,                           
+                            _city: city,
+                            _locality: locality,
+                            _address:address,
                             gpsUpdateText:'UPDATE'
                         });
                     }
@@ -152,10 +161,33 @@ class Location extends React.Component {
             anchorEl:e.currentTarget,
             gpsUpdateText:'UPDATE'
         });
+        this.onPickLocation();
     }
     closePopover(){
         this.setState({
             activePopover:'notPop'
+        });
+    }
+    onLocationSelect(){
+        console.log('onLocationSelect');
+        this.setState({ 
+            gmap: this.state._map,                           
+            city: this.state._city,
+            locality: this.state._locality,
+            address:this.state._address,
+            activePopover:'notPop',
+            gpsUpdateText:'UPDATE'
+        },function(){
+            this.props.manageSave('show','businessAddress.city',this.state.city);
+            this.props.manageSave('show','businessAddress.locality',this.state.locality);
+            this.props.manageSave('show','businessAddress.address',this.state.address);
+        });        
+    }
+    onAddressChange(e){
+        this.setState({
+            address:e.target.value
+        },function(){
+            this.props.manageSave('show','businessAddress.address',this.state.address);
         });
     }
 	render(){
@@ -184,7 +216,8 @@ class Location extends React.Component {
                         initialValue = {this.state.locality} />
                     <TextField fullWidth={true}
                         floatingLabelText="Address"
-                        value={this.state.address} />
+                        value={this.state.address} 
+                        onChange={this.onAddressChange.bind(this)}/>
                     <div className={"pickLocation"}>
                         <RaisedButton 
                             secondary={true} 
@@ -200,14 +233,14 @@ class Location extends React.Component {
                           canAutoPosition = { true }
                           open={this.state.activePopover === 'pop'}                          
                           onRequestClose={this.closePopover.bind(this, 'pop')} >
-                          <div style={{padding:20}}>
-                            <h2>WARNING:</h2><br />
-                            <p>This update the store location to the current location</p><br />
+                          <div style={{padding:20}}>                            
+                            <p>WARNING: This will update the store location to the current location</p><br />
+                            <div id="storeMap" className={"storeMap"}></div>
                             <RaisedButton 
                                 fullWidth = { true}
                                 secondary={true} 
                                 label={this.state.gpsUpdateText}
-                                onTouchTap={this.onPickLocation.bind(this)} />
+                                onTouchTap={this.onLocationSelect.bind(this)} />
                           </div>
                         </Popover>
                     </div>

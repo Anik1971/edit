@@ -224,31 +224,38 @@ class Description extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-            businessType: 1,
+            businessType: "Self-Owned",
             businessShortDescription: this.props.bData.businessType || '',
             businessLongDescription: this.props.bData.businessDescription || '',
-            selectedBusinessCategory: this.props.bData.category
+            selectedBusinessCategory: this.props.bData.category,
+            phoneLimit:5,
+            phoneClass:[],
+            businessPhone:[]
         };	
+        this.state.phoneClass[0] = '';
+        for(let i=1;i<this.state.phoneLimit;i++){
+        	this.state.phoneClass.push('hidden');
+        }
 	}	
 	businessTypeChange(e, index, businessType){
 		this.setState({
 			businessType:businessType
 		},function(){
-			this.props.manageSave('show','businessType',this.state.businessType);
+			this.props.manageSave('show','ownershipType',this.state.businessType);
 		});
 	}
 	onBusinessShortDescUpdate(textField){
 		this.setState({
 			businessShortDescription:textField.target.value
 		},function(){
-			this.props.manageSave('show','businessShortDescription',this.state.businessShortDescription);
+			this.props.manageSave('show','businessType',this.state.businessShortDescription);
 		});
 	}
 	onBusinessLongDescUpdate(textField){
 		this.setState({
 			businessLongDescription:textField.target.value
 		},function(){
-			this.props.manageSave('show','businessLongDescription',this.state.businessLongDescription);
+			this.props.manageSave('show','businessDescription',this.state.businessLongDescription);
 		});
 	}
 	onCategoryUpdate(dynamicVals){
@@ -259,14 +266,15 @@ class Description extends React.Component {
 		}
 		this.props.manageSave('show','selectedCategory',selectedCategory);
 	}
-	onBusinessPhoneChange(textField){
-		console.log('onBusinessPhoneChange');
-		this.setState({
-			businessPhone: textField.target.value
-		},function(){
-			this.props.manageSave('show','businessPhone',this.state.businessPhone);
-		});
-		
+	onBusinessPhoneChange(index,textField){
+		console.log('onBusinessPhoneChange',index);
+		this.state.businessPhone[index] = textField.target.value;
+		this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
+		if(textField.target.value.length>0 && this.state.phoneLimit >= index){
+			this.state.phoneClass[index+1] = '';	
+		}else if(index>0 && textField.target.value.length == 0){
+			this.state.phoneClass[index] = 'hidden';	
+		}
 	}
 	render(){
 		return (
@@ -274,7 +282,8 @@ class Description extends React.Component {
 	            <TextField fullWidth={true}
 	            	floatingLabelText={"One Line Description"}
 	                value={this.state.businessShortDescription} 
-	                onChange={this.onBusinessShortDescUpdate.bind(this)}/>
+	                onChange={this.onBusinessShortDescUpdate.bind(this)}
+	                maxLimit={50}/>
 	            <TextField fullWidth={true}
 	                floatingLabelText="Business Long Description"
 	                multiLine={true} 
@@ -283,9 +292,9 @@ class Description extends React.Component {
 	            <SelectField value={this.state.businessType}
 	            	floatingLabelText="Business Type"
 	            	onChange={this.businessTypeChange.bind(this)}>
-			        <MenuItem value={1} primaryText="Self-Owned"/>
-			        <MenuItem value={2} primaryText="Partnership"/>
-			        <MenuItem value={3} primaryText="Others"/>
+			        <MenuItem value={"Self-Owned"} primaryText="Self-Owned"/>
+			        <MenuItem value={"Partnership"} primaryText="Partnership"/>
+			        <MenuItem value={"Others"} primaryText="Others"/>
 			    </SelectField>
 	          	<CategoryAutoComplete 
 	          		bData={this.props.bData}
@@ -294,10 +303,18 @@ class Description extends React.Component {
 	          		specialCategories={specialCategories}
 	            	specialCategoriesCheckList={specialCategoriesCheckList}	            	
 	            	onCategoryUpdate={this.onCategoryUpdate.bind(this)}
-	            	manageSave={this.props.manageSave} />
-	            <TextField fullWidth={true}
-	                floatingLabelText="Business Phone [Auto grown]" 
-	                onBusinessPhoneChange={this.onBusinessPhoneChange.bind(this)} />	            
+	            	manageSave={this.props.manageSave} />	            
+				{  
+            		this.state.phoneClass.map((className, index) => {
+            			let phoneText = "Business Phone "+(index+1);
+            			return (<TextField fullWidth={true}
+	                		floatingLabelText={phoneText}
+	                		onChange={this.onBusinessPhoneChange.bind(this,index)}
+	                		className={className} 
+	                		maxLimit={10}
+	                		key={index}/>)	 
+            		})
+            	}            
 	        </div>);
 	}
 }

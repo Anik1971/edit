@@ -33,19 +33,11 @@ class ProfileImage extends React.Component {
 	}
 	coverImageUpdate(imageurl){
 		console.log('imageurl');
-		let appExtras = JSON.parse(this.props.bData.appExtras);
-		appExtras.businessImageCover = imageurl;
-		this.props.putBusiData({	      
-	      appExtras: JSON.stringify(appExtras)
-	    });
+		this.props.manageSave('show','coverImageUpdate',imageurl);
 	}
 	businessImageUpdate(imageurl){
 		console.log('imageurl');
-		let appExtras = JSON.parse(this.props.bData.appExtras);
-		appExtras.businessImage = imageurl;
-		this.props.putBusiData({	      
-	      appExtras: JSON.stringify(appExtras)
-	    });
+		this.props.manageSave('show','profileImageUpdate',imageurl);
 	}
     render() {
         return (
