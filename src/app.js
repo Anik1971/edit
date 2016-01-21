@@ -116,7 +116,7 @@ class Index extends React.Component {
     console.log('saveData (app.js) ',this.state.saveData);
     let bData = this.state.bData;    
     for(let key in this.state.saveData){
-      let sData = this.state.saveData[key];
+      let sData = this.state.saveData[key]; 
       if(bData[key]){ //checks if level 0 has such field
         if(typeof sData == 'object'){ //checks if the data going to be stored is a object
           bData[key]=JSON.stringify(sData); // goodbox compatible nested json
