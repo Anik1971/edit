@@ -19,20 +19,26 @@ class GenerateCheckBox extends React.Component {
 	{
 		super(props);
 		this.state={
-			specialCategoryCheckList:[]
+			boolList:[],
+			valueList: []
 		}
 	}
-	onCheck(check){
+	onCheck(index,check){
 		console.log('check',check.target.checked);
-		if(check.target.checked){
-			let specialCategoryCheckList = this.state.specialCategoryCheckList;
-			specialCategoryCheckList.push(check.target.value);
-			this.setState({
-				specialCategoryCheckList:specialCategoryCheckList
-			},function(){
-				this.props.manageSave('show','category',this.state.specialCategoryCheckList.join());
-			});
+		if(check.target.checked){		
+			this.state.boolList[index] = true;
+			this.state.valueList[index] = check.target.value;
+		}else{
+			this.state.boolList[index] = false;		
 		}
+		let uploadData = [];
+		for(let i in this.state.valueList){
+			if(this.state.boolList[i] && this.state.valueList[i]){
+				uploadData.push(this.state.valueList[i]);
+			}
+		}
+		this.props.manageSave('show','specialcategory',uploadData.join());
+		console.log('check state',this.state);
 	}
   	render() {
 	  	if(this.props.specialCategoriesCheckList){
@@ -47,7 +53,8 @@ class GenerateCheckBox extends React.Component {
                     		key={index} 
                     		label={title}
                     		className="checkBox"
-                    		onCheck={this.onCheck.bind(this)} />
+                    		onCheck={this.onCheck.bind(this,index)} 
+                    		defaultChecked={this.state.boolList[index]} />
                     );
                   })
                 }
@@ -175,7 +182,7 @@ class CategoryAutoComplete extends React.Component{
     	console.log('Blur called');
     }
     onCategoryUpdateInput(index,category){
-    	console.log('onCategoryUpdateInput',category);
+    	//console.log('onCategoryUpdateInput',category);
     }
 	render() {
 		if(this.state.categoryCount){

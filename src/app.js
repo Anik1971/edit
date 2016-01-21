@@ -83,17 +83,11 @@ class Index extends React.Component {
       });
     }
     let saveData = this.state.saveData;
-    if(saveData[field]){
-      if(field == 'category'){
-        saveData[field].push(value);
-      }
-    }else{
-      saveData[field]=value;
-    }
+    saveData[field]=value;
     this.setState({
       saveData: saveData
     },function(){
-      console.log('state',this.state.saveData);
+      console.log('save data: ',this.state.saveData);
     });
   }
   render() {
