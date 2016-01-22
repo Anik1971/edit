@@ -98,7 +98,7 @@ export default class ImageUpdater extends React.Component {
           onRequestClose={this.handleClose}>
           <Card zDepth={1}>
             <CardMedia>
-              <img width="auto" src={this.state.image}/>
+              <img width="auto" style="max-height:150px" src={this.state.image}/>
             </CardMedia>
             <CardActions>              
               <div className="row">              

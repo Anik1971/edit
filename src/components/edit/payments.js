@@ -1,6 +1,8 @@
 import React from 'react';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
+import Dropzone from 'react-dropzone';
+import DocumentUploader from './../dialogues/documentUploader';
 class Payments extends React.Component {
     constructor(props){
         super(props);  
@@ -13,6 +15,11 @@ class Payments extends React.Component {
             paymentStatus : paymentStatus
         } 
     }   
+    businessImageUpdate(imageurl){
+        console.log("Trail");
+        console.log(imageurl);
+        this.props.manageSave('show','profileImageUpdate',imageurl);
+    }
     render(){
         return (<div style={this.props.styles.slide}>
                     <TextField
@@ -30,15 +37,10 @@ class Payments extends React.Component {
                     <TextField fullWidth={true}
                         floatingLabelText="VAT/TIN/Sevice Taxa" />
                     <div className="row">
-                        <RaisedButton
-                            secondary={true}
-                            fullWidth={true} 
-                            label="Upload Documents">
-                          <input 
-                            className="imageUploadButton" 
-                            type="file" 
-                            id="imageButton" />
-                        </RaisedButton>
+                        <DocumentUploader 
+                                open={true}
+                                image={this.state.profileImage}                 
+                                postUpload={this.businessImageUpdate.bind(this)} />
                     </div>
                   </div>
                 );

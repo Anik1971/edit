@@ -14,9 +14,14 @@ class Delivery extends React.Component {
 		super(props);	
     let homeDelivery = 'hidden';
     let homeDeliveryEnabled = false;
-    if(this.props.bData.serviceAreas != ''){
+    let tempServiceAreas = {};
+    if(this.props.bData.serviceAreas.areas){
       homeDelivery = '';
       homeDeliveryEnabled = true;
+      tempServiceAreas = this.props.bData.serviceAreas.areas;
+    }else{
+      tempServiceAreas = {};
+      tempServiceAreas = [];
     }
     let minimumOrderAmount = '';
     let deliveryCharge = '';
@@ -54,7 +59,7 @@ class Delivery extends React.Component {
       customDeliveryPricing: '',
       serviceLimit:5,
       serviceClass:[],
-      serviceAreas:[],
+      serviceAreas:tempServiceAreas,
       serviceAreasObj:[]
     };  
     this.state.serviceClass[0] = '';
@@ -176,7 +181,10 @@ class Delivery extends React.Component {
         serviceAreas:serviceAreas,
         serviceAreasObj:serviceAreasObj
     },function(){
-        this.props.manageSave('show','serviceAreas',this.state.serviceAreasObj);
+        let tempServiceAreas = {};
+        tempServiceAreas.areas = [];
+        tempServiceAreas.areas = this.state.serviceAreasObj;
+        this.props.manageSave('show','serviceAreas',tempServiceAreas);
         if(this.state.serviceAreas.length>0 && this.state.serviceLimit >= index){
           this.state.serviceClass[index+1] = '';  
         }else if(index>0 && this.state.serviceAreas.length == 0){
@@ -229,6 +237,10 @@ class Delivery extends React.Component {
                     this.state.serviceClass.map((className, index) => {
                       let serviceText = "Service Area "+(index+1);
                       let _className = "GeoSuggestList "+className;
+                      let serviceName = '';
+                      if(this.state.serviceAreas[index] && this.state.serviceAreas[index].name){
+                        serviceName = this.state.serviceAreas[index].name;
+                      }
                       return (<Geosuggest 
                         placeholder={serviceText}
                         className={_className}
@@ -238,7 +250,7 @@ class Delivery extends React.Component {
                         getSuggestLabel={this.getLocatlitySuggestLabel.bind(this,index)}
                         skipSuggest={this.skipLocalitySuggest.bind(this,index)}
                         onSuggestSelect={this.onLocalitySuggestSelect.bind(this,index)} 
-                        initialValue = {this.state.serviceAreas[index]}
+                        initialValue = {serviceName}
                         key={index} />)   
                     })
                   } 

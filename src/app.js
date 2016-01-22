@@ -115,11 +115,11 @@ class Index extends React.Component {
     debugger;   
     for(let key in this.state.saveData){
       let sData = this.state.saveData[key]; 
-      if(bData[key]){ //checks if level 0 has such field        
+      if(bData[key] || bData[key] == ''){ //checks if level 0 has such field        
         bData[key]=sData; //normal data       
       }else{ //others goes to app extras
         let appExtras = bData.appExtras;
-        if(!appExtras){
+        if(!appExtras ){
           appExtras = {};
         }
         appExtras[key] = sData; //normal data
@@ -161,6 +161,8 @@ class Index extends React.Component {
               let status = window.Android.saveBusinessData(convertToStringBusinessProfileObj);
               console.log("....................save business data status............");
               console.log(status);
+              console.info('saved Data');
+              console.log(JSON.parse(window.Android.getBusinessData()));
             } catch (e) {
               console.log("....................save business data failed due to crash............");
               console.log(e);

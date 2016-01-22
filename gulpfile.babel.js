@@ -13,12 +13,12 @@ gulp.task("js", () => {
     .bundle()
     .pipe(source("bundle.js"))
     .pipe(buffer())
-    .pipe(uglify())
+    /*.pipe(uglify())
     .pipe(gzip({
       gzipOptions: {
         level: 9
       }
-    }))
+    }))*/
     .pipe(gulp.dest("dist"));
 
 });
