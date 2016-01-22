@@ -20,11 +20,13 @@ class ProfileImage extends React.Component {
 		this.state = {
 		  profilePicDialogue: false,
 		  businessImageCover: {
-		    'background-image': 'url('+businessImageCover+')'
+		    backgroundImage: 'url('+businessImageCover+')'
 		  },
 		  businessImage: {
-		    'background-image': 'url('+businessImage+')'
+		    backgroundImage: 'url('+businessImage+')'
 		  },
+		  businessImageCoverUrl:businessImageCover,
+		  businessImageUrl:businessImage,
 		  profileImage: 'http://lorempixel.com/600/337/nature/'
 		};
 	}
@@ -37,19 +39,17 @@ class ProfileImage extends React.Component {
 	}
 	businessImageUpdate(imageurl){
 		console.log('imageurl');
-		this.props.manageSave('show','profileImageUpdate',imageurl);
+		this.props.manageSave('show','businessImage',imageurl);
 	}
     render() {
         return (
-        <div styles={this.state.businessImageCover} id="profile-image-cover">
+        <div style={this.state.businessImageCover} id="profile-image-cover">
         	<ImageUpdater 
-        		open={this.state.coverImageDialogue} 
-        		image={this.props.bData.appExtras.businessImageCover}        		
+        		image={this.state.businessImageCoverUrl}        		
         		postUpload={this.coverImageUpdate.bind(this)} />
-            <div styles={this.state.businessImage} id="profile-image">     	
+            <div style={this.state.businessImage} id="profile-image">     	
 				<ImageUpdater 
-					open={this.state.profilePicDialogue}
-        			image={this.state.profileImage}         		
+        			image={this.state.businessImageUrl}         		
         			postUpload={this.businessImageUpdate.bind(this)} />
             </div>
         </div>);

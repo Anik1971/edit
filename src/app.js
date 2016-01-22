@@ -104,32 +104,25 @@ class Index extends React.Component {
     }else{*/
       saveData[field]=value;
     //}
-    this.setState({
-      saveData: saveData
-    },function(){
-      console.log('save data: ',this.state.saveData);
-    });
-  }
+    this.state.saveData = saveData;
+    console.log('save data: ',this.state.saveData);
+}
   executeSave(){
     console.info('Execute Save');
     console.log('bData curr (app.js) ',this.state.bData);
     console.log('saveData (app.js) ',this.state.saveData);
-    let bData = this.state.bData;    
+    let bData = this.state.bData; 
+    debugger;   
     for(let key in this.state.saveData){
       let sData = this.state.saveData[key]; 
-      if(bData[key]){ //checks if level 0 has such field
-        if(typeof sData == 'object'){ //checks if the data going to be stored is a object
-          bData[key]=JSON.stringify(sData); // goodbox compatible nested json
-        }else{
-          bData[key]=sData; //normal data
-        }        
+      if(bData[key]){ //checks if level 0 has such field        
+        bData[key]=sData; //normal data       
       }else{ //others goes to app extras
         let appExtras = bData.appExtras;
-        if(typeof sData == 'object'){ //checks if the data going to be stored is a object
-          appExtras[key] = JSON.stringify(sData); // goodbox compatible nested json
-        }else{
-          appExtras[key] = sData; //normal data
+        if(!appExtras){
+          appExtras = {};
         }
+        appExtras[key] = sData; //normal data
         bData.appExtras = appExtras; //integrating appExtras
       }    
       this.setState({
@@ -139,14 +132,25 @@ class Index extends React.Component {
     } 
     this.state.bData = bData; //integrating to bData
 
+    //creating data to export
+    let exportData = this.state.bData;
+    for(let key in exportData){
+      let _bData = exportData[key];      
+      if(typeof _bData == 'object'){ //checks if the data going to be stored is a object
+        exportData[key]=JSON.stringify(_bData); // goodbox compatible nested json
+      }       
+    } 
+    
+
     console.log('Merged data:',bData);
+    console.log('ExportData data:',exportData);
     if(window.Android){
       console.log(this.state.bData);
-      this.state.bData.storeTimings = JSON.stringify(this.state.bData.storeTimings);
+      /*this.state.bData.storeTimings = JSON.stringify(this.state.bData.storeTimings);
       this.state.bData.serviceAreas = JSON.stringify(this.state.bData.serviceAreas);
       this.state.bData.deliveryPricing = JSON.stringify(this.state.bData.deliveryPricing);
       this.state.bData.businessAddress = JSON.stringify(this.state.bData.businessAddress);
-      this.state.bData.appExtras = JSON.stringify(this.state.bData.appExtras);
+      this.state.bData.appExtras = JSON.stringify(this.state.bData.appExtras);*/
       
       
       let convertToStringBusinessProfileObj = JSON.stringify(this.state.bData);
@@ -157,7 +161,6 @@ class Index extends React.Component {
               let status = window.Android.saveBusinessData(convertToStringBusinessProfileObj);
               console.log("....................save business data status............");
               console.log(status);
-
             } catch (e) {
               console.log("....................save business data failed due to crash............");
               console.log(e);
