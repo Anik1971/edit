@@ -15,7 +15,6 @@ import TextField from 'material-ui/lib/text-field';
 import Dropzone from 'react-dropzone';
 import Request from 'superagent';
 import CircularProgress from 'material-ui/lib/circular-progress';
-
 export default class ImageUpdater extends React.Component {
   constructor(props) {
     super(props);
@@ -98,7 +97,7 @@ export default class ImageUpdater extends React.Component {
           onRequestClose={this.handleClose}>
           <Card zDepth={1}>
             <CardMedia>
-              <img width="auto" style="max-height:150px" src={this.state.image}/>
+              <img width="auto" height="150px" src={this.state.image}/>
             </CardMedia>
             <CardActions>              
               <div className="row">              

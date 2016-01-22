@@ -15,10 +15,10 @@ class Payments extends React.Component {
             paymentStatus : paymentStatus
         } 
     }   
-    businessImageUpdate(imageurl){
-        console.log("Trail");
+    businessDocUpdate(imageurl){
+        console.log("Document",imageurl);
         console.log(imageurl);
-        this.props.manageSave('show','profileImageUpdate',imageurl);
+        this.props.manageSave('show','documentUpdate',imageurl);
     }
     render(){
         return (<div style={this.props.styles.slide}>
@@ -40,7 +40,7 @@ class Payments extends React.Component {
                         <DocumentUploader 
                                 open={true}
                                 image={this.state.profileImage}                 
-                                postUpload={this.businessImageUpdate.bind(this)} />
+                                postUpload={this.businessDocUpdate.bind(this)} />
                     </div>
                   </div>
                 );
