@@ -25,17 +25,27 @@ class Location extends React.Component {
     onCitySuggestSelect(location){
         console.log('onCitySuggestSelect',location); 
         this.setState({
-            selCity:location
+            selCity:location,
+            city:location.label
         },function(){
-            this.props.manageSave('show','businessAddress.city',this.state.city);
+            let businessAddress = {};
+            businessAddress.city = this.state.city;
+            businessAddress.locality = this.state.locality;
+            businessAddress.address = this.state.address;
+            this.props.manageSave('show','businessAddress',businessAddress);
         });      
     }
     onLocalitySuggestSelect(location){
         console.log('onLocalitySuggestSelect',location);
         this.setState({
-            selLocality:location
+            selLocality:location,
+            locality:location.label
         },function(){
-            this.props.manageSave('show','businessAddress.locality',this.state.locality);
+            let businessAddress = {};
+            businessAddress.city = this.state.city;
+            businessAddress.locality = this.state.locality;
+            businessAddress.address = this.state.address;
+            this.props.manageSave('show','businessAddress',businessAddress);
         });
     }
 
@@ -178,16 +188,22 @@ class Location extends React.Component {
             activePopover:'notPop',
             gpsUpdateText:'UPDATE'
         },function(){
-            this.props.manageSave('show','businessAddress.city',this.state.city);
-            this.props.manageSave('show','businessAddress.locality',this.state.locality);
-            this.props.manageSave('show','businessAddress.address',this.state.address);
+            let businessAddress = {};
+            businessAddress.city = this.state.city;
+            businessAddress.locality = this.state.locality;
+            businessAddress.address = this.state.address;
+            this.props.manageSave('show','businessAddress',businessAddress);
         });        
     }
     onAddressChange(e){
         this.setState({
             address:e.target.value
         },function(){
-            this.props.manageSave('show','businessAddress.address',this.state.address);
+            let businessAddress = {};
+            businessAddress.city = this.state.city;
+            businessAddress.locality = this.state.locality;
+            businessAddress.address = this.state.address;
+            this.props.manageSave('show','businessAddress',businessAddress);
         });
     }
 	render(){

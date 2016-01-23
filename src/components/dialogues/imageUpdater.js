@@ -87,7 +87,7 @@ export default class ImageUpdater extends React.Component {
           onTouchTap = {this.editImage.bind(this)} >
           <EditIcon 
             className="editIcon" 
-            color={Colors.white} />
+            color={Colors.black} />
         </FlatButton> 
         
         <Dialog

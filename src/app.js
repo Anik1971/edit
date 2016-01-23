@@ -173,8 +173,6 @@ class Index extends React.Component {
               let status = window.Android.saveBusinessData(convertToStringBusinessProfileObj);
               console.log("....................save business data status............");
               console.log(status);
-              console.info('saved Data');
-              console.log(JSON.parse(window.Android.getBusinessData()));
             } catch (e) {
               console.log("....................save business data failed due to crash............");
               console.log(e);
