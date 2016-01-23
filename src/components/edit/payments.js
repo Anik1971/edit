@@ -17,8 +17,20 @@ class Payments extends React.Component {
     }   
     businessDocUpdate(imageurl){
         console.log("Document",imageurl);
-        console.log(imageurl);
-        this.props.manageSave('show','documentUpdate',imageurl);
+        let pending = this.props.bData.appExtras.pending;
+        if(pending){
+            if(pending.document){
+                pending.document.push(imageurl);
+            }else{
+                pending.document = [];
+                pending.document.push(imageurl);
+            }
+        }else{
+            pending = {};
+            pending.document = [];
+            pending.document.push(imageurl);
+        }
+        this.props.manageSave('show','pending',pending);
     }
     render(){
         return (<div style={this.props.styles.slide}>

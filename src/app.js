@@ -88,7 +88,7 @@ class Index extends React.Component {
       return oo;
     }
   }*/
-  manageSave(task,field,value){
+  manageSave(task,field,value,callback){
     if(task == 'show'){
       this.setState({
         saveBtn:''
@@ -140,7 +140,9 @@ class Index extends React.Component {
       });  
     } 
 
-    this.state.bData = bData; //integrating to bData
+    this.setState({
+      bData : bData //integrating to bData
+    });
 
     //creating data to export
     let exportData = this.state.bData;

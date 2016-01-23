@@ -36,8 +36,14 @@ class ProfileImage extends React.Component {
 	coverImageUpdate(imageurl){
 		console.log('imageurl');
 		let pending = this.props.bData.appExtras.pending;
-		if(pending && pending.coverImage){
-			pending.coverImage.push(imageurl);
+		console.log('pending',pending);
+		if(pending){
+			if(pending.coverImage){
+				pending.coverImage.push(imageurl);
+			}else{
+				pending.coverImage = [];
+				pending.coverImage.push(imageurl);
+			}
 		}else{
 			pending = {};
 			pending.coverImage = [];
@@ -48,8 +54,13 @@ class ProfileImage extends React.Component {
 	businessImageUpdate(imageurl){
 		console.log('imageurl');
 		let pending = this.props.bData.appExtras.pending;
-		if(pending && pending.businessImage){
-			pending.businessImage.push(imageurl);
+		if(pending){
+			if(pending.businessImage){
+				pending.businessImage.push(imageurl);
+			}else{
+				pending.businessImage = [];
+				pending.businessImage.push(imageurl);
+			}
 		}else{
 			pending = {};
 			pending.businessImage = [];
