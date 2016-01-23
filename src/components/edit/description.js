@@ -230,7 +230,8 @@ class Description extends React.Component {
             selectedBusinessCategory: this.props.bData.category,
             phoneLimit:5,
             phoneClass:[],
-            businessPhone:[]
+            businessPhone:[],
+            languageType:this.props.bData.languageType
         };	
         this.state.phoneClass[0] = '';
         for(let i=1;i<this.state.phoneLimit;i++){
@@ -242,6 +243,13 @@ class Description extends React.Component {
 			businessType:businessType
 		},function(){
 			this.props.manageSave('show','ownershipType',this.state.businessType);
+		});
+	}
+	languageTypeChange(e, index, languageType){
+		this.setState({
+			languageType:languageType
+		},function(){
+			this.props.manageSave('show','languageType',this.state.languageType);
 		});
 	}
 	onBusinessShortDescUpdate(textField){
@@ -295,6 +303,19 @@ class Description extends React.Component {
 			        <MenuItem value={"Self-Owned"} primaryText="Self-Owned"/>
 			        <MenuItem value={"Partnership"} primaryText="Partnership"/>
 			        <MenuItem value={"Others"} primaryText="Others"/>
+			    </SelectField>
+			    <SelectField value={this.state.languageType}
+	            	floatingLabelText="Language Translation Preference"
+	            	onChange={this.languageTypeChange.bind(this)}>
+	            	<MenuItem value={"None"} primaryText="None"/>
+	            	<MenuItem value={"bn"} primaryText="Bengali"/>
+	            	<MenuItem value={"gu"} primaryText="Gujarati"/>
+	            	<MenuItem value={"hi"} primaryText="Hindi"/>
+	            	<MenuItem value={"kn"} primaryText="Kannada"/>
+	            	<MenuItem value={"ta"} primaryText="Tamil"/>
+	            	<MenuItem value={"te"} primaryText="Telugu"/>
+	            	<MenuItem value={"ur"} primaryText="Urdu"/>
+	            	<MenuItem value={"ml"} primaryText="Malayalam"/>
 			    </SelectField>
 	          	<CategoryAutoComplete 
 	          		bData={this.props.bData}

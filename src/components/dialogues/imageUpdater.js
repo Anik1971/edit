@@ -21,6 +21,7 @@ export default class ImageUpdater extends React.Component {
     this.state = {
       open: false,
       image: this.props.image || 'http://www.mp3alive.com/no_photo.jpg',
+      uploadSuccess: false,
       loader: 'hidden'
     };
   }
@@ -41,14 +42,16 @@ export default class ImageUpdater extends React.Component {
        .end(function(err, res){
          if (err || !res.ok) {
            _this.setState({
-            loader:'hidden'
+            loader:'hidden',
+            uploadSuccess:false
            });
          } else {
            let response = JSON.parse(res.text);
            if(response.status == 0){
             _this.setState({
               image: response.url,
-              loader:'hidden'
+              loader:'hidden',
+              uploadSuccess: true
             });
            }
          }
@@ -60,9 +63,15 @@ export default class ImageUpdater extends React.Component {
   };
   updateImage(){
     console.log(this);
-    this.props.postUpload(this.state.image);
+    let _this = this;
     this.setState({
       open: false
+    },function(){
+      if(_this.state.open == false && _this.state.uploadSuccess){
+        _this.props.postUpload(_this.state.image);
+      }else{
+        console.error('Upload failure');
+      }
     });
   };
   render() {
