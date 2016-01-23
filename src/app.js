@@ -88,7 +88,27 @@ class Index extends React.Component {
       return oo;
     }
   }*/
+  aniMerge(oldObj,newObj){
+      for(let key in newObj){
+        if(typeof newObj[key] == 'object'){
+          if(!oldObj[key]){
+            oldObj[key] = newObj[key];
+            return oldObj;
+          }else{
+            oldObj[key] = this.aniMerge(oldObj[key],newObj[key]);
+            return oldObj;
+          }          
+        }else{
+          oldObj[key] = newObj[key];
+          
+        }
+      }
+      return oldObj;
+    }
   manageSave(task,field,value,callback){
+    //debugger;
+    //console.log('state.saveData',this.state.saveData);
+    //console.log('field',field,value);
     if(task == 'show'){
       this.setState({
         saveBtn:''
@@ -98,14 +118,10 @@ class Index extends React.Component {
         saveBtn:'hidden'
       });
     }
-    let saveData = this.state.saveData;
-    /*if(field.indexOf('.')>0){ //nested object
-      let saveData[field.split('.')[0]] = this.saveDepth(field,value);
-    }else{*/
-      saveData[field]=value;
-    //}
-    this.state.saveData = saveData;
-    console.log('save data: ',this.state.saveData);
+    let tempSaveData = {};
+    tempSaveData[field]=value;
+    this.state.saveData = this.aniMerge(this.state.saveData,tempSaveData);
+    //console.log('save data: ',this.state.saveData);
 }
   executeSave(){
     console.info('Execute Save');

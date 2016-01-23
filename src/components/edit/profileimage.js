@@ -53,7 +53,7 @@ class ProfileImage extends React.Component {
 	}
 	businessImageUpdate(imageurl){
 		console.log('imageurl');
-		debugger;
+		//debugger;
 		let pending = this.props.bData.appExtras.pending;
 		if(pending){
 			if(pending.businessImage){
