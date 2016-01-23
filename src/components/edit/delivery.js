@@ -63,7 +63,10 @@ class Delivery extends React.Component {
       serviceAreasObj:[]
     };  
     this.state.serviceClass[0] = '';
-    for(let i=1;i<this.state.serviceLimit;i++){
+    for(let i=0;i<this.state.serviceLimit;i++){
+      this.state.serviceClass.push('hidden');
+    }
+    for(let i=0;i<tempServiceAreas.length+1;i++){
       this.state.serviceClass.push('hidden');
     }
 	}	

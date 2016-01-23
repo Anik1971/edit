@@ -112,6 +112,15 @@ class Index extends React.Component {
     console.log('bData curr (app.js) ',this.state.bData);
     console.log('saveData (app.js) ',this.state.saveData);
     let bData = this.state.bData; 
+    //converting level 1 nested json strings to Object
+    for(let key in bData){
+      let _currData = bData[key];        
+      try{
+        bData[key] = JSON.parse(_currData);          
+      }catch(e){
+        bData[key] = _currData;          
+      }        
+    }
     debugger;   
     for(let key in this.state.saveData){
       let sData = this.state.saveData[key]; 
@@ -130,6 +139,7 @@ class Index extends React.Component {
         saveData: {}
       });  
     } 
+
     this.state.bData = bData; //integrating to bData
 
     //creating data to export

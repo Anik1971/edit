@@ -9,12 +9,12 @@ class ProfileImage extends React.Component {
 	constructor(props) {
 		super(props);
 		let businessImageCover = 'http://www.mp3alive.com/no_photo.jpg';
-		if(this.props.bData.appExtras.businessImageCover){
-			businessImageCover = this.props.bData.appExtras.businessImageCover;
+		if(this.props.bData.appExtras.approved && this.props.bData.appExtras.approved.coverImage){
+			businessImageCover = this.props.bData.appExtras.approved.coverImage;
 		}
 		let businessImage = 'http://www.mp3alive.com/no_photo.jpg';
-		if(this.props.bData.appExtras.businessImage){
-			businessImage = this.props.bData.appExtras.businessImage;
+		if(this.props.bData.appExtras.approved && this.props.bData.appExtras.approved.businessImage){
+			businessImage = this.props.bData.appExtras.approved.businessImage;
 		}
 
 		this.state = {
@@ -35,11 +35,27 @@ class ProfileImage extends React.Component {
 	}
 	coverImageUpdate(imageurl){
 		console.log('imageurl');
-		this.props.manageSave('show','coverImageUpdate',imageurl);
+		let pending = this.props.bData.appExtras.pending;
+		if(pending && pending.coverImage){
+			pending.coverImage.push(imageurl);
+		}else{
+			pending = {};
+			pending.coverImage = [];
+			pending.coverImage.push(imageurl);
+		}
+		this.props.manageSave('show','pending',pending);
 	}
 	businessImageUpdate(imageurl){
 		console.log('imageurl');
-		this.props.manageSave('show','businessImage',imageurl);
+		let pending = this.props.bData.appExtras.pending;
+		if(pending && pending.businessImage){
+			pending.businessImage.push(imageurl);
+		}else{
+			pending = {};
+			pending.businessImage = [];
+			pending.businessImage.push(imageurl);
+		}
+		this.props.manageSave('show','pending',pending);
 	}
     render() {
         return (

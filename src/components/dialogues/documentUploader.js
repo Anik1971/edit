@@ -32,7 +32,7 @@ export default class DocumentUploader extends React.Component {
         loader:''
       });
       Request
-       .post('http://testchat.tsepak.com/goodbox/image_resize')
+       .post('https://chat.tsepak.com/goodbox/image_resize')
        .attach('image', files[0],files[0].name)
        .end(function(err, res){
          if (err || !res.ok) {
