@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 import Dropzone from 'react-dropzone';
-import DocumentUploader from './../dialogues/documentUploader';
+import ImageUpdater from './../dialogues/imageUpdater';
 class Payments extends React.Component {
     constructor(props){
         super(props);  
@@ -10,9 +10,14 @@ class Payments extends React.Component {
         if(this.props.bData.paymentEnabled){
             paymentStatus = 'Enabled';
         }
+        let document = '';
+        if(this.props.bData.appExtras && this.props.bData.appExtras.approved && this.props.bData.appExtras.approved.document){
+            document = this.props.bData.appExtras.approved.document;
+        }
         this.state = {
             paymentEnabled : this.props.bData.paymentEnabled,
-            paymentStatus : paymentStatus
+            paymentStatus : paymentStatus,
+            document: document
         } 
     }   
     businessDocUpdate(imageurl){
@@ -33,6 +38,10 @@ class Payments extends React.Component {
         this.props.manageSave('show','pending',pending);
     }
     render(){
+        let document = this.state.approved;
+        if(!document){
+            document = 'http://www.mp3alive.com/no_photo.jpg';
+        }
         return (<div style={this.props.styles.slide}>
                     <TextField
                         hintText="Status"
@@ -49,10 +58,10 @@ class Payments extends React.Component {
                     <TextField fullWidth={true}
                         floatingLabelText="VAT/TIN/Sevice Taxa" />
                     <div className="row">
-                        <DocumentUploader 
-                                open={true}
-                                image={this.state.profileImage}                 
-                                postUpload={this.businessDocUpdate.bind(this)} />
+                        Document Upload: 
+                        <ImageUpdater 
+                            image={document}                 
+                            postUpload={this.businessDocUpdate.bind(this)} />
                     </div>
                   </div>
                 );
