@@ -231,7 +231,8 @@ class Description extends React.Component {
             phoneLimit:5,
             phoneClass:[],
             businessPhone:[],
-            languageType:this.props.bData.languageType
+            languageType:this.props.bData.languageType,
+            updateFlag:false
         };	
         this.state.phoneClass[0] = '';
         for(let i=1;i<this.state.phoneLimit;i++){
@@ -256,8 +257,18 @@ class Description extends React.Component {
 		this.setState({
 			businessShortDescription:textField.target.value
 		},function(){
-			this.props.manageSave('show','businessType',this.state.businessShortDescription);
+			this.props.manageSave('updation');
 		});
+		/*this.setState({
+			businessShortDescription:textField.target.value
+		},function(){
+			this.props.manageSave('updation');
+		});*/
+	}
+	showSaveBtn(){
+		if(!this.state.updateFlag){
+			this.props.manageSave('updation');	
+		}		
 	}
 	onBusinessLongDescUpdate(textField){
 		this.setState({
@@ -284,12 +295,21 @@ class Description extends React.Component {
 			this.state.phoneClass[index] = 'hidden';	
 		}
 	}
+	onBusinessShortDescBlur(textField){
+		console.log('blur');
+		this.setState({
+			businessShortDescription:textField.target.value
+		},function(){
+			this.props.manageSave('show','businessType',this.state.businessShortDescription);
+		});
+	}
 	render(){
 		return (
 		    <div style={this.props.styles.slide}>
 	            <TextField fullWidth={true}
 	            	floatingLabelText={"One Line Description"}
 	                value={this.state.businessShortDescription} 
+	                onBlur={this.onBusinessShortDescBlur.bind(this)}
 	                onChange={this.onBusinessShortDescUpdate.bind(this)}
 	                maxLimit={50}/>
 	            <TextField fullWidth={true}

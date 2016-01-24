@@ -113,6 +113,13 @@ class Index extends React.Component {
       this.setState({
         saveBtn:''
       });
+    }else if(task == 'updation'){
+      if(this.state.saveBtn == 'hidden'){
+        this.setState({
+          saveBtn:''
+        });
+      }
+      return;
     }else{
       this.setState({
         saveBtn:'hidden'
