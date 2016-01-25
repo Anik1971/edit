@@ -3,6 +3,7 @@ import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import EditIcon from 'material-ui/lib/svg-icons/image/camera-alt';
+import NextIcon from 'material-ui/lib/svg-icons/av/skip-next';
 import Colors from 'material-ui/lib/styles/colors';
 import Card from 'material-ui/lib/card/card';
 import CardActions from 'material-ui/lib/card/card-actions';
@@ -15,19 +16,31 @@ import TextField from 'material-ui/lib/text-field';
 import Dropzone from 'react-dropzone';
 import Request from 'superagent';
 import CircularProgress from 'material-ui/lib/circular-progress';
+import SwipeableViews from 'react-swipeable-views';
+
+import GridList from 'material-ui/lib/grid-list/grid-list';
+import GridTile from 'material-ui/lib/grid-list/grid-tile';
+import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
+import IconButton from 'material-ui/lib/icon-button';
+
 export default class ImageUpdater extends React.Component {
   constructor(props) {
     super(props);
-    let pendingClass = 'hidden';
+    let pendingClass = 'hidden',pending = [],pendingMsg = '';
     if(this.props.pending && this.props.pending.length){
       pendingClass = '';
+      pending = this.props.pending;
+      pendingMsg = this.props.pending.length+" image(s) waiting for approval";
     }
     this.state = {
       open: false,
       image: this.props.image || 'http://www.mp3alive.com/no_photo.jpg',
       uploadSuccess: false,
       loader: 'hidden',
-      pendingClass:pendingClass
+      pendingClass:pendingClass,
+      slideIndex: 0,
+      pending:pending,
+      pendingMsg:pendingMsg
     };
   }
   editImage(){
@@ -79,6 +92,11 @@ export default class ImageUpdater extends React.Component {
       }
     });
   };
+  onIndexChange(value){
+    this.setState({
+      slideIndex: value,
+    });
+  };
   render() {
     const actions = [
       <FlatButton
@@ -111,7 +129,34 @@ export default class ImageUpdater extends React.Component {
           onRequestClose={this.handleClose}>
           <Card zDepth={1}>
             <CardMedia>
-              <img width="auto" height="150px" src={this.state.image}/>
+              <SwipeableViews
+                      index={this.state.slideIndex}
+                      onChangeIndex={this.onIndexChange.bind(this)}
+                    >
+                <div className={"imageGallery"}>   
+                  <GridTile                    
+                    title={"Approved"}
+                    subtitle={this.state.pendingMsg}>                  
+                    <img width="auto" height="150px" src={this.state.image}/>
+                  </GridTile>
+                </div>
+                
+                
+                    
+                {  
+                  this.state.pending.map((imageUrl, index) => {
+                    return (                      
+                      <div className={"imageGallery"}>          
+                        <GridTile
+                          key={index}
+                          title={"Pending"}
+                          subtitle={<span><b>{"for approval"}</b></span>}>
+                          <img src={imageUrl} width="auto" height="150px" /></GridTile>
+                      </div>
+                    );
+                  })
+                }  
+              </SwipeableViews> 
             </CardMedia>
             <CardActions>              
               <div className="row">              
@@ -131,12 +176,8 @@ export default class ImageUpdater extends React.Component {
                     mode="indeterminate" 
                     size={.5} /> 
                   <div className={this.state.pendingClass}>
-                    <RaisedButton
-                        secondary={true}  
-                        fullWidth ={true}                    
-                        label="PENDING"> 
-                    </RaisedButton>  
-                  </div>      
+                    next <NextIcon color={Colors.black} />
+                  </div>
               </div>
             </CardActions>
           </Card>          

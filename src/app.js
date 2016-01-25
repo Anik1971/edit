@@ -29,6 +29,9 @@ const styles={
 class Index extends React.Component {
   constructor(props) {
       super(props);
+      if(window.cosupplier){
+        window.location.hash = 'profile';
+      }
       let uData = uData_dummy;
       console.log('UserData',uData);
       

@@ -3,7 +3,7 @@ let bData_dummy =
   "QOcachingEnabled": 0,
   "activeFavouriteCount": 2,
   "activityTabHeader": "",
-  "appExtras": "",
+  "appExtras": "{\"Monday\": \"hi\", \"Tuesday\": \"Hello\"}",
   "businessAddress": "{\"address\":\"1122\",\"locality\":\"zzzzxxx\",\"placeId\":\"ChIJfVMt45EUrjsRPFkE3PLPKkk\",\"city\":\" Mangalore\"}",
   "businessAddressLine1": "1122",
   "businessAddressLine2": "HSR Layout",

@@ -19,7 +19,11 @@ class ProfileImage extends React.Component {
 		}
 		let pending_businessImageCover = [];		
 		if(this.props.bData.appExtras.pending && this.props.bData.appExtras.pending.coverImage){
-			pending_businessImageCover = this.props.bData.appExtras.pending.coverImage.split(',');
+			pending_businessImageCover = this.props.bData.appExtras.pending.coverImage;
+		}
+		let pending_businessImage = [];		
+		if(this.props.bData.appExtras.pending && this.props.bData.appExtras.pending.businessImage){
+			pending_businessImage = this.props.bData.appExtras.pending.businessImage;
 		}
 		this.state = {
 		  profilePicDialogue: false,
@@ -32,6 +36,7 @@ class ProfileImage extends React.Component {
 		  businessImageCoverUrl:businessImageCover,
 		  businessImageUrl:businessImage,
 		  pending_businessImageCover:pending_businessImageCover,
+		  pending_businessImage:pending_businessImage,		  
 		  profileImage: 'http://lorempixel.com/600/337/nature/'
 		};
 	}
@@ -84,7 +89,8 @@ class ProfileImage extends React.Component {
             <div style={this.state.businessImage} id="profile-image">     	
 				<ImageUpdater 
         			image={this.state.businessImageUrl}         		
-        			postUpload={this.businessImageUpdate.bind(this)} />
+        			postUpload={this.businessImageUpdate.bind(this)} 
+        			pending = {this.state.pending_businessImage}/>
             </div>
         </div>);
     }
