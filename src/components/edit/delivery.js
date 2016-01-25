@@ -99,33 +99,79 @@ class Delivery extends React.Component {
       }
   }
   onMinimumOrderChange(e){
-    this.setState({
-      minimumOrder:e.target.value
-    },function(){
-      this.props.manageSave('show','deliveryPricing.standard.minimumOrderAmount',this.state.minimumOrder);
-    });
+    this.state.minimumOrder = e.target.value;
+    this.props.manageSave('updation');
   }
   onDeliveryChargeChange(e){
-    this.setState({
-      deliveryCharge:e.target.value
-    },function(){
-      this.props.manageSave('show','deliveryPricing.standard.deliveryCharge',this.state.deliveryCharge);
-    });
+    this.state.deliveryCharge = e.target.value;
+    this.props.manageSave('updation');
   }
   onFreeDeliveryAboveChange(e){
-    this.setState({
-      freeDeliveryAbove:e.target.value
-    },function(){
-      this.props.manageSave('show','deliveryPricing.standard.freeDeliveryAmount',this.state.freeDeliveryAbove);
-    });
+    this.state.freeDeliveryAbove = e.target.value;
+    this.props.manageSave('updation');
   }
   onCustomDeliveryPricingChange(e){
+    this.state.customDeliveryPricing = e.target.value;
+    this.props.manageSave('updation');
+  }
+
+  onMinimumOrderBlur(textField){
     this.setState({
-      customDeliveryPricing:e.target.value
+      minimumOrder:textField.target.value
     },function(){
-      this.props.manageSave('show','deliveryPricing.custom.customDeliveryPricing',this.state.customDeliveryPricing);
+      let uploadData = {};
+      uploadData.standard = {};
+      uploadData.custom = {};
+      uploadData.standard.minimumOrderAmount = this.state.minimumOrder;
+      uploadData.standard.deliveryCharge = this.state.deliveryCharge;
+      uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove;   
+      uploadData.custom.customDeliveryPricing = '';     
+      this.props.manageSave('show','deliveryPricing',uploadData);
     });
   }
+  onDeliveryChargeBlur(textField){
+    this.setState({
+      deliveryCharge:textField.target.value
+    },function(){
+      let uploadData = {};
+      uploadData.standard = {};
+      uploadData.custom = {};
+      uploadData.standard.minimumOrderAmount = this.state.minimumOrder;
+      uploadData.standard.deliveryCharge = this.state.deliveryCharge;
+      uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove;  
+      uploadData.custom.customDeliveryPricing = ''; 
+      this.props.manageSave('show','deliveryPricing',uploadData);
+    });
+  }
+  onFreeDeliveryAboveBlur(textField){
+    this.setState({
+      freeDeliveryAbove:textField.target.value
+    },function(){
+      let uploadData = {};
+      uploadData.standard = {};
+      uploadData.custom = {};
+      uploadData.standard.minimumOrderAmount = this.state.minimumOrder;
+      uploadData.standard.deliveryCharge = this.state.deliveryCharge;
+      uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove; 
+      uploadData.custom.customDeliveryPricing = ''; 
+      this.props.manageSave('show','deliveryPricing',uploadData);
+    });
+  }
+  onCustomDeliveryPricingBlur(textField){
+    this.setState({
+      customDeliveryPricing:textField.target.value
+    },function(){
+      let uploadData = {};
+      uploadData.custom = {};
+      uploadData.standard = {};
+      uploadData.standard.minimumOrderAmount = '';
+      uploadData.standard.deliveryCharge = '';
+      uploadData.standard.freeDeliveryAmount = ''; 
+      uploadData.custom.customDeliveryPricing = this.state.minimumOrder; 
+      this.props.manageSave('show','deliveryPricing',uploadData);
+    });
+  }
+
   onServiceAreaChange(index,textField){
     console.log('onServiceAreaChange',index);
     this.state.serviceAreas[index] = textField.target.value;
@@ -216,24 +262,28 @@ class Delivery extends React.Component {
                     <div className="subContent">
                       <TextField fullWidth={true}
                           floatingLabelText={"Minimum Order"}
-                          value={this.state.minimumOrder} 
-                          onChange = {this.onMinimumOrderChange.bind(this)} />
+                          defaultValue={this.state.minimumOrder} 
+                          onChange = {this.onMinimumOrderChange.bind(this)} 
+                          onBlur = {this.onMinimumOrderBlur.bind(this)}/>
                       <TextField fullWidth={true}
                           floatingLabelText="Delivery Charge"                        
-                          value={this.state.deliveryCharge} 
-                          onChange = {this.onDeliveryChargeChange.bind(this)} />
+                          defaultValue={this.state.deliveryCharge} 
+                          onChange = {this.onDeliveryChargeChange.bind(this)} 
+                          onBlur = {this.onDeliveryChargeBlur.bind(this)}/>
                       <TextField fullWidth={true}
                           floatingLabelText="Free Delivery Above"                        
-                          value={this.state.freeDeliveryAbove} 
-                          onChange = {this.onFreeDeliveryAboveChange.bind(this)} />
+                          defaultValue={this.state.freeDeliveryAbove} 
+                          onChange = {this.onFreeDeliveryAboveChange.bind(this)} 
+                          onBlur = {this.onFreeDeliveryAboveBlur.bind(this)}/>
                     </div>
                   </div>
                   <div className={this.state.deliveryPricingCustom} id="deliveryPricingCustom">
                     <div className="subContent">
                       <TextField fullWidth={true}
                           floatingLabelText={"Custom delivery pricing"}
-                          value={this.state.customDeliveryPricing} 
-                          onChange = {this.onCustomDeliveryPricingChange.bind(this)} />                    
+                          defaultValue={this.state.customDeliveryPricing} 
+                          onChange = {this.onCustomDeliveryPricingChange.bind(this)} 
+                          onBlur = {this.onCustomDeliveryPricingBlur.bind(this)}/>                    
                     </div>
                   </div>                  
                   {  

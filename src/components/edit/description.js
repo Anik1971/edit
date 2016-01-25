@@ -223,6 +223,10 @@ class CategoryAutoComplete extends React.Component{
 class Description extends React.Component {
 	constructor(props){
 		super(props);
+		let businessPhone = [];
+		if(this.props.bData.appExtras.businessPhone){
+			businessPhone = this.props.bData.appExtras.businessPhone.split(',');
+		}
 		this.state = {
             businessType: "Self-Owned",
             businessShortDescription: this.props.bData.businessType || '',
@@ -230,13 +234,15 @@ class Description extends React.Component {
             selectedBusinessCategory: this.props.bData.category,
             phoneLimit:5,
             phoneClass:[],
-            businessPhone:[],
-            languageType:this.props.bData.languageType,
-            updateFlag:false
+            businessPhone:businessPhone,
+            languageType:this.props.bData.languageType
         };	
         this.state.phoneClass[0] = '';
         for(let i=1;i<this.state.phoneLimit;i++){
         	this.state.phoneClass.push('hidden');
+        }
+        for(let i=1;i<this.state.businessPhone.length+1 && i<this.state.phoneLimit;i++){
+        	this.state.phoneClass[i] = '';
         }
 	}	
 	businessTypeChange(e, index, businessType){
@@ -254,28 +260,12 @@ class Description extends React.Component {
 		});
 	}
 	onBusinessShortDescUpdate(textField){
-		this.setState({
-			businessShortDescription:textField.target.value
-		},function(){
-			this.props.manageSave('updation');
-		});
-		/*this.setState({
-			businessShortDescription:textField.target.value
-		},function(){
-			this.props.manageSave('updation');
-		});*/
-	}
-	showSaveBtn(){
-		if(!this.state.updateFlag){
-			this.props.manageSave('updation');	
-		}		
+		this.state.businessShortDescription = textField.target.value;
+		this.props.manageSave('updation');
 	}
 	onBusinessLongDescUpdate(textField){
-		this.setState({
-			businessLongDescription:textField.target.value
-		},function(){
-			this.props.manageSave('show','businessDescription',this.state.businessLongDescription);
-		});
+		this.state.businessLongDescription = textField.target.value;
+		this.props.manageSave('updation');
 	}
 	onCategoryUpdate(dynamicVals){
 		console.log('dynamicVals',dynamicVals);
@@ -288,7 +278,7 @@ class Description extends React.Component {
 	onBusinessPhoneChange(index,textField){
 		console.log('onBusinessPhoneChange',index);
 		this.state.businessPhone[index] = textField.target.value;
-		this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
+		this.props.manageSave('updation');
 		if(textField.target.value.length>0 && this.state.phoneLimit >= index){
 			this.state.phoneClass[index+1] = '';	
 		}else if(index>0 && textField.target.value.length == 0){
@@ -296,26 +286,43 @@ class Description extends React.Component {
 		}
 	}
 	onBusinessShortDescBlur(textField){
-		console.log('blur');
 		this.setState({
 			businessShortDescription:textField.target.value
 		},function(){
 			this.props.manageSave('show','businessType',this.state.businessShortDescription);
 		});
 	}
+	onBusinessLongDescBlur(textField){
+		this.setState({
+			businessLongDescription:textField.target.value
+		},function(){
+			this.props.manageSave('show','businessDescription',this.state.businessLongDescription);
+		});
+	}
+	onBusinessPhoneBlur(index,textField){
+		console.log('onBusinessPhoneBlur',index);
+		this.state.businessPhone[index] = textField.target.value;
+		this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
+		if(textField.target.value.length>0 && this.state.phoneLimit >= index){
+			this.state.phoneClass[index+1] = '';	
+		}else if(index>0 && textField.target.value.length == 0){
+			this.state.phoneClass[index] = 'hidden';	
+		}
+	}
 	render(){
 		return (
 		    <div style={this.props.styles.slide}>
 	            <TextField fullWidth={true}
 	            	floatingLabelText={"One Line Description"}
-	                value={this.state.businessShortDescription} 
+	                defaultValue={this.state.businessShortDescription} 
 	                onBlur={this.onBusinessShortDescBlur.bind(this)}
 	                onChange={this.onBusinessShortDescUpdate.bind(this)}
 	                maxLimit={50}/>
 	            <TextField fullWidth={true}
 	                floatingLabelText="Business Long Description"
 	                multiLine={true} 
-	                value={this.state.businessLongDescription} 
+	                defaultValue={this.state.businessLongDescription} 
+	                onBlur={this.onBusinessLongDescBlur.bind(this)}
 	                onChange={this.onBusinessLongDescUpdate.bind(this)}/> 
 	            <SelectField value={this.state.businessType}
 	            	floatingLabelText="Business Type"
@@ -348,9 +355,15 @@ class Description extends React.Component {
 				{  
             		this.state.phoneClass.map((className, index) => {
             			let phoneText = "Business Phone "+(index+1);
+            			let phoneNum = '';
+            			if(this.state.businessPhone[index]){
+            				phoneNum = this.state.businessPhone[index];
+            			}
             			return (<TextField fullWidth={true}
 	                		floatingLabelText={phoneText}
+	                		onBlur={this.onBusinessPhoneBlur.bind(this,index)}
 	                		onChange={this.onBusinessPhoneChange.bind(this,index)}
+	                		defaultValue={phoneNum}
 	                		className={className} 
 	                		maxLimit={10}
 	                		key={index}/>)	 
