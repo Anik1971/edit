@@ -26,11 +26,12 @@ import IconButton from 'material-ui/lib/icon-button';
 export default class ImageUpdater extends React.Component {
   constructor(props) {
     super(props);
-    let pendingClass = 'hidden',pending = [],pendingMsg = '';
+    let pendingClass = 'hidden',pending = [],pendingMsg = '',pendingStatus = '';
     if(this.props.pending && this.props.pending.length){
       pendingClass = '';
       pending = this.props.pending;
       pendingMsg = this.props.pending.length+" image(s) waiting for approval";
+      pendingStatus = 'Approved';
     }
     this.state = {
       open: false,
@@ -40,7 +41,8 @@ export default class ImageUpdater extends React.Component {
       pendingClass:pendingClass,
       slideIndex: 0,
       pending:pending,
-      pendingMsg:pendingMsg
+      pendingMsg:pendingMsg,
+      pendingStatus:pendingStatus
     };
   }
   editImage(){
@@ -135,7 +137,7 @@ export default class ImageUpdater extends React.Component {
                     >
                 <div className={"imageGallery"}>   
                   <GridTile                    
-                    title={"Approved"}
+                    title={this.state.pendingStatus}
                     subtitle={this.state.pendingMsg}>                  
                     <img width="auto" height="150px" src={this.state.image}/>
                   </GridTile>
