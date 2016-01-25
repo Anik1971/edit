@@ -18,11 +18,16 @@ import CircularProgress from 'material-ui/lib/circular-progress';
 export default class ImageUpdater extends React.Component {
   constructor(props) {
     super(props);
+    let pendingClass = 'hidden';
+    if(this.props.pending && this.props.pending.length){
+      pendingClass = '';
+    }
     this.state = {
       open: false,
       image: this.props.image || 'http://www.mp3alive.com/no_photo.jpg',
       uploadSuccess: false,
-      loader: 'hidden'
+      loader: 'hidden',
+      pendingClass:pendingClass
     };
   }
   editImage(){
@@ -120,11 +125,18 @@ export default class ImageUpdater extends React.Component {
                       onDrop={this.startImageUpload.bind(this)}>
                       <div>Try dropping some files here, or click to select files to upload.</div>
                     </Dropzone>
-                  </RaisedButton>  
+                  </RaisedButton>                   
                   <CircularProgress 
                     className={this.state.loader} 
                     mode="indeterminate" 
-                    size={.5} />         
+                    size={.5} /> 
+                  <div className={this.state.pendingClass}>
+                    <RaisedButton
+                        secondary={true}  
+                        fullWidth ={true}                    
+                        label="PENDING"> 
+                    </RaisedButton>  
+                  </div>      
               </div>
             </CardActions>
           </Card>          
