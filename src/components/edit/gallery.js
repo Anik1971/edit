@@ -4,6 +4,8 @@ import GridTile from 'material-ui/lib/grid-list/grid-tile';
 import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
+import SwipeableViews from 'react-swipeable-views';
+
 
 const tilesData = [
   {
@@ -40,36 +42,24 @@ const tilesData = [
   }
 ];
 
-const gradientBg = 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)';
-const tileElements = tilesData.map((tile,index) => <GridTile
-  cols={tile.featured ? 2 : 1}
-  rows={tile.featured ? 2 : 1}
-  key={index}><img src={tile.img} /></GridTile>);
-const gridListStyle = {width: 500, height: 400, overflowY: 'auto', marginBottom: 24};
+const styles = {
+  slide: {
+    minHeight: 400,
+    backgroundSize: '85%',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: 'rgba(0,0,0,0.85)'
+  }};
+const photos = tilesData.map((tile,index) => <div key={index} style={Object.assign({},styles.slide,{backgroundImage:"url(" + tile.img  +")"})}></div>);
 
 class Gallery extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
-    return (<div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-      {/*Grid list with all possible overrides*/}
-      <GridList
-        cols={2}
-        cellHeight={200}
-        padding={1}
-        style={gridListStyle}
-        >
-        {tileElements}
-        <GridTile
-          cols={2}
-          rows={1}>
-          <img 
-            className="galleryAddmore"
-            src="https://image.freepik.com/free-icon/add-button--cross-in-a-circle_318-9475.jpg" />
-        </GridTile>
-      </GridList>
-    </div>);
+    return (<div><SwipeableViews>
+      {photos}
+    </SwipeableViews></div>);
   }
 }
 export default Gallery;
