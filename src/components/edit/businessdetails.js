@@ -10,7 +10,7 @@ import Description from './description';
 import Location from './location';
 import Delivery from './delivery';
 import Payments from './payments';
-import FloatingActionButton from 'material-ui/lib/floating-action-button';
+import RaisedButton from 'material-ui/lib/raised-button';
 import SaveIcon from 'material-ui/lib/svg-icons/content/save';
 const styles = {
     headline: {
@@ -69,6 +69,7 @@ class BusinessDetail extends React.Component {
     }
 
     render() {
+        let saveBtn = this.props.saveBtn+" floatingBtn";
         return (
             <div>
                 <Tabs
@@ -115,13 +116,15 @@ class BusinessDetail extends React.Component {
                     putBusiData={this.props.putBusiData.bind(this)}
                     manageSave={this.props.manageSave} />
                 </SwipeableViews>
-                <div className="floatingBtn">
-                    <FloatingActionButton 
-                      className={this.props.saveBtn} 
-                      styles={styles.floatRight}
-                      onTouchTap={this.props.executeSave.bind(this)}>
-                      <SaveIcon />
-                    </FloatingActionButton>
+                <div className={saveBtn}>
+                    <RaisedButton 
+                      secondary={true} 
+                      fullWidth={true}
+                      label="SAVE"                            
+                      labelPosition="after"                      
+                      className={this.props.saveBtn}                       
+                      onClick={this.props.executeSave.bind(this)}>                      
+                    </RaisedButton>
                 </div>
             </div>
         );
