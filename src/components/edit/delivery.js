@@ -97,10 +97,20 @@ class Delivery extends React.Component {
           homeDeliveryEnabled: false
         });
       }
+      this.props.manageSave('show');
   }
   onMinimumOrderChange(e){
-    this.state.minimumOrder = e.target.value;
-    this.props.manageSave('updation');
+    if(e.target.value == ''){
+      this.setState({
+        minimumOrderErrorText: "This filed is required."
+      });
+    } else {
+      this.setState({
+        minimumOrderErrorText: ""
+      });
+      this.state.minimumOrder = e.target.value;
+      this.props.manageSave('updation');
+    }
   }
   onDeliveryChargeChange(e){
     this.state.deliveryCharge = e.target.value;
@@ -255,13 +265,14 @@ class Delivery extends React.Component {
                   <SelectField value={this.state.deliveryPricing}
                         floatingLabelText="Delivery Pricing"
                         onChange={this.deliveryPricingChange.bind(this)}>
-                      <MenuItem value={"standard"} primaryText="standard"/>
-                      <MenuItem value={"custom"} primaryText="custom"/>                    
+                      <MenuItem value={"standard"} primaryText="Standard"/>
+                      <MenuItem value={"custom"} primaryText="Custom"/>                    
                   </SelectField>
                   <div className={this.state.deliveryPricingStandard} id="deliveryPricingStandard">
                     <div className="subContent">
                       <TextField fullWidth={true}
                           floatingLabelText={"Minimum Order"}
+                          errorText={this.state.minimumOrderErrorText}
                           defaultValue={this.state.minimumOrder} 
                           onChange = {this.onMinimumOrderChange.bind(this)} 
                           onBlur = {this.onMinimumOrderBlur.bind(this)}/>
