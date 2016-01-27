@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import EditIcon from 'material-ui/lib/svg-icons/image/camera-alt';
 import NextIcon from 'material-ui/lib/svg-icons/av/skip-next';
+import PrevIcon from 'material-ui/lib/svg-icons/av/skip-previous';
 import Colors from 'material-ui/lib/styles/colors';
 import Card from 'material-ui/lib/card/card';
 import CardActions from 'material-ui/lib/card/card-actions';
@@ -67,11 +68,21 @@ export default class ImageUpdater extends React.Component {
            });
          } else {
            let response = JSON.parse(res.text);
-           if(response.status == 0){
+           if(response.status == 0){           
+            let pendingClass = '';
+            let pending = _this.state.pending;
+            pending.push(response.url)
+            let pendingMsg = pending.length+" image(s) waiting for approval";                    
+            let slideIndex = _this.state.slideIndex;
+            slideIndex = pending.length;
+            console.log('pending',_this.state.pending);
             _this.setState({
-              image: response.url,
+              pending: pending,
               loader:'hidden',
-              uploadSuccess: true
+              uploadSuccess: true,
+              slideIndex:slideIndex,
+              pendingMsg:pendingMsg,              
+              pendingClass:pendingClass
             });
            }
          }
@@ -88,7 +99,7 @@ export default class ImageUpdater extends React.Component {
       open: false
     },function(){
       if(_this.state.open == false && _this.state.uploadSuccess){
-        _this.props.postUpload(_this.state.image);
+        _this.props.postUpload(_this.state.pending);
       }else{
         console.error('Upload failure');
       }
@@ -98,6 +109,25 @@ export default class ImageUpdater extends React.Component {
     this.setState({
       slideIndex: value,
     });
+  };
+  prevClick(){
+    console.log('prev clicked',this.state);
+    let slideIndex = this.state.slideIndex;
+    if(slideIndex>0){
+      this.setState({
+        slideIndex:slideIndex-1
+      });
+    }
+  };
+  nextClick(){
+    console.log('next clicked');
+    let slideIndex = this.state.slideIndex;
+    let pending = this.state.pending;
+    if(slideIndex<pending.length){
+      this.setState({
+        slideIndex:slideIndex+1
+      })
+    }
   };
   render() {
     const actions = [
@@ -136,7 +166,8 @@ export default class ImageUpdater extends React.Component {
                       onChangeIndex={this.onIndexChange.bind(this)}
                     >
                 <div className={"imageGallery"}>   
-                  <GridTile                    
+                  <GridTile   
+                    className="imgUptGridTile"                 
                     title={this.state.pendingStatus}
                     subtitle={this.state.pendingMsg}>                  
                     <img width="auto" height="150px" src={this.state.image}/>
@@ -148,11 +179,13 @@ export default class ImageUpdater extends React.Component {
                 {  
                   this.state.pending.map((imageUrl, index) => {
                     return (                      
-                      <div className={"imageGallery"}>          
-                        <GridTile
-                          key={index}
-                          title={"Pending"}
-                          subtitle={<span><b>{"for approval"}</b></span>}>
+                      <div 
+                        className={"imageGallery"}
+                        key={index}>          
+                        <GridTile  
+                          className="imgUptGridTile"                        
+                          title={<span className="mainText">{"Pending"}</span>}
+                          subtitle={<span className="subText"><b>{"for approval"}</b></span>}>
                           <img src={imageUrl} width="auto" height="150px" /></GridTile>
                       </div>
                     );
@@ -160,7 +193,11 @@ export default class ImageUpdater extends React.Component {
                 }  
               </SwipeableViews> 
             </CardMedia>
-            <CardActions>              
+            <CardActions>    
+              <div className={this.state.pendingClass}>
+                <PrevIcon onClick={this.prevClick.bind(this)} className="prevBtn" color={Colors.black} />
+                <NextIcon onClick={this.nextClick.bind(this)} className="nextBtn" color={Colors.black} />
+              </div>          
               <div className="row">              
                   <RaisedButton
                       className="profilePicChangeBtn"
@@ -176,10 +213,7 @@ export default class ImageUpdater extends React.Component {
                   <CircularProgress 
                     className={this.state.loader} 
                     mode="indeterminate" 
-                    size={.5} /> 
-                  <div className={this.state.pendingClass}>
-                    next <NextIcon color={Colors.black} />
-                  </div>
+                    size={.5} />                   
               </div>
             </CardActions>
           </Card>          
