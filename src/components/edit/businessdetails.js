@@ -48,16 +48,28 @@ class BusinessDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            slideIndex: 0,
+            slideIndex: this.props.tab,
         };
     }
 
     handleChange(value) {
+        debugger;
+        let errorFlag = false;
+        let errorData = {};
+        for(let key in window.errorStack){
+            errorData = window.errorStack[key];
+            if(errorData){
+                errorFlag = true;                 
+                break;
+            }
+        }
+        if(errorFlag){
+            this.props.toast(errorData.text);
+        }
         this.setState({
-            slideIndex: value,
-        });
+            slideIndex: value
+        });    
     }
-
     getChildContext() {
         return {
             muiTheme: ThemeManager.getMuiTheme({
@@ -74,12 +86,12 @@ class BusinessDetail extends React.Component {
             <div>
                 <Tabs
                   onChange={this.handleChange.bind(this)}
+                  initialSelectedIndex={this.state.slideIndex}
                   value={this.state.slideIndex}
                   inkBarStyle = {styles.inkbar}
                   style = {styles.tabs}
                   tabItemContainerStyle = {styles.tab}
-                  className = "profile-tabs"
-                >
+                  className = "profile-tabs">
                   {
                     TAB_HEADERS.map((header, index) => {
                         return <Tab label={header} value={index} key={index}/>;
@@ -89,8 +101,7 @@ class BusinessDetail extends React.Component {
                 </Tabs>
                 <SwipeableViews
                   index={this.state.slideIndex}
-                  onChangeIndex={this.handleChange.bind(this)}
-                >
+                  onChangeIndex={this.handleChange.bind(this)}>
                   <Description 
                     styles={styles}
                     bData={this.props.bData} 

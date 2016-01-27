@@ -227,6 +227,7 @@ class Description extends React.Component {
 		if(this.props.bData.appExtras.businessPhone){
 			businessPhone = this.props.bData.appExtras.businessPhone.split(',');
 		}
+		let errorText = {};
 		this.state = {
             businessType: "Self-Owned",
             businessShortDescription: this.props.bData.businessType || '',
@@ -235,7 +236,9 @@ class Description extends React.Component {
             phoneLimit:5,
             phoneClass:[],
             businessPhone:businessPhone,
-            languageType:this.props.bData.languageType
+            languageType:this.props.bData.languageType,
+            errorText: errorText,
+            errorFlag: false
         };	
         this.state.phoneClass[0] = '';
         for(let i=1;i<this.state.phoneLimit;i++){
@@ -261,7 +264,29 @@ class Description extends React.Component {
 	}
 	onBusinessShortDescUpdate(textField){
 		this.state.businessShortDescription = textField.target.value;
-		this.props.manageSave('updation');
+		if(!this.state.businessShortDescription){
+			let errorText = this.state.errorText;
+			errorText['businessShortDescription'] = 'One line description is required';
+			this.setState({
+				errorText:errorText
+			},function(){
+				window.errorStack['businessShortDescription'] = {
+					text: errorText['businessShortDescription'],
+					tab: 0 
+				};
+				this.props.manageSave('hidden');
+			});
+		}else{
+			if(this.state.errorText['businessShortDescription']){
+				let errorText = this.state.errorText;
+				errorText['businessShortDescription'] = '';
+				delete window.errorStack['businessShortDescription'];
+				this.setState({
+					errorText:errorText
+				});
+			}			
+			this.props.manageSave('updation');
+		}
 	}
 	onBusinessLongDescUpdate(textField){
 		this.state.businessLongDescription = textField.target.value;
@@ -321,13 +346,15 @@ class Description extends React.Component {
 	                defaultValue={this.state.businessShortDescription} 
 	                onBlur={this.onBusinessShortDescBlur.bind(this)}
 	                onChange={this.onBusinessShortDescUpdate.bind(this)}
+	                errorText={this.state.errorText['businessShortDescription']}
 	                maxLimit={50}/>
 	            <TextField fullWidth={true}
 	                floatingLabelText="Business Long Description"
 	                multiLine={true} 
 	                defaultValue={this.state.businessLongDescription} 
 	                onBlur={this.onBusinessLongDescBlur.bind(this)}
-	                onChange={this.onBusinessLongDescUpdate.bind(this)}/> 
+	                onChange={this.onBusinessLongDescUpdate.bind(this)}
+	                errorText={this.state.errorText['businessLongDescription']}/> 
 	            <SelectField value={this.state.businessType}
 	            	floatingLabelText="Business Type"
 	            	onChange={this.businessTypeChange.bind(this)}>

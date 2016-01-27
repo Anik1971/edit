@@ -13,6 +13,7 @@ import uData_dummy from './components/data/dummyUserData';
 import Card from 'material-ui/lib/card/card';
 import CardMedia from 'material-ui/lib/card/card-media';
 import CardTitle from 'material-ui/lib/card/card-title';
+import Snackbar from 'material-ui/lib/snackbar';
 
 injectTapEventPlugin();
 
@@ -39,8 +40,13 @@ class Index extends React.Component {
       this.state = {
           bData:  bData,
           saveBtn: 'hidden',
-          saveData: {}
+          saveData: {},
+          snackbar: false,
+          snackbarMsg: '',
+          tab:0
       };
+      window.errorFlag = false;
+      window.errorStack = {};
       console.log('converted bData::',bData); 
   }
   getBusiData(){
@@ -77,38 +83,29 @@ class Index extends React.Component {
         console.log('state  after (app.js) ',this.state);
     });   
   }
-  /*saveDepth(0,value){
-    let oo = {}, t, parts, part;
-    for (let k in o) {
-        t = oo;
-        parts = k.split('.');
-        let key = parts.pop();
-        while (parts.length) {
-          part = parts.shift();
-          t = t[part] = t[part] || {};
-        }
-        t[key] = value;
-      }
-      return oo;
-    }
-  }*/
   aniMerge(oldObj,newObj){
-      for(let key in newObj){
-        if(typeof newObj[key] == 'object'){
-          if(!oldObj[key]){
-            oldObj[key] = newObj[key];
-            return oldObj;
-          }else{
-            oldObj[key] = this.aniMerge(oldObj[key],newObj[key]);
-            return oldObj;
-          }          
-        }else{
+    for(let key in newObj){
+      if(typeof newObj[key] == 'object'){
+        if(!oldObj[key]){
           oldObj[key] = newObj[key];
-          
-        }
+          return oldObj;
+        }else{
+          oldObj[key] = this.aniMerge(oldObj[key],newObj[key]);
+          return oldObj;
+        }          
+      }else{
+        oldObj[key] = newObj[key];
+        
       }
-      return oldObj;
     }
+    return oldObj;
+  }
+  toast(msg){
+    this.setState({
+      snackbar: true,
+      snackbarMsg: msg
+    });
+  };
   manageSave(task,field,value,callback){
     //debugger;
     //console.log('state.saveData',this.state.saveData);
@@ -128,13 +125,34 @@ class Index extends React.Component {
       this.setState({
         saveBtn:'hidden'
       });
+      return;
     }
     let tempSaveData = {};
     tempSaveData[field]=value;
     this.state.saveData = this.aniMerge(this.state.saveData,tempSaveData);
     //console.log('save data: ',this.state.saveData);
-}
+  }
   executeSave(){
+    let errorFlag = false;
+    for(let key in window.errorStack){
+      let errorData = window.errorStack[key];
+      if(errorData && errorData.text){
+        //debugger;
+        this.setState({
+          snackbar: true,
+          snackbarMsg:errorData.text,
+          tab:errorData.tab
+        },function(){
+          window.pageYOffset = 0;
+        });
+        errorFlag = true;
+        break;
+      }
+    }
+    if(errorFlag){
+      console.log('the state',this.state);
+      return;
+    }
     console.info('Execute Save');
     console.log('bData curr (app.js) ',this.state.bData);
     console.log('saveData (app.js) ',this.state.saveData);
@@ -183,11 +201,6 @@ class Index extends React.Component {
     console.log('ExportData data:',exportData);
     if(window.Android){
       console.log(this.state.bData);
-      /*this.state.bData.storeTimings = JSON.stringify(this.state.bData.storeTimings);
-      this.state.bData.serviceAreas = JSON.stringify(this.state.bData.serviceAreas);
-      this.state.bData.deliveryPricing = JSON.stringify(this.state.bData.deliveryPricing);
-      this.state.bData.businessAddress = JSON.stringify(this.state.bData.businessAddress);
-      this.state.bData.appExtras = JSON.stringify(this.state.bData.appExtras);*/
       
       debugger;
       window.convertToStringBusinessProfileObj = JSON.stringify(exportData);
@@ -208,6 +221,11 @@ class Index extends React.Component {
     }
     
   }
+  onSnackBarClose(){
+    this.setState({
+      snackbar:false
+    });
+  };
   render() {
     return (
      <div>
@@ -227,7 +245,9 @@ class Index extends React.Component {
           putBusiData={this.putBusiData} 
           saveBtn={this.state.saveBtn} 
           manageSave={this.manageSave.bind(this)} 
-          executeSave={this.executeSave.bind(this)}/>
+          executeSave={this.executeSave.bind(this)}
+          tab={this.state.tab}
+          toast={this.toast.bind(this)} /> 
         <Card
           style={styles.card_shadow}
           className="business-card">            
@@ -240,7 +260,12 @@ class Index extends React.Component {
                 getBusiData={this.getBusiData}
                 putBusiData={this.putBusiData} ></Gallery>
             </CardMedia>  
-        </Card>         
+        </Card>  
+        <Snackbar
+          open={this.state.snackbar}
+          message={this.state.snackbarMsg}
+          autoHideDuration={4000}
+          onRequestClose={this.onSnackBarClose.bind(this)}/>       
     </div>
     );
   }
