@@ -53,7 +53,6 @@ class BusinessDetail extends React.Component {
     }
 
     handleChange(value) {
-        debugger;
         let errorFlag = false;
         let errorData = {};
         for(let key in window.errorStack){

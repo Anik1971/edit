@@ -26,6 +26,7 @@ class Delivery extends React.Component {
     let minimumOrderAmount = '';
     let deliveryCharge = '';
     let freeDeliveryAmount = '';
+    let customDeliveryPricing = '';
     //classNames
     let deliveryPricingCustom = '';
     let deliveryPricingStandard = '';
@@ -40,6 +41,9 @@ class Delivery extends React.Component {
         freeDeliveryAmount = this.props.bData.deliveryPricing.standard.freeDeliveryAmount;
       }
     }
+    if(this.props.bData.deliveryPricing && this.props.bData.deliveryPricing.custom){
+      customDeliveryPricing = this.props.bData.deliveryPricing.custom.customDeliveryPricing;
+    }
     if(minimumOrderAmount || deliveryCharge || freeDeliveryAmount){
       deliveryPricingCustom = 'hidden';
       deliveryPricingStandard = '';
@@ -47,6 +51,7 @@ class Delivery extends React.Component {
       deliveryPricingStandard = 'hidden';
       deliveryPricingCustom = '';
     }
+    let errorText = {};
     this.state={
       homeDeliveryEnabled: homeDeliveryEnabled,
       homeDelivery: homeDelivery,
@@ -56,11 +61,13 @@ class Delivery extends React.Component {
       minimumOrder: minimumOrderAmount,
       deliveryCharge: deliveryCharge,
       freeDeliveryAbove: freeDeliveryAmount,
-      customDeliveryPricing: '',
+      customDeliveryPricing: customDeliveryPricing,
       serviceLimit:5,
       serviceClass:[],
       serviceAreas:tempServiceAreas,
-      serviceAreasObj:[]
+      serviceAreasObj:[],
+      errorText: errorText,
+      errorFlag: false
     };  
     this.state.serviceClass[0] = '';
     for(let i=0;i<this.state.serviceLimit;i++){
@@ -69,6 +76,15 @@ class Delivery extends React.Component {
     for(let i=0;i<tempServiceAreas.length+1;i++){
       this.state.serviceClass.push('hidden');
     }
+    if(this.state.homeDeliveryEnabled && this.state.serviceAreas.length == 0){
+      let errorText = this.state.errorText;
+      errorText['serviceAreas'] = 'Service Areas is required';
+      this.state.errorText = errorText;
+      window.errorStack['serviceAreas'] = {
+        text: errorText['serviceAreas'],
+        tab: 2 
+      };
+    }
 	}	
   deliveryPricingChange(e, index, deliveryPricing){
     this.setState({deliveryPricing});
@@ -76,11 +92,23 @@ class Delivery extends React.Component {
       this.setState({
         deliveryPricingStandard : '',
         deliveryPricingCustom : 'hidden'
+      },function(){
+        let uploadData = {};
+        uploadData.standard = {};
+        uploadData.standard.minimumOrderAmount = this.state.minimumOrder;
+        uploadData.standard.deliveryCharge = this.state.deliveryCharge;
+        uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove;   
+        this.props.manageSave('show','deliveryPricing',uploadData);
       });
     }else{
       this.setState({
         deliveryPricingStandard : 'hidden',
         deliveryPricingCustom : ''
+      },function(){
+        let uploadData = {};
+        uploadData.custom = {};
+        uploadData.custom.customDeliveryPricing = this.state.customDeliveryPricing; 
+        this.props.manageSave('show','deliveryPricing',uploadData);
       });
     }
   }
@@ -90,11 +118,30 @@ class Delivery extends React.Component {
         this.setState({
           homeDelivery: '',
           homeDeliveryEnabled: true
+        },function(){
+          if(this.state.homeDeliveryEnabled && this.state.serviceAreas.length == 0){
+            let errorText = this.state.errorText;
+            errorText['serviceAreas'] = 'Service Areas is required';
+            this.state.errorText = errorText;
+            window.errorStack['serviceAreas'] = {
+              text: errorText['serviceAreas'],
+              tab: 2 
+            };
+          }
         });
       }else{
         this.setState({
           homeDelivery: 'hidden',
           homeDeliveryEnabled: false
+        },function(){
+          if(this.state.errorText['serviceAreas']){
+            let errorText = this.state.errorText;
+            errorText['serviceAreas'] = '';
+            delete window.errorStack['serviceAreas'];
+            this.setState({
+              errorText:errorText
+            });
+          }
         });
       }
       this.props.manageSave('show');
@@ -131,11 +178,9 @@ class Delivery extends React.Component {
     },function(){
       let uploadData = {};
       uploadData.standard = {};
-      uploadData.custom = {};
       uploadData.standard.minimumOrderAmount = this.state.minimumOrder;
       uploadData.standard.deliveryCharge = this.state.deliveryCharge;
       uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove;   
-      uploadData.custom.customDeliveryPricing = '';     
       this.props.manageSave('show','deliveryPricing',uploadData);
     });
   }
@@ -145,11 +190,10 @@ class Delivery extends React.Component {
     },function(){
       let uploadData = {};
       uploadData.standard = {};
-      uploadData.custom = {};
       uploadData.standard.minimumOrderAmount = this.state.minimumOrder;
       uploadData.standard.deliveryCharge = this.state.deliveryCharge;
       uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove;  
-      uploadData.custom.customDeliveryPricing = ''; 
+      
       this.props.manageSave('show','deliveryPricing',uploadData);
     });
   }
@@ -159,11 +203,9 @@ class Delivery extends React.Component {
     },function(){
       let uploadData = {};
       uploadData.standard = {};
-      uploadData.custom = {};
       uploadData.standard.minimumOrderAmount = this.state.minimumOrder;
       uploadData.standard.deliveryCharge = this.state.deliveryCharge;
       uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove; 
-      uploadData.custom.customDeliveryPricing = ''; 
       this.props.manageSave('show','deliveryPricing',uploadData);
     });
   }
@@ -173,11 +215,7 @@ class Delivery extends React.Component {
     },function(){
       let uploadData = {};
       uploadData.custom = {};
-      uploadData.standard = {};
-      uploadData.standard.minimumOrderAmount = '';
-      uploadData.standard.deliveryCharge = '';
-      uploadData.standard.freeDeliveryAmount = ''; 
-      uploadData.custom.customDeliveryPricing = this.state.minimumOrder; 
+      uploadData.custom.customDeliveryPricing = this.state.customDeliveryPricing; 
       this.props.manageSave('show','deliveryPricing',uploadData);
     });
   }
@@ -249,6 +287,22 @@ class Delivery extends React.Component {
         }else if(index>0 && this.state.serviceAreas.length == 0){
           this.state.serviceClass[index] = 'hidden';  
         }
+        if(this.state.homeDeliveryEnabled && this.state.serviceAreas.length == 0){
+          let errorText = this.state.errorText;
+          errorText['serviceAreas'] = 'Service Areas is required';
+          this.state.errorText = errorText;
+          window.errorStack['serviceAreas'] = {
+            text: errorText['serviceAreas'],
+            tab: 2 
+          };
+        }else{            
+          let errorText = this.state.errorText;
+          errorText['serviceAreas'] = '';
+          delete window.errorStack['serviceAreas'];
+          this.setState({
+            errorText:errorText
+          });          
+        }
     });
   }
 	render(){
@@ -315,6 +369,7 @@ class Delivery extends React.Component {
                         skipSuggest={this.skipLocalitySuggest.bind(this,index)}
                         onSuggestSelect={this.onLocalitySuggestSelect.bind(this,index)} 
                         initialValue = {serviceName}
+                        errorText={this.state.errorText['businessShortDescription']}
                         key={index} />)   
                     })
                   } 
