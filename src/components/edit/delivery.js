@@ -127,6 +127,12 @@ class Delivery extends React.Component {
               text: errorText['serviceAreas'],
               tab: 2 
             };
+            let uploadData = {};
+            uploadData.standard = {};
+            uploadData.standard.minimumOrderAmount = this.state.minimumOrder;
+            uploadData.standard.deliveryCharge = this.state.deliveryCharge;
+            uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove;   
+            this.props.manageSave('show','deliveryPricing',uploadData);
           }
         });
       }else{
@@ -141,10 +147,13 @@ class Delivery extends React.Component {
             this.setState({
               errorText:errorText
             });
+            let uploadData = {};
+            uploadData.custom = {};
+            uploadData.custom.customDeliveryPricing = this.state.customDeliveryPricing; 
+            this.props.manageSave('show','deliveryPricing',uploadData);
           }
         });
       }
-      this.props.manageSave('show');
   }
   onMinimumOrderChange(e){
     if(e.target.value == ''){
