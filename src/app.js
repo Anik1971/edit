@@ -26,6 +26,7 @@ const styles={
     boxShadow: '0 1px 6px rgba(118, 209, 242, 0.12), 0 1px 4px rgba(118, 209, 242, 0.24)'
   }
 }
+
 class Index extends React.Component {
   constructor(props) {
       super(props);
@@ -147,7 +148,7 @@ class Index extends React.Component {
         bData[key] = _currData;          
       }        
     }
-    debugger;   
+    //debugger;   
     for(let key in this.state.saveData){
       let sData = this.state.saveData[key]; 
       if(bData[key] || bData[key] == ''){ //checks if level 0 has such field        
@@ -159,14 +160,12 @@ class Index extends React.Component {
         }
         appExtras[key] = sData; //normal data
         bData.appExtras = appExtras; //integrating appExtras
-      }    
-      this.setState({
-        saveBtn:'hidden',
-        saveData: {}
-      });  
+      }      
     } 
 
     this.setState({
+      saveBtn:'hidden',
+      saveData: {},
       bData : bData //integrating to bData
     });
 
@@ -190,8 +189,8 @@ class Index extends React.Component {
       this.state.bData.businessAddress = JSON.stringify(this.state.bData.businessAddress);
       this.state.bData.appExtras = JSON.stringify(this.state.bData.appExtras);*/
       
-      
-      let convertToStringBusinessProfileObj = JSON.stringify(this.state.bData);
+      debugger;
+      window.convertToStringBusinessProfileObj = JSON.stringify(exportData);
           console.log('convertToStringBusinessProfileObj',convertToStringBusinessProfileObj);
           if(window.Android.saveBusinessData){
             try {
@@ -247,6 +246,9 @@ class Index extends React.Component {
   }
 }
 
+
+
+/*mounting the routes to element with id app*/
 ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={App}>

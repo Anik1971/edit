@@ -48,58 +48,85 @@ class Location extends React.Component {
             this.props.manageSave('show','businessAddress',businessAddress);
         });
     }
-
+    getLocation(callback){
+        if(window.Android){
+          let userData = JSON.parse(window.Android.getUserInfo()); 
+          console.log(userData);
+          if(userData){
+            let location = userData.location;
+            let position = {
+                coords : {
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                }
+            }  
+            callback(position);
+         }          
+        }else{
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(location){
+                    let position = {
+                        coords : {
+                            latitude: location.coords.latitude,
+                            longitude: location.coords.longitude
+                        }
+                    }
+                    callback(position);
+                }); 
+            }else {
+            // Browser doesn't support Geolocation\
+            console.error('Browser doesnt support Geolocation');
+          }
+        }
+    }
     onPickLocation(){
         this.setState({
             gpsUpdateText: 'PLEASE WAIT...'
         });
-        if (navigator.geolocation) {
-            let _this = this;
-            let position = navigator.geolocation.getCurrentPosition(function(position){
-                console.log(position);
-                let map = new google.maps.Map(document.getElementById('storeMap'), {
-                    center: {lat: position.coords.latitude, lng: position.coords.longitude},
-                    zoom: 6
-                }); 
-                let geocoder = new google.maps.Geocoder;
-                let infowindow = new google.maps.InfoWindow;                
-                let latlng = {
-                    lat: position.coords.latitude, 
-                    lng: position.coords.longitude
-                };
-                geocoder.geocode({'location': latlng}, function(results, status) {
-                    if(results[0]){                        
-                        let formatted_address = results[0].formatted_address.split(',');
-                        let city = formatted_address[formatted_address.length-3];
-                        let locality = formatted_address[formatted_address.length-4];
-                        let address = [];
+        let _this = this;
+        let position = this.getLocation(function(position){
+            console.log('position',position);
+            let Latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            let map = new google.maps.Map(document.getElementById('storeMap'), {
+                center: Latlng,
+                zoom: 6
+            }); 
+            let geocoder = new google.maps.Geocoder;
+            let infowindow = new google.maps.InfoWindow;                
+            let latlng = {
+                lat: position.coords.latitude, 
+                lng: position.coords.longitude
+            };
+            geocoder.geocode({'location': latlng}, function(results, status) {
+                if(results[0]){                        
+                    let formatted_address = results[0].formatted_address.split(',');
+                    let city = formatted_address[formatted_address.length-3];
+                    let locality = formatted_address[formatted_address.length-4];
+                    let address = [];
 
-                        for(let i = 0;i<formatted_address.length-4;i++){
-                            address.push(formatted_address[i]);
-                        }
-                        address = address.join();
-                        //marker
-                        map.setZoom(20);
-                        let marker = new google.maps.Marker({
-                          position: latlng,
-                          map: map
-                        });
-                        infowindow.setContent(address);
-                        infowindow.open(map, marker);
-                        _this.setState({ 
-                            _gmap: map,                           
-                            _city: city,
-                            _locality: locality,
-                            _address:address,
-                            gpsUpdateText:'UPDATE'
-                        });
+                    for(let i = 0;i<formatted_address.length-4;i++){
+                        address.push(formatted_address[i]);
                     }
-                });                
-            });
-          } else {
-            // Browser doesn't support Geolocation\
-            console.error('Browser doesnt support Geolocation');
-          }
+                    address = address.join();
+                    //marker
+                    map.setZoom(20);
+                    let marker = new google.maps.Marker({
+                      position: latlng,
+                      map: map
+                    });
+                    infowindow.setContent(address);
+                    infowindow.open(map, marker);
+                    _this.setState({ 
+                        _gmap: map,                           
+                        _city: city,
+                        _locality: locality,
+                        _address:address,
+                        gpsUpdateText:'UPDATE'
+                    });
+                }
+            });                
+        });
+          
     }
 
 
