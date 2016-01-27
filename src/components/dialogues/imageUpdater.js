@@ -24,6 +24,13 @@ import GridTile from 'material-ui/lib/grid-list/grid-tile';
 import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
 import IconButton from 'material-ui/lib/icon-button';
 
+const styles = {
+  dialog : {
+    padding:'0px',
+    paddingTop: '10px !important',
+    top:'-40px'
+  }
+}
 export default class ImageUpdater extends React.Component {
   constructor(props) {
     super(props);
@@ -159,7 +166,10 @@ export default class ImageUpdater extends React.Component {
           actions={actions}
           modal={false}
           open={this.state.open}
-          onRequestClose={this.handleClose}>
+          onRequestClose={this.handleClose}
+          autoDetectWindowHeight={false}
+          repositionOnUpdate={false}
+          style={styles.dialog } >
           <Card zDepth={0}>
             <CardMedia>
               <SwipeableViews
