@@ -11,7 +11,7 @@ let bData_dummy =
   "businessDescription": "Long description",
   "businessHandle": "",
   "businessName": "Mahesh Newstore",
-  "businessType": "One Line Descriptipn",
+  "businessType": "Individual",
   "category": "", 
   "categoryHeader": "",
   "consumerInviteLink": "",
