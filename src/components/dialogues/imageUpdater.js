@@ -3,8 +3,8 @@ import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import EditIcon from 'material-ui/lib/svg-icons/image/camera-alt';
-import NextIcon from 'material-ui/lib/svg-icons/av/skip-next';
-import PrevIcon from 'material-ui/lib/svg-icons/av/skip-previous';
+import NextIcon from 'material-ui/lib/svg-icons/navigation/chevron-right';
+import PrevIcon from 'material-ui/lib/svg-icons/navigation/chevron-left';
 import Colors from 'material-ui/lib/styles/colors';
 import Card from 'material-ui/lib/card/card';
 import CardActions from 'material-ui/lib/card/card-actions';
@@ -27,6 +27,7 @@ import IconButton from 'material-ui/lib/icon-button';
 export default class ImageUpdater extends React.Component {
   constructor(props) {
     super(props);
+    console.info('ImageUpdater');
     let pendingClass = 'hidden',pending = [],pendingMsg = '',pendingStatus = '';
     if(this.props.pending && this.props.pending.length){
       pendingClass = '';
@@ -159,7 +160,7 @@ export default class ImageUpdater extends React.Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}>
-          <Card zDepth={1}>
+          <Card zDepth={0}>
             <CardMedia>
               <SwipeableViews
                       index={this.state.slideIndex}
@@ -172,10 +173,7 @@ export default class ImageUpdater extends React.Component {
                     subtitle={this.state.pendingMsg}>                  
                     <img width="auto" height="150px" src={this.state.image}/>
                   </GridTile>
-                </div>
-                
-                
-                    
+                </div>                
                 {  
                   this.state.pending.map((imageUrl, index) => {
                     return (                      
@@ -192,12 +190,12 @@ export default class ImageUpdater extends React.Component {
                   })
                 }  
               </SwipeableViews> 
-            </CardMedia>
-            <CardActions>    
-              <div className={this.state.pendingClass}>
-                <PrevIcon onClick={this.prevClick.bind(this)} className="prevBtn" color={Colors.black} />
+              <div id="navButtons" className={this.state.pendingClass}>
+                <PrevIcon size={2} onClick={this.prevClick.bind(this)} className="prevBtn" color={Colors.black} />
                 <NextIcon onClick={this.nextClick.bind(this)} className="nextBtn" color={Colors.black} />
-              </div>          
+              </div>
+            </CardMedia>
+            <CardActions>          
               <div className="row">              
                   <RaisedButton
                       className="profilePicChangeBtn"

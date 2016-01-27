@@ -26,6 +26,7 @@ const styles={
     boxShadow: '0 1px 6px rgba(118, 209, 242, 0.12), 0 1px 4px rgba(118, 209, 242, 0.24)'
   }
 }
+
 class Index extends React.Component {
   constructor(props) {
       super(props);
@@ -247,6 +248,9 @@ class Index extends React.Component {
   }
 }
 
+
+
+/*mounting the routes to element with id app*/
 ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={App}>

@@ -279,10 +279,18 @@ class Description extends React.Component {
 		console.log('onBusinessPhoneChange',index);
 		this.state.businessPhone[index] = textField.target.value;
 		this.props.manageSave('updation');
-		if(textField.target.value.length>0 && this.state.phoneLimit >= index){
-			this.state.phoneClass[index+1] = '';	
+		if(textField.target.value.length>9 && this.state.phoneLimit > index+1){
+			let phoneClass = this.state.phoneClass;
+			phoneClass[index+1] = '';
+			this.setState({
+				phoneClass : phoneClass
+			});
 		}else if(index>0 && textField.target.value.length == 0){
-			this.state.phoneClass[index] = 'hidden';	
+			let phoneClass = this.state.phoneClass;
+			phoneClass[index] = 'hidden';
+			this.setState({
+				phoneClass : phoneClass
+			});	
 		}
 	}
 	onBusinessShortDescBlur(textField){
@@ -303,11 +311,6 @@ class Description extends React.Component {
 		console.log('onBusinessPhoneBlur',index);
 		this.state.businessPhone[index] = textField.target.value;
 		this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
-		if(textField.target.value.length>0 && this.state.phoneLimit >= index){
-			this.state.phoneClass[index+1] = '';	
-		}else if(index>0 && textField.target.value.length == 0){
-			this.state.phoneClass[index] = 'hidden';	
-		}
 	}
 	render(){
 		return (
