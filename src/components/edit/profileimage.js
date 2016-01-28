@@ -91,12 +91,13 @@ class ProfileImage extends React.Component {
         		image={this.state.businessImageCoverUrl}        		
         		postUpload={this.coverImageUpdate.bind(this)} 
         		pending = {this.state.pending_businessImageCover}/>
-            <div style={this.state.businessImage} id="profile-image">     	
-				<ImageUpdater 
+            <div style={this.state.businessImage} id="profile-image">
+            	<ImageUpdater 
         			image={this.state.businessImageUrl}         		
         			postUpload={this.businessImageUpdate.bind(this)} 
-        			pending = {this.state.pending_businessImage}/>
-        		<div className="businessNameTag">{this.state.businessName.substr(0,1)}</div>
+        			pending = {this.state.pending_businessImage}/> 	
+        		<div className="businessNameTag">
+        			{this.state.businessName.substr(0,1)}</div>
             </div>
         </div>);
     }

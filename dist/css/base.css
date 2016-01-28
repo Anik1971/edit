@@ -60,7 +60,8 @@ table {
     border-radius: 5px;
     margin: 0 auto;
     left: 0;
-    right: 0; }
+    right: 0;
+    background-color: #BF89BF; }
 
 .businessNameTag {
   font-size: 59px;
@@ -70,7 +71,7 @@ table {
   position: relative;
   left: 0px;
   width: 100%;
-  top: 35%; }
+  top: 50%; }
 
 #profile-detail {
   min-height: 100px;
@@ -227,7 +228,7 @@ table {
 .serviceHeader {
   width: 100%;
   font-size: 12px;
-  color: #AEAEAE;
+  color: rgba(0, 0, 0, 0.5);
   float: left;
   margin-bottom: 10px; }
 
@@ -257,8 +258,17 @@ table {
   color: red; }
 
 .editIcon {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  z-index: 1; }
+
+.dialogueCancel {
   float: right;
-  padding-top: 5px; }
+  position: absolute;
+  z-index: 1;
+  right: 4px;
+  top: 4px; }
 
 .profileBtn {
   float: right; }

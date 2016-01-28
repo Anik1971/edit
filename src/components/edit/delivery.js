@@ -245,7 +245,6 @@ class Delivery extends React.Component {
   }
 
   onServiceAreaChange(index,textField){
-    console.log('onServiceAreaChange',index);
     this.state.serviceAreas[index] = textField.target.value;
     this.props.manageSave('show','serviceArea',this.state.serviceAreas.join());
     if(textField.target.value.length>0 && this.state.serviceLimit >= index){
@@ -362,8 +361,6 @@ class Delivery extends React.Component {
   }
 	render(){
     let geoInitialVal = this.state.geoInitialVal;
-    console.log('geoInitialVal',geoInitialVal);
-    console.log('serviceAreas',this.state.serviceAreas);
 		return (
             <div style={this.props.styles.slide}>
                 <Toggle

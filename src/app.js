@@ -38,7 +38,6 @@ class Index extends React.Component {
         window.location.hash = 'profile';
       }
       let uData = uData_dummy;
-
       this.state = {
           bData:  bData,
           saveBtn: 'hidden',
@@ -49,6 +48,16 @@ class Index extends React.Component {
       };
       window.errorFlag = false;
       window.errorStack = {};
+  }
+  loadParseData(){
+    console.log('loadParseData');
+    let _this = this;
+     bData.getParseData(function(bData){
+        console.log('callback');
+        _this.setState({
+          bData: bData
+        });
+    });
   }
   getBusiData(){
     if(window.Android){

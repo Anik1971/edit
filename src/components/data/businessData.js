@@ -41,12 +41,16 @@ let bData_dummy =
 let bData = {};
 if(window.Android){
   console.info('GOT NATIVE DATA');
-  bData = JSON.parse(window.Android.getBusinessData());
+  bData = JSON.parse(window.Android.getBusinessData());  
 }else{
   console.info('USING DUMMY DATA');
   bData = bData_dummy;
 }
 
+bData.getParseData = function(callback){
+  console.log('getting Parse data');
+  callback(bData);
+}
 //converting level 1 nested json strings to Object
 for(let key in bData){
   let _currData = bData[key];        
