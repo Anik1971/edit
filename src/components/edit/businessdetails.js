@@ -81,6 +81,11 @@ class BusinessDetail extends React.Component {
 
     render() {
         let saveBtn = this.props.saveBtn+" floatingBtn";
+        if (window.moveTab)
+        {
+            this.state.slideIndex = this.props.tab;
+            window.moveTab = false;
+        }
         return (
             <div>
                 <Tabs
@@ -133,7 +138,7 @@ class BusinessDetail extends React.Component {
                       label="SAVE"                            
                       labelPosition="after"                      
                       className={this.props.saveBtn}                       
-                      onClick={this.props.executeSave.bind(this)}>                      
+                      onClick={this.props.executeSave}>                      
                     </RaisedButton>
                 </div>
             </div>

@@ -18,6 +18,9 @@ import Snackbar from 'material-ui/lib/snackbar';
 injectTapEventPlugin();
 
 class App extends React.Component {
+  constructor(props){
+    super(props);
+  }
     render() {
         return <div>{this.props.children}</div>;
     }
@@ -35,19 +38,17 @@ class Index extends React.Component {
         window.location.hash = 'profile';
       }
       let uData = uData_dummy;
-      console.log('UserData',uData);
-      
+
       this.state = {
           bData:  bData,
           saveBtn: 'hidden',
           saveData: {},
           snackbar: false,
           snackbarMsg: '',
-          tab:0
+          tab: 0
       };
       window.errorFlag = false;
       window.errorStack = {};
-      console.log('converted bData::',bData); 
   }
   getBusiData(){
     if(window.Android){
@@ -57,8 +58,6 @@ class Index extends React.Component {
     }
   }
   putBusiData(json) {
-    console.log('putting app.js ',json);
-    console.log('state  before (app.js) ',this.state);
     let bData = this.state.bData;
     for(let key in json){
       bData[key]=json[key];
@@ -69,12 +68,8 @@ class Index extends React.Component {
        if(window.Android){
           //code for saving the json to android preference variable
           let convertToStringBusinessProfileObj = JSON.stringify(this.state.bData);
-          console.log('convertToStringBusinessProfileObj',convertToStringBusinessProfileObj); 
           try {
-            let status = window.Android.saveBusinessData(convertToStringBusinessProfileObj);
-            console.log("....................save business data status............");
-            console.log(status);
-
+            window.Android.saveBusinessData(convertToStringBusinessProfileObj);
           } catch (e) {
             console.log("....................save business data failed due to crash............");
             console.log(e);
@@ -105,11 +100,8 @@ class Index extends React.Component {
       snackbar: true,
       snackbarMsg: msg
     });
-  };
+  }
   manageSave(task,field,value,callback){
-    //debugger;
-    //console.log('state.saveData',this.state.saveData);
-    //console.log('field',field,value);
     if(task == 'show'){
       this.setState({
         saveBtn:''
@@ -130,14 +122,13 @@ class Index extends React.Component {
     let tempSaveData = {};
     tempSaveData[field]=value;
     this.state.saveData = this.aniMerge(this.state.saveData,tempSaveData);
-    //console.log('save data: ',this.state.saveData);
   }
   executeSave(){
     let errorFlag = false;
     for(let key in window.errorStack){
       let errorData = window.errorStack[key];
       if(errorData && errorData.text){
-        //debugger;
+        window.moveTab = true;
         this.setState({
           snackbar: true,
           snackbarMsg:errorData.text,
@@ -166,7 +157,6 @@ class Index extends React.Component {
         bData[key] = _currData;          
       }        
     }
-    //debugger;   
     for(let key in this.state.saveData){
       let sData = this.state.saveData[key]; 
       if(bData[key] || bData[key] == ''){ //checks if level 0 has such field        
@@ -201,13 +191,10 @@ class Index extends React.Component {
     console.log('ExportData data:',exportData);
     if(window.Android){
       console.log(this.state.bData);
-      
-      debugger;
       window.convertToStringBusinessProfileObj = JSON.stringify(exportData);
           console.log('convertToStringBusinessProfileObj',convertToStringBusinessProfileObj);
           if(window.Android.saveBusinessData){
             try {
-              debugger;
               let status = window.Android.saveBusinessData(convertToStringBusinessProfileObj);
               console.log("....................save business data status............");
               console.log(status);
