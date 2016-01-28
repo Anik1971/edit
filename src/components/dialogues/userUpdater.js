@@ -3,8 +3,8 @@ import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import EditIcon from 'material-ui/lib/svg-icons/content/create';
-import NextIcon from 'material-ui/lib/svg-icons/av/skip-next';
-import PrevIcon from 'material-ui/lib/svg-icons/av/skip-previous';
+import NextIcon from 'material-ui/lib/svg-icons/navigation/chevron-right';
+import PrevIcon from 'material-ui/lib/svg-icons/navigation/chevron-left';
 import Colors from 'material-ui/lib/styles/colors';
 import Card from 'material-ui/lib/card/card';
 import CardActions from 'material-ui/lib/card/card-actions';
@@ -22,6 +22,7 @@ import GridList from 'material-ui/lib/grid-list/grid-list';
 import GridTile from 'material-ui/lib/grid-list/grid-tile';
 import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
 import IconButton from 'material-ui/lib/icon-button';
+import ClearIcon from 'material-ui/lib/svg-icons/content/clear';
 
 export default class UserUpdater extends React.Component {
   constructor(props) {
@@ -141,11 +142,17 @@ export default class UserUpdater extends React.Component {
   render() {
     const actions = [
       <FlatButton
-        label="Cancel"
-        secondary={true}
-        onTouchTap={this.cancelImageUpload.bind(this)} />,
+        label="Update Photo"
+        secondary={true}>
+        <Dropzone 
+          className="imageUploadButton"
+          id="profilePicUploadButton"
+          onDrop={this.startImageUpload.bind(this)}>
+          <div>Try dropping some files here, or click to select files to upload.</div>
+        </Dropzone>
+      </FlatButton>,
       <FlatButton
-        label="Update"
+        label="Save"
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
@@ -153,22 +160,17 @@ export default class UserUpdater extends React.Component {
 
     return (
       <div>
-        <FlatButton 
-          secondary={true} 
-          labelPosition="after"
-          className="imageUpdaterButton"
-          onTouchTap = {this.editImage.bind(this)} >
-          <EditIcon 
-            className="editIcon" 
-            color={Colors.black} />
-        </FlatButton> 
-        
+        <EditIcon 
+          className="editIcon userUpdater" 
+          color={Colors.black} 
+          onClick={this.editImage.bind(this)} />        
         <Dialog
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}>
-          <Card zDepth={1}>
+          <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
+          <Card zDepth={0}>
             <CardMedia>
               <SwipeableViews
                       index={this.state.slideIndex}
@@ -204,18 +206,7 @@ export default class UserUpdater extends React.Component {
                 <PrevIcon onClick={this.prevClick.bind(this)} className="prevBtn" color={Colors.black} />
                 <NextIcon onClick={this.nextClick.bind(this)} className="nextBtn" color={Colors.black} />
               </div>          
-              <div className="row">              
-                  <RaisedButton
-                      className="profilePicChangeBtn"
-                      secondary={true}                      
-                      label="CHANGE">                    
-                    <Dropzone 
-                      className="imageUploadButton"
-                      id="profilePicUploadButton"
-                      onDrop={this.startImageUpload.bind(this)}>
-                      <div>Try dropping some files here, or click to select files to upload.</div>
-                    </Dropzone>
-                  </RaisedButton>                   
+              <div className="row">
                   <CircularProgress 
                     className={this.state.loader} 
                     mode="indeterminate" 

@@ -16,7 +16,7 @@ let bData_dummy =
   "categoryHeader": "",
   "consumerInviteLink": "",
   "consumerInviteText": "",
-  "deliveryPricing": "{\"standard\":{\"minimumOrderAmount\":21,\"freeDeliveryAmount\":2,\"deliveryCharge\":0},\"chat\":\"false\",\"custom\":\"\"}",
+  "deliveryPricing": "{\"standard\":{\"minimumOrderAmount\":0,\"freeDeliveryAmount\":2,\"deliveryCharge\":0},\"chat\":\"false\",\"custom\":\"\"}",
   "favourite": false,
   "forSearch": false,
   "id": 4,

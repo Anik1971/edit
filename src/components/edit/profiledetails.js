@@ -55,7 +55,7 @@ class ProfileDetail extends React.Component {
     render() {
     	let userImage = this.state.userImage || defaultUserIcon;
        
-        let userName = this.state.userName || 'No Name';
+        let userName = this.state.userName || 'Your Name';
 
         return (        
         <div id="profile-detail">
