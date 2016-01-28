@@ -2,3 +2,44 @@
 	margin-top: 16px;
 	padding-left: 16px;
 }
+.deliveryAreasSelect2{
+	border:1px solid #EEE;
+	margin-top:20px;
+	border-radius: 4px;
+	padding: 10px;
+}
+.serviceHeader{
+	width:100%;
+	font-size:12px;
+	color:#AEAEAE;
+	float:left;
+	margin-bottom:10px;
+}
+.tagArea{
+	width:100%;
+	float:left;
+	.select2Tag{
+		 width: auto;
+	    border: 1px solid #00BCD4;
+	    /* background-color: #00BCD4; */
+	    float: left;
+	    padding: 5px;
+	    border-radius: 11px;
+	    color: #2F2C2C;
+	    font-size: 15px;
+	    margin: 3px;
+	    .nameArea{
+	    	float: left;
+	    }
+	    .closeArea{
+	    	float: left;
+	    	margin-top:-3px;
+	    	margin-bottom: -6px;
+	    }
+	}
+}
+.serviceError{
+	font-size: 12px;
+	margin-top: 5px;
+	color:red;
+}

@@ -6,8 +6,15 @@ import RadioButtonGroup from 'material-ui/lib/radio-button-group';
 import SelectField from 'material-ui/lib/SelectField';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Geosuggest from 'react-geosuggest';
+import ClearIcon from 'material-ui/lib/svg-icons/content/clear';
+import Colors from 'material-ui/lib/styles/colors';
 
-
+const styles = {
+  closeIcon : {
+    width:'14px',
+    height:'14px'
+  }
+}
 
 class Delivery extends React.Component {
 	constructor(props){
@@ -15,13 +22,15 @@ class Delivery extends React.Component {
     let homeDelivery = 'hidden';
     let homeDeliveryEnabled = false;
     let tempServiceAreas = {};
+    let serviceAreasObj = [];
     if(this.props.bData.serviceAreas.areas){
       homeDelivery = '';
       homeDeliveryEnabled = true;
       tempServiceAreas = this.props.bData.serviceAreas.areas;
+      serviceAreasObj = this.props.bData.serviceAreas;
     }else{
-      tempServiceAreas = {};
       tempServiceAreas = [];
+      serviceAreasObj = [];
     }
     let minimumOrderAmount = '';
     let deliveryCharge = '';
@@ -65,10 +74,11 @@ class Delivery extends React.Component {
       deliveryCharge: deliveryCharge,
       freeDeliveryAbove: freeDeliveryAmount,
       customDeliveryPricing: customDeliveryPricing,
-      serviceLimit:5,
+      serviceLimit:20,
       serviceClass:[],
       serviceAreas:tempServiceAreas,
-      serviceAreasObj:[],
+      serviceAreasObj:serviceAreasObj,
+      geoInitialVal:'',
       errorText: errorText,
       errorFlag: false
     };  
@@ -242,8 +252,13 @@ class Delivery extends React.Component {
       this.state.serviceClass[index] = 'hidden';  
     }
   }
-  getLocatlitySuggestLabel(index,suggest){
-    console.log('locality Label:',suggest);
+  
+
+
+
+  //test
+  getLocatlitySuggestLabel2(suggest){
+    console.log('locality Label 2:',suggest);
     let locality = [],termsLength = 0;
     termsLength = suggest.terms.length;
     suggest.terms.forEach(term => {
@@ -253,17 +268,17 @@ class Delivery extends React.Component {
     let localityLabel = locality.join();
     return localityLabel;
   }
-  skipLocalitySuggest(index,suggest){
-    console.log('skipLocalitySuggest',suggest);
-    let city = '',termsLength = 0;
-    termsLength = suggest.terms.length;
+  skipLocalitySuggest2(suggest){
+    
   }
-  onLocalitySuggestSelect(index,location){
-    console.log('onLocalitySuggestSelect',location);
+  onLocalitySuggestSelect2(location){
     let serviceAreas = this.state.serviceAreas;
     let serviceAreasObj = this.state.serviceAreasObj;
-    
-    serviceAreas[index] = location.label;
+    if(serviceAreas.indexOf(location.label)>-1 && serviceAreas.length < this.state.serviceLimit){
+      console.log('Already exists');
+      return;
+    }
+    serviceAreas.push(location.label);
     let serviceObjModal = {
       name: location.label,
       placeId: location.placeId,
@@ -285,21 +300,46 @@ class Delivery extends React.Component {
         west: vp.getSouthWest().lng()
       };
     }
-    serviceAreasObj[index] = serviceObjModal;
+    serviceAreasObj.push(serviceObjModal);
     this.setState({
         serviceAreas:serviceAreas,
-        serviceAreasObj:serviceAreasObj
+        serviceAreasObj:serviceAreasObj,
+        geoInitialVal:''
     },function(){
         let tempServiceAreas = {};
         tempServiceAreas.areas = [];
         tempServiceAreas.areas = this.state.serviceAreasObj;
         this.props.manageSave('show','serviceAreas',tempServiceAreas);
-        if(this.state.serviceAreas.length>0 && this.state.serviceLimit >= index){
-          this.state.serviceClass[index+1] = '';  
-        }else if(index>0 && this.state.serviceAreas.length == 0){
-          this.state.serviceClass[index] = 'hidden';  
-        }
         if(this.state.homeDeliveryEnabled && this.state.serviceAreas.length == 0){
+          let errorText = this.state.errorText;
+          errorText['serviceAreas'] = 'Service Areas is required';
+          this.state.errorText = errorText;
+          window.errorStack['serviceAreas'] = {
+            text: errorText['serviceAreas'],
+            tab: 2 
+          };
+        }else{            
+          let errorText = this.state.errorText;
+          errorText['serviceAreas'] = '';
+          delete window.errorStack['serviceAreas'];
+          this.setState({
+            errorText:errorText
+          });          
+        }
+        this.refs.geoSug.clear();
+    });
+  }
+  deleteArea(index){
+    console.log('delete area',index);
+    let serviceAreas = this.state.serviceAreas;
+    let serviceAreasObj = this.state.serviceAreasObj;
+    serviceAreas.splice(index,1);
+    serviceAreasObj.splice(index,1);
+    this.setState({
+      serviceAreas: serviceAreas,
+      serviceAreasObj: serviceAreasObj
+    },function(){
+      if(this.state.homeDeliveryEnabled && this.state.serviceAreas.length == 0){
           let errorText = this.state.errorText;
           errorText['serviceAreas'] = 'Service Areas is required';
           this.state.errorText = errorText;
@@ -318,6 +358,8 @@ class Delivery extends React.Component {
     });
   }
 	render(){
+    let geoInitialVal = this.state.geoInitialVal;
+    console.log('geoInitialVal',geoInitialVal);
 		return (
             <div style={this.props.styles.slide}>
                 <Toggle
@@ -362,29 +404,33 @@ class Delivery extends React.Component {
                           onChange = {this.onCustomDeliveryPricingChange.bind(this)} 
                           onBlur = {this.onCustomDeliveryPricingBlur.bind(this)}/>                    
                     </div>
-                  </div>                  
-                  {  
-                    this.state.serviceClass.map((className, index) => {
-                      let serviceText = "Service Area "+(index+1);
-                      let _className = "GeoSuggestList "+className;
-                      let serviceName = '';
-                      if(this.state.serviceAreas[index] && this.state.serviceAreas[index].name){
-                        serviceName = this.state.serviceAreas[index].name;
-                      }
-                      return (<Geosuggest 
-                        placeholder={serviceText}
-                        className={_className}
+                  </div>
+                  <div className="deliveryAreasSelect2">
+                    <span className="serviceHeader">Service Areas</span>
+                    <div className="tagArea">
+                      {  
+                        this.state.serviceAreas.map((areaName, index) => {                        
+                          return (<div className="select2Tag" key={index}>
+                                    <div className="nameArea">{areaName}</div>
+                                    <div className="closeArea">
+                                      <ClearIcon onClick={this.deleteArea.bind(this,index)} styles={styles.closeIcon} color={Colors.grey600} /></div>
+                                  </div>)   
+                        })
+                      } 
+                    </div>
+                    <Geosuggest 
+                        ref="geoSug"
+                        placeholder={"Enter service area"}
+                        className={"GeoSuggestList"}
                         inputClassName={"GeoSuggestinput"}
                         autoActivateFirstSuggest={true}
                         country={"in"}                        
-                        getSuggestLabel={this.getLocatlitySuggestLabel.bind(this,index)}
-                        skipSuggest={this.skipLocalitySuggest.bind(this,index)}
-                        onSuggestSelect={this.onLocalitySuggestSelect.bind(this,index)} 
-                        initialValue = {serviceName}
-                        errorText={this.state.errorText['businessShortDescription']}
-                        key={index} />)   
-                    })
-                  } 
+                        getSuggestLabel={this.getLocatlitySuggestLabel2.bind(this)}
+                        skipSuggest={this.skipLocalitySuggest2.bind(this)}
+                        onSuggestSelect={this.onLocalitySuggestSelect2.bind(this)} 
+                        initialValue = {geoInitialVal} />
+                    <div className="serviceError">{this.state.errorText['serviceAreas']}</div>
+                  </div>
                 </div>
               </div>
             );
