@@ -21,12 +21,14 @@ class Delivery extends React.Component {
 		super(props);	
     let homeDelivery = 'hidden';
     let homeDeliveryEnabled = false;
-    let tempServiceAreas = {};
+    let tempServiceAreas = [];
     let serviceAreasObj = [];
     if(this.props.bData.serviceAreas.areas){
       homeDelivery = '';
       homeDeliveryEnabled = true;
-      tempServiceAreas = this.props.bData.serviceAreas.areas;
+      for(let key in this.props.bData.serviceAreas.areas){
+        tempServiceAreas.push(this.props.bData.serviceAreas.areas[key].name);
+      }
       serviceAreasObj = this.props.bData.serviceAreas;
     }else{
       tempServiceAreas = [];
@@ -360,6 +362,7 @@ class Delivery extends React.Component {
 	render(){
     let geoInitialVal = this.state.geoInitialVal;
     console.log('geoInitialVal',geoInitialVal);
+    console.log('serviceAreas',this.state.serviceAreas);
 		return (
             <div style={this.props.styles.slide}>
                 <Toggle
@@ -410,10 +413,12 @@ class Delivery extends React.Component {
                     <div className="tagArea">
                       {  
                         this.state.serviceAreas.map((areaName, index) => {                        
-                          return (<div className="select2Tag" key={index}>
+                          return (<div className="select2Tag" 
+                            key={index}>
                                     <div className="nameArea">{areaName}</div>
                                     <div className="closeArea">
-                                      <ClearIcon onClick={this.deleteArea.bind(this,index)} styles={styles.closeIcon} color={Colors.grey600} /></div>
+                                      <ClearIcon key={index} onClick={this.deleteArea.bind(this,index)} styles={styles.closeIcon} color={Colors.grey600} />
+                                      </div>
                                   </div>)   
                         })
                       } 
