@@ -44,18 +44,21 @@ class Delivery extends React.Component {
     if(this.props.bData.deliveryPricing && this.props.bData.deliveryPricing.custom){
       customDeliveryPricing = this.props.bData.deliveryPricing.custom.customDeliveryPricing;
     }
+    let deliveryPricing = 'standard';
     if(minimumOrderAmount || deliveryCharge || freeDeliveryAmount){
       deliveryPricingCustom = 'hidden';
       deliveryPricingStandard = '';
+      deliveryPricing = 'standard';
     }else{
       deliveryPricingStandard = 'hidden';
       deliveryPricingCustom = '';
+      deliveryPricing = 'custom';
     }
     let errorText = {};
     this.state={
       homeDeliveryEnabled: homeDeliveryEnabled,
       homeDelivery: homeDelivery,
-      deliveryPricing: 'standard',
+      deliveryPricing: deliveryPricing,
       deliveryPricingStandard: deliveryPricingStandard,
       deliveryPricingCustom: deliveryPricingCustom,
       minimumOrder: minimumOrderAmount,
