@@ -29,7 +29,7 @@ class Delivery extends React.Component {
       for(let key in this.props.bData.serviceAreas.areas){
         tempServiceAreas.push(this.props.bData.serviceAreas.areas[key].name);
       }
-      serviceAreasObj = this.props.bData.serviceAreas;
+      serviceAreasObj = this.props.bData.serviceAreas.areas;
     }else{
       tempServiceAreas = [];
       serviceAreasObj = [];
@@ -302,6 +302,7 @@ class Delivery extends React.Component {
         west: vp.getSouthWest().lng()
       };
     }
+    debugger;
     serviceAreasObj.push(serviceObjModal);
     this.setState({
         serviceAreas:serviceAreas,
