@@ -20,7 +20,7 @@ class StoreTimings extends React.Component {
 		return meridiem
 	}
 	render(){
-		const days = {"Monday": [{"close": 2259, "open": 830}], "Tuesday": [{"close": 1259, "open": 830}, {"close": 2259, "open": 1400}], "Friday": [{"close": 2259, "open": 830}], "Wednesday": [{"close": 2259, "open": 830}], "Thursday": [{"close": 2259, "open": 830}], "Sunday": [{"close": 2259, "open": 830}], "Saturday": [{"close": 2259, "open": 830}]}	
+		const days = {"Monday": [{"close": 2259, "open": 830}], "Tuesday": [{"close": 1259, "open": 830}, {"close": 2259, "open": 1400}], "Wednesday": [{"close": 2259, "open": 830}], "Thursday": [{"close": 2259, "open": 830}], "Friday": [{"close": 2259, "open": 830}], "Saturday": [{"close": 2259, "open": 830}],"Sunday": [{"close": 2259, "open": 830}]}	
 		const styles = {
 			addTimingsDivStyle:{
 				position:'fixed',
