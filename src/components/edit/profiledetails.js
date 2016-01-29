@@ -12,38 +12,35 @@ class ProfileDetail extends React.Component {
 		super(props);
 		let userImage = '';
 		let userName = '';
-		if(this.props.bData.appExtras.approved && this.props.bData.appExtras.approved.userImage){
-			userImage = this.props.bData.appExtras.approved.userImage;
+		if(this.props.bData.newExtras.userName){
+			userName = this.props.bData.newExtras.userName;
+		}
+		if(this.props.bData.newExtras.approved && this.props.bData.newExtras.approved.userImage){
+			userImage = this.props.bData.newExtras.approved.userImage;
 		}		
-		let pending_userImage = [];		
-		if(this.props.bData.appExtras.pending && this.props.bData.appExtras.pending.userImage){
-			pending_userImage = this.props.bData.appExtras.pending.userImage;
+		let pending_userImage = '';		
+		if(this.props.bData.newExtras.pending && this.props.bData.newExtras.pending.userImage){
+			pending_userImage = this.props.bData.newExtras.pending.userImage;
 		}		
 		this.state = {
 			userName:userName,
 			pending:pending_userImage,
-			userImage:userImage
+			userImage:userImage || pending_userImage
 		}
 		console.log('STate',this.state)
 	}
 	userImageUpdate(imageurl,userName){
 		if(imageurl.length){
-			console.log('imageurl');
-			let pending = this.props.bData.appExtras.pending;
-			console.log('pending',pending);
-			if(pending){
-				if(pending.userImage){
-					pending.userImage.push(imageurl);
-				}else{
-					pending.userImage = [];
-					pending.userImage.push(imageurl);
-				}
-			}else{
+			console.log('imageurl');			
+			let pending = this.props.bData.newExtras.pending;
+			if(!pending){
 				pending = {};
-				pending.userImage = [];
-				pending.userImage.push(imageurl);
 			}
+			pending.userImage = imageurl;
 			this.props.manageSave('show','pending',pending);
+			this.setState({
+				userImage: imageurl
+			});
 		}	
 		if(userName){
 			this.setState({
@@ -53,10 +50,11 @@ class ProfileDetail extends React.Component {
 		}		
 	}
     render() {
-    	let userImage = this.state.userImage || defaultUserIcon;
+    	let userImage = this.state.userImage || this.state.pending || defaultUserIcon;
        
         let userName = this.state.userName || 'Your Name';
 
+        let userImagePreview = this.state.userImage || this.state.pending;
         return (        
         <div id="profile-detail">
             <div className="business-name">{this.props.bData.businessName}</div>
@@ -69,9 +67,8 @@ class ProfileDetail extends React.Component {
 				        <Avatar src={userImage} />
 				    }>
 			    	<UserUpdater 			        		 
-		        		image={userImage} 
-		        		name={this.state.userName}  
-		        		pending={this.state.pending}     		
+		        		image={userImagePreview} 
+		        		name={this.state.userName}      		
 				        postUpload={this.userImageUpdate.bind(this)} />
 				    </ListItem>
 			    </List>
