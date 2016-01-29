@@ -37,7 +37,6 @@ class Payments extends React.Component {
     }
 
     businessDocUpdate(imageurl) {
-        console.log("Document", imageurl);
         let pending = this.props.bData.appExtras.pending;
         if (pending) {
             if (pending.document) {
@@ -100,7 +99,7 @@ class Payments extends React.Component {
                         style={styles.panCard}/>
                     <FontIcon className="material-icons">file_upload</FontIcon>
                     <div style={styles.displayHint}>
-                    * Or other business registration proff issued by government
+                    * Or other business registration proof issued by government
                     </div>
                   </div>);
     }

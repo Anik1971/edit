@@ -8,34 +8,6 @@ import SwipeableViews from 'react-swipeable-views';
 import DocumentUploader from './../dialogues/documentUploader';
 
 
-const tilesData = [{
-  img: 'http://lorempixel.com/600/337/nature/',
-  title: 'Breakfast',
-  author: 'jill111',
-  featured: true,
-}, {
-  img: 'http://lorempixel.com/500/337/nature/',
-  title: 'Tasty burger',
-  author: 'pashminu',
-}, {
-  img: 'http://lorempixel.com/400/300/nature/',
-  title: 'Camera',
-  author: 'Danson67',
-}, {
-  img: 'http://lorempixel.com/600/437/nature/',
-  title: 'Morning',
-  author: 'fancycrave1',
-  featured: true,
-}, {
-  img: 'http://lorempixel.com/600/300/nature/',
-  title: 'Hats',
-  author: 'Hans',
-}, {
-  img: 'http://lorempixel.com/300/300/nature/',
-  title: 'Hats',
-  author: 'Hans',
-}];
-
 const styles = {
   slide: {
     minHeight: 400,
@@ -58,12 +30,12 @@ const styles = {
     textAlign: 'center',
   }
 };
-const photos = tilesData.map((tile, index) => <div key={index} style={Object.assign({},styles.slide,{backgroundImage:"url(" + tile.img  +")"})}></div>);
 class Gallery extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       slideIndex: 0,
+      slideImages: []
     };
 
   }
@@ -71,24 +43,33 @@ class Gallery extends React.Component {
     var indicatorStyle = {
       borderRadius: '100%',
       backgroundColor: 'rgba(255,255,255,0.75)',
-      height: 10,
-      width: 10,
+      height: 5,
+      width: 5,
       display: 'inline-block',
       marginRight: 5
     };
     if (index == this.state.slideIndex)
+    {
       indicatorStyle.backgroundColor = 'rgba(255,255,255,0.9)';
+      indicatorStyle.height = 10;
+      indicatorStyle.width = 10;
+    }
     return indicatorStyle;
   }
   handleChange(value) {
     this.setState({
-      slideIndex: value,
-    });
+      slideIndex: value    });
   }
   handlePostImageUpload(value) {
-    console.log(value);
+    let newSlideImages = this.state.slideImages.slice();
+    newSlideImages.push(value);
+    this.setState({
+      slideImages: newSlideImages
+    });
   }
   render() {
+    const photos = this.state.slideImages.map((image, index) => <div key={index} style={Object.assign({},styles.slide,{backgroundImage:"url(" + image  +")"})}></div>);
+
     return (<div id="gallery">
               <SwipeableViews
                 index={this.state.slideIndex}
@@ -100,7 +81,7 @@ class Gallery extends React.Component {
                 </div>
               </SwipeableViews>
               <div style={styles.indicatorContainer}>
-                {tilesData.map((tile,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
+                {photos.map((photo,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
               </div>
             </div>);
   }
