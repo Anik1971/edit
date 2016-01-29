@@ -453,6 +453,9 @@ class Delivery extends React.Component {
         }
     });
   }
+  geoOnFocus(){
+    this.props.manageSave('hidden');
+  }
 	render(){
     let geoInitialVal = this.state.geoInitialVal;
 		return (
@@ -528,6 +531,7 @@ class Delivery extends React.Component {
                         getSuggestLabel={this.getLocatlitySuggestLabel2.bind(this)}
                         skipSuggest={this.skipLocalitySuggest2.bind(this)}
                         onSuggestSelect={this.onLocalitySuggestSelect2.bind(this)} 
+                        onFocus={this.geoOnFocus.bind(this)}
                         initialValue = {geoInitialVal} />
                     <div className="serviceError">{this.state.errorText['serviceAreas']}</div>
                   </div>

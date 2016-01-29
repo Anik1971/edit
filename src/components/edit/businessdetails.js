@@ -121,9 +121,10 @@ class BusinessDetail extends React.Component {
                 </SwipeableViews>
                 <div className={saveBtn}>
                     <RaisedButton 
+                      backgroundColor={"#24BF37"}
                       secondary={true} 
                       fullWidth={true}
-                      label="SAVE"                            
+                      label="SAVE CHANGES"                            
                       labelPosition="after"                      
                       className={this.props.saveBtn}                       
                       onClick={this.props.executeSave}>                      
