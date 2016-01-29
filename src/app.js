@@ -14,6 +14,8 @@ import Card from 'material-ui/lib/card/card';
 import CardMedia from 'material-ui/lib/card/card-media';
 import CardTitle from 'material-ui/lib/card/card-title';
 import Snackbar from 'material-ui/lib/snackbar';
+import Request from 'superagent';
+import {EventEmitter} from 'fbemitter';
 
 injectTapEventPlugin();
 
@@ -21,9 +23,54 @@ class App extends React.Component {
   constructor(props){
     super(props);
   }
-    render() {
-        return <div>{this.props.children}</div>;
-    }
+  componentWillMount(){
+    window.emitter = new EventEmitter();
+        
+      try{
+        let uData = {
+          userId: 'a09bdcd8'
+        };
+        if(window.Android){
+          uData = JSON.parse(window.Android.getUserInfo());
+        }
+        let supplierLoginID = uData.userId;
+        /*curl 
+            'http://testchat.tsepak.com/goodbox/get_supplier_data' 
+            --data-binary $'{"supplierLoggedInId": "a09bdcd8"}\n' 
+            --compressed */
+        Request
+         .post('http://testchat.tsepak.com/goodbox/get_supplier_data')
+         .send('{"supplierLoggedInId":"'+  supplierLoginID + '"}')
+         .end(function(err, res){
+           if (err || !res.ok) {
+            console.error('Response',err);
+           }else {
+            //converting level 1 nested json strings to Object
+            console.log('Response',res);
+            try{
+              let _bData = JSON.parse(res.text);
+              for(let key in _bData){
+                let _currData = _bData[key];        
+                try{
+                  _bData[key] = JSON.parse(_currData);          
+                }catch(e){
+                  _bData[key] = _currData;          
+                }        
+              }
+              window.emitter.emit('bData',_bData);
+            }catch(e){
+              console.error('Server Data parse'.e);
+            }
+          }
+         });
+      }
+      catch(e){
+        console.error('Android.getUserInfo()',e);
+      }  
+  }
+  render() {
+      return <div>{this.props.children}</div>;
+  }
 }
 const styles={
   card_shadow:{
@@ -38,16 +85,35 @@ class Index extends React.Component {
         window.location.hash = 'profile';
       }
       let uData = uData_dummy;
+      let _bData = bData;
+      if(window.businessData){
+        console.info('Data from server Accepted');
+        _bData = window.businessData;
+      }else{
+        console.log('Data from server not recieved yet');
+      }
       this.state = {
-          bData:  bData,
+          bData:  _bData,
           saveBtn: 'hidden',
           saveData: {},
           snackbar: false,
           snackbarMsg: '',
-          tab: 0
+          tab: 0,
+          businessWrapperClass: '',
+          bDataLoaded: false
       };
       window.errorFlag = false;
       window.errorStack = {};
+  }
+  componentWillMount(){
+    let _this = this;
+    window.emitter.addListener('bData', function(value){
+      console.log('bData event',value);
+      _this.setState({
+        bData: value,
+        bDataLoaded: true
+      })
+    });
   }
   loadParseData(){
     console.log('loadParseData');
@@ -113,18 +179,21 @@ class Index extends React.Component {
   manageSave(task,field,value,callback){
     if(task == 'show'){
       this.setState({
-        saveBtn:''
+        saveBtn:'',
+        businessWrapperClass:'businessWrapperPadding'
       });
     }else if(task == 'updation'){
       if(this.state.saveBtn == 'hidden'){
         this.setState({
-          saveBtn:''
+          saveBtn:'',
+          businessWrapperClass:'businessWrapperPadding'
         });
       }
       return;
     }else{
       this.setState({
-        saveBtn:'hidden'
+        saveBtn:'hidden',
+        businessWrapperClass:''
       });
       return;
     }
@@ -152,6 +221,11 @@ class Index extends React.Component {
     if(errorFlag){
       console.log('the state',this.state);
       return;
+    }else{
+      this.setState({
+        snackbar: true,
+        snackbarMsg:'Please wait, saving...',
+      });
     }
     console.info('Execute Save');
     console.log('bData curr (app.js) ',this.state.bData);
@@ -171,54 +245,91 @@ class Index extends React.Component {
       if(bData[key] || bData[key] == ''){ //checks if level 0 has such field        
         bData[key]=sData; //normal data       
       }else{ //others goes to app extras
-        let appExtras = bData.appExtras;
+        /*let appExtras = bData.appExtras;
         if(!appExtras ){
           appExtras = {};
         }
         appExtras[key] = sData; //normal data
-        bData.appExtras = appExtras; //integrating appExtras
+        bData.appExtras = appExtras; //integrating appExtras*/
+
+        //updated
+        bData[key]=sData; //puts it in a new field
       }      
     } 
 
     this.setState({
       saveBtn:'hidden',
       saveData: {},
+      businessWrapperClass:'',
       bData : bData //integrating to bData
     });
 
     //creating data to export
     let exportData = this.state.bData;
     for(let key in exportData){
-      let _bData = exportData[key];      
+      let _bData = exportData[key];    
       if(typeof _bData == 'object'){ //checks if the data going to be stored is a object
         exportData[key]=JSON.stringify(_bData); // goodbox compatible nested json
-      }       
+      }     
+      //some exceptions
+      switch(key){
+        case "businessHandle":
+          exportData[key] = exportData[key]+'';
+          break;
+        case "phoneNoForDisplay":
+          exportData[key] = exportData[key]+'';
+          break;
+        default:
+          break;
+      }    
     } 
     
 
     console.log('Merged data:',bData);
     console.log('ExportData data:',exportData);
-    if(window.Android){
+    let _this = this;
+    //if(window.Android){
       console.log(this.state.bData);
+      
       window.convertToStringBusinessProfileObj = JSON.stringify(exportData);
-          console.log('convertToStringBusinessProfileObj',convertToStringBusinessProfileObj);
-          if(window.Android.saveBusinessData){
-            try {
-              let status = window.Android.saveBusinessData(convertToStringBusinessProfileObj);
-              console.log("....................save business data status............");
-              console.log(status);
-              this.setState({
-                snackbar: true,
-                snackbarMsg:'Saved successfully'
-              });
-            } catch (e) {
-              console.log("....................save business data failed due to crash............");
-              console.log(e);
-            } 
-          }else{
-            console.error('window.Android.saveBusinessData not found');
-          } 
-    }
+      Request
+       .post('http://testchat.tsepak.com/goodbox/set_supplier_data')
+       .type('form')
+       .send(window.convertToStringBusinessProfileObj)
+       .end(function(err, res){
+         if (err || !res.ok) {
+          console.error('Response',err);
+          _this.setState({
+            snackbar: true,
+            snackbarMsg:'Failed to save'
+          });
+         }else {
+          //converting level 1 nested json strings to Object
+          console.log('Response',res);
+          _this.setState({
+            snackbar: true,
+            snackbarMsg:'Saved successfully'
+          });          
+        }
+       });
+      /*console.log('convertToStringBusinessProfileObj',convertToStringBusinessProfileObj);
+      if(window.Android.saveBusinessData){
+        try {
+          let status = window.Android.saveBusinessData(convertToStringBusinessProfileObj);
+          console.log("....................save business data status............");
+          console.log(status);
+          this.setState({
+            snackbar: true,
+            snackbarMsg:'Saved successfully'
+          });
+        } catch (e) {
+          console.log("....................save business data failed due to crash............");
+          console.log(e);
+        } 
+      }else{
+        console.error('window.Android.saveBusinessData not found');
+      } */
+    //}
   }
   onSnackBarClose(){
     this.setState({
@@ -226,47 +337,56 @@ class Index extends React.Component {
     });
   };
   render() {
-    return (
-     <div>
-        <ProfileImage 
-          bData={this.state.bData} 
-          getBusiData={this.getBusiData.bind(this)}
-          putBusiData={this.putBusiData.bind(this)} 
-          manageSave={this.manageSave.bind(this)} />
-        <ProfileDetail 
-          bData={this.state.bData} 
-          getBusiData={this.getBusiData}
-          putBusiData={this.putBusiData} 
-          manageSave={this.manageSave.bind(this)} />
-        <BusinessDetail 
-          bData={this.state.bData} 
-          getBusiData={this.getBusiData}
-          putBusiData={this.putBusiData} 
-          saveBtn={this.state.saveBtn} 
-          manageSave={this.manageSave.bind(this)} 
-          executeSave={this.executeSave.bind(this)}
-          tab={this.state.tab}
-          toast={this.toast.bind(this)} /> 
-        <Card
-          style={styles.card_shadow}
-          className="business-card">            
-            <CardTitle
-            className="business-cardHeader"
-            title="Photos"/>            
-            <CardMedia>
-              <Gallery 
-                bData={this.state.bData} 
-                getBusiData={this.getBusiData}
-                putBusiData={this.putBusiData} ></Gallery>
-            </CardMedia>  
-        </Card>  
-        <Snackbar
-          open={this.state.snackbar}
-          message={this.state.snackbarMsg}
-          autoHideDuration={4000}
-          onRequestClose={this.onSnackBarClose.bind(this)}/>       
-    </div>
-    );
+    if(!this.state.bDataLoaded){
+      return(<div className="loaderWrapper">Loading...</div>);
+    }else{
+      let wrapperPadding = "businessWrapper";
+      if(this.state.businessWrapperClass){
+        wrapperPadding = "businessWrapper "+this.state.businessWrapperClass;
+      }
+
+      return (
+       <div className={wrapperPadding}>
+          <ProfileImage 
+            bData={this.state.bData} 
+            getBusiData={this.getBusiData.bind(this)}
+            putBusiData={this.putBusiData.bind(this)} 
+            manageSave={this.manageSave.bind(this)} />
+          <ProfileDetail 
+            bData={this.state.bData} 
+            getBusiData={this.getBusiData}
+            putBusiData={this.putBusiData} 
+            manageSave={this.manageSave.bind(this)} />
+          <BusinessDetail 
+            bData={this.state.bData} 
+            getBusiData={this.getBusiData}
+            putBusiData={this.putBusiData} 
+            saveBtn={this.state.saveBtn} 
+            manageSave={this.manageSave.bind(this)} 
+            executeSave={this.executeSave.bind(this)}
+            tab={this.state.tab}
+            toast={this.toast.bind(this)} /> 
+          <Card
+            style={styles.card_shadow}
+            className="business-card">            
+              <CardTitle
+              className="business-cardHeader"
+              title="Photos"/>            
+              <CardMedia>
+                <Gallery 
+                  bData={this.state.bData} 
+                  getBusiData={this.getBusiData}
+                  putBusiData={this.putBusiData} ></Gallery>
+              </CardMedia>  
+          </Card>  
+          <Snackbar
+            open={this.state.snackbar}
+            message={this.state.snackbarMsg}
+            autoHideDuration={4000}
+            onRequestClose={this.onSnackBarClose.bind(this)}/>       
+      </div>
+      );
+    }
   }
 }
 

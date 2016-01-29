@@ -110,11 +110,8 @@ class Delivery extends React.Component {
         };
       }else{
         errorText['serviceAreas'] = '';
+        this.state.errorText = errorText;
         delete window.errorStack['serviceAreas'];
-        window.errorStack['serviceAreas'] = {
-          text: errorText['serviceAreas'],
-          tab: 2 
-        };
       }
 
       if(this.state.deliveryPricing == 'standard'){
@@ -134,11 +131,8 @@ class Delivery extends React.Component {
           };
         }else{
           errorText['minimumOrder'] = '';
+          this.state.errorText = errorText;
           delete window.errorStack['minimumOrder'];
-          window.errorStack['minimumOrder'] = {
-            text: errorText['minimumOrder'],
-            tab: 2 
-          };
         }
 
         if(this.state.deliveryCharge && this.state.deliveryCharge.length && isNaN(this.state.deliveryCharge)){
@@ -157,11 +151,8 @@ class Delivery extends React.Component {
           };
         }else{
           errorText['deliveryCharge'] = '';
+          this.state.errorText = errorText;
           delete window.errorStack['deliveryCharge'];
-          window.errorStack['deliveryCharge'] = {
-            text: errorText['deliveryCharge'],
-            tab: 2 
-          };
         }
 
         if(this.state.freeDeliveryAbove && this.state.freeDeliveryAbove.length && isNaN(this.state.freeDeliveryAbove)){
@@ -171,14 +162,7 @@ class Delivery extends React.Component {
             text: errorText['freeDeliveryAbove'],
             tab: 2 
           };
-        }else if(isNaN(this.state.freeDeliveryAbove)){
-          errorText['freeDeliveryAbove'] = 'Free Delivery Above must be a number';
-          this.state.errorText = errorText;
-          window.errorStack['freeDeliveryAbove'] = {
-            text: errorText['freeDeliveryAbove'],
-            tab: 2 
-          };
-        }else if((+this.state.minimumOrder) > (+this.state.freeDeliveryAbove)){
+        }else if(this.state.freeDeliveryAbove.length && ((+this.state.minimumOrder) > (+this.state.freeDeliveryAbove))){
           errorText['freeDeliveryAbove'] = 'Free Delivery Amount must be greater than Minimum Order';
           this.state.errorText = errorText;
           window.errorStack['freeDeliveryAbove'] = {
@@ -187,17 +171,22 @@ class Delivery extends React.Component {
           };
         }else{
           errorText['freeDeliveryAbove'] = '';
+          this.state.errorText = errorText;
           delete window.errorStack['freeDeliveryAbove'];
-          window.errorStack['freeDeliveryAbove'] = {
-            text: errorText['freeDeliveryAbove'],
-            tab: 2 
-          };
         }        
+      }else{
+        errorText['minimumOrder'] = '';        
+        errorText['deliveryCharge'] = '';
+        errorText['freeDeliveryAbove'] = '';
+        this.state.errorText = errorText;
+        delete window.errorStack['minimumOrder'];
+        delete window.errorStack['deliveryCharge'];
+        delete window.errorStack['freeDeliveryAbove'];
       }
 
       if(this.state.deliveryPricing == 'custom'){
         let errorText = this.state.errorText;
-        if((!this.state.customDeliveryPricing || isNaN(this.state.customDeliveryPricing) || this.state.customDeliveryPricing <=0 )){
+        if((!this.state.customDeliveryPricing || this.state.customDeliveryPricing=='' )){
           errorText['customDeliveryPricing'] = 'Custom Delivery Pricing Order is required';
           this.state.errorText = errorText;
           window.errorStack['customDeliveryPricing'] = {
@@ -206,13 +195,27 @@ class Delivery extends React.Component {
           };
         }else{
           errorText['customDeliveryPricing'] = '';
+          this.state.errorText = errorText;
           delete window.errorStack['customDeliveryPricing'];
-          window.errorStack['customDeliveryPricing'] = {
-            text: errorText['customDeliveryPricing'],
-            tab: 2 
-          };
         }
+      }else{
+        errorText['customDeliveryPricing'] = '';        
+        this.state.errorText = errorText;
+        delete window.errorStack['customDeliveryPricing'];
       }
+    }else{
+      errorText['serviceAreas'] = ''; 
+      errorText['minimumOrder'] = '';        
+      errorText['deliveryCharge'] = '';
+      errorText['freeDeliveryAbove'] = '';
+      errorText['customDeliveryPricing'] = '';             
+      this.state.errorText = errorText;
+      delete window.errorStack['serviceAreas'];
+      delete window.errorStack['minimumOrder'];
+      delete window.errorStack['deliveryCharge'];
+      delete window.errorStack['freeDeliveryAbove'];
+      delete window.errorStack['customDeliveryPricing'];
+      
     }
   }
   deliveryPricingChange(e, index, deliveryPricing){
@@ -285,6 +288,9 @@ class Delivery extends React.Component {
   }
   onCustomDeliveryPricingChange(e){
     this.state.customDeliveryPricing = e.target.value;
+    this.state.minimumOrder = '';
+    this.state.deliveryCharge = '';
+    this.state.freeDeliveryAbove = '';
     this.props.manageSave('updation');
   }
 
@@ -333,6 +339,9 @@ class Delivery extends React.Component {
     },function(){
       let uploadData = {};
       uploadData.custom = {};
+      uploadData.standard.minimumOrderAmount = this.state.minimumOrder;
+      uploadData.standard.deliveryCharge = this.state.deliveryCharge;
+      uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove; 
       uploadData.custom.customDeliveryPricing = this.state.customDeliveryPricing; 
       this.deliveryVaildation(this);
       this.props.manageSave('show','deliveryPricing',uploadData);
@@ -350,7 +359,7 @@ class Delivery extends React.Component {
 
   //test
   getLocatlitySuggestLabel2(suggest){
-    console.log('locality Label 2:',suggest);
+    //console.log('locality Label 2:',suggest);
     let locality = [],termsLength = 0;
     termsLength = suggest.terms.length;
     suggest.terms.forEach(term => {

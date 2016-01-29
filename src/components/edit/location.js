@@ -34,10 +34,10 @@ class Location extends React.Component {
             localityBox: '',
             localityText: address.locality
         };
-        if(this.state.cityText.length){
+        if(this.state.cityText && this.state.cityText.length){
             this.state.cityBox =  'boxAnim';
         }
-        if(this.state.localityText.length){
+        if(this.state.localityText && this.state.localityText.length){
             this.state.localityBox =  'boxAnim';
         }
 	}	
