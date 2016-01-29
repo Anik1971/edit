@@ -203,7 +203,7 @@ class CategoryAutoComplete extends React.Component{
 				                    searchText={this.state.dynamicVals[index].selectedCategory}
 				                    onFocusLost={this.onBlur.bind(this,index)}
 				                    onNewRequest={this.onCategoryRequest.bind(this, index)} 
-				                    onUpdateInput={this.onCategoryUpdateInput.bind(this, index)}/>
+				                    onUpdateInput={this.onCategoryUpdateInput.bind(this, index)} />
 				                <GenerateCheckBox 
 				                	specialCategoriesCheckList={this.state.dynamicVals[index].specialCategoriesCheckList}
 				                	manageSave={this.props.manageSave} />
