@@ -53,6 +53,7 @@ class Location extends React.Component {
             businessAddress.locality = this.state.locality;
             businessAddress.address = this.state.address;
             this.props.manageSave('show','businessAddress',businessAddress);
+            this.cityOnBlur();
         });      
     }
     onLocalitySuggestSelect(location){
@@ -67,6 +68,7 @@ class Location extends React.Component {
             businessAddress.locality = this.state.locality;
             businessAddress.address = this.state.address;
             this.props.manageSave('show','businessAddress',businessAddress);
+            this.localityOnBlur();
         });
     }
     getLocation(callback){
