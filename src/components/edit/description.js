@@ -224,8 +224,8 @@ class Description extends React.Component {
 	constructor(props){
 		super(props);
 		let businessPhone = [];
-		if(this.props.bData.appExtras.businessPhone){
-			businessPhone = this.props.bData.appExtras.businessPhone.split(',');
+		if(this.props.bData.newExtras.businessPhone){
+			businessPhone = this.props.bData.newExtras.businessPhone.split(',');
 		}
 		let errorText = {};
 		this.state = {

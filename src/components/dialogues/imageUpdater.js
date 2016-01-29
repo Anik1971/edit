@@ -39,8 +39,8 @@ export default class ImageUpdater extends React.Component {
   constructor(props) {
     super(props);
     console.info('ImageUpdater');
-    let pendingClass = 'hidden',pending = [],pendingMsg = '',pendingStatus = '';
-    if(this.props.pending && this.props.pending.length){
+    let pendingClass = 'hidden',pending = '',pendingMsg = '',pendingStatus = '';
+    if(this.props.pending){
       pendingClass = '';
       pending = this.props.pending;
       pendingMsg = this.props.pending.length+" image(s) waiting for approval";
@@ -82,8 +82,7 @@ export default class ImageUpdater extends React.Component {
            let response = JSON.parse(res.text);
            if(response.status == 0){           
             let pendingClass = '';
-            let pending = _this.state.pending;
-            pending.push(response.url)
+            let pending = response.url;
             let pendingMsg = pending.length+" image(s) waiting for approval";                    
             let slideIndex = _this.state.slideIndex;
             slideIndex = pending.length;
@@ -94,7 +93,8 @@ export default class ImageUpdater extends React.Component {
               uploadSuccess: true,
               slideIndex:slideIndex,
               pendingMsg:pendingMsg,              
-              pendingClass:pendingClass
+              pendingClass:pendingClass,
+              image:response.url
             });
            }
          }
@@ -177,46 +177,13 @@ export default class ImageUpdater extends React.Component {
           <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
           <Card zDepth={0}>
             <CardMedia>
-              <SwipeableViews
-                      index={this.state.slideIndex}
-                      onChangeIndex={this.onIndexChange.bind(this)}
-                    >
-                <div className={"imageGallery"}>   
-                  <GridTile   
-                    className="imgUptGridTile"                 
-                    title={this.state.pendingStatus}
-                    subtitle={this.state.pendingMsg}>                  
-                    <img width="auto" height="150px" styles={styles.img} src={this.state.image}/>
-                  </GridTile>
-                </div>                
-                {  
-                  this.state.pending.map((imageUrl, index) => {
-                    return (                      
-                      <div 
-                        className={"imageGallery"}
-                        key={index}>          
-                        <GridTile  
-                          className="imgUptGridTile"                        
-                          title={<span className="mainText">{"Pending"}</span>}
-                          subtitle={<span className="subText"><b>{"for approval"}</b></span>}>
-                          <img src={imageUrl} width="auto" height="150px"  styles={styles.img} /></GridTile>
-                      </div>
-                    );
-                  })
-                }  
-              </SwipeableViews> 
-              <div id="navButtons" className={this.state.pendingClass}>
-                <PrevIcon size={2} onClick={this.prevClick.bind(this)} className="prevBtn" color={Colors.black} />
-                <NextIcon onClick={this.nextClick.bind(this)} className="nextBtn" color={Colors.black} />
-              </div>
+              <img width="auto" height="150px" styles={styles.img} src={this.state.image}/> 
             </CardMedia>
             <CardActions>          
-              <div className="row">                                
                   <CircularProgress 
                     className={this.state.loader} 
                     mode="indeterminate" 
                     size={.5} />                   
-              </div>
             </CardActions>
           </Card>          
         </Dialog>

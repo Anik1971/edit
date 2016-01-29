@@ -57,9 +57,12 @@ class App extends React.Component {
                   _bData[key] = _currData;          
                 }        
               }
+              if(!_bData['newExtras']){
+                _bData['newExtras'] = {};
+              }
               window.emitter.emit('bData',_bData);
             }catch(e){
-              console.error('Server Data parse'.e);
+              console.error('Server Data parse',e);
             }
           }
          });
@@ -245,15 +248,12 @@ class Index extends React.Component {
       if(bData[key] || bData[key] == ''){ //checks if level 0 has such field        
         bData[key]=sData; //normal data       
       }else{ //others goes to app extras
-        /*let appExtras = bData.appExtras;
-        if(!appExtras ){
-          appExtras = {};
+        let newExtras = bData.newExtras;
+        if(!newExtras ){
+          newExtras = {};
         }
-        appExtras[key] = sData; //normal data
-        bData.appExtras = appExtras; //integrating appExtras*/
-
-        //updated
-        bData[key]=sData; //puts it in a new field
+        newExtras[key] = sData; //normal data
+        bData.newExtras = newExtras; //integrating newExtras
       }      
     } 
 
