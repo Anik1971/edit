@@ -45,28 +45,28 @@ class Location extends React.Component {
         console.log('onCitySuggestSelect',location); 
         this.setState({
             selCity:location,
-            city:location.label
+            city:location.label,
+            cityText:location.label
         },function(){
             let businessAddress = {};
             businessAddress.city = this.state.city;
             businessAddress.locality = this.state.locality;
             businessAddress.address = this.state.address;
             this.props.manageSave('show','businessAddress',businessAddress);
-            this.cityOnBlur();
         });      
     }
     onLocalitySuggestSelect(location){
         console.log('onLocalitySuggestSelect',location);
         this.setState({
             selLocality:location,
-            locality:location.label
+            locality:location.label,
+            localityText:location.label
         },function(){
             let businessAddress = {};
             businessAddress.city = this.state.city;
             businessAddress.locality = this.state.locality;
             businessAddress.address = this.state.address;
             this.props.manageSave('show','businessAddress',businessAddress);
-            this.localityOnBlur();
         });
     }
     getLocation(callback){
@@ -160,25 +160,6 @@ class Location extends React.Component {
         }     
         return city;  
     }
-    cityOnChange(keyWord){
-        console.log('city onChange');
-        this.setState({
-            citySuggest: [],
-            cityText:keyWord
-        });
-    }
-    cityOnBlur(e){
-        console.log('cityOnBlur');
-        if(this.state.cityText.length == 0 || !this.state.city){
-            this.setState({               
-                cityBox: ''
-            });
-        }else{
-            this.setState({                
-                cityBox: 'boxAnim'
-            });
-        }
-    }
     skipCitySuggest(suggest){
         let city = '',termsLength = 0;
         termsLength = suggest.terms.length;
@@ -267,6 +248,25 @@ class Location extends React.Component {
             this.props.manageSave('show','businessAddress',businessAddress);
         });
     }
+    cityOnChange(keyWord){
+        console.log('city onChange');
+        this.setState({
+            citySuggest: [],
+            cityText:keyWord
+        });
+    }
+    cityOnBlur(e){
+        console.log('cityOnBlur');
+        if(this.state.cityText.length){
+            this.setState({                
+                cityBox: 'boxAnim'
+            });
+        }else{
+            this.setState({               
+                cityBox: ''
+            });
+        }
+    }
     cityOnFocus(){
         this.setState({
             cityBox: 'boxAnim blueFont'
@@ -279,13 +279,13 @@ class Location extends React.Component {
     }
     localityOnBlur(){
         console.log('localityOnBlur');
-        if(this.state.localityText.length == 0 || !this.state.locality){
-            this.setState({               
-                localityBox: ''
-            });
-        }else{
+        if(this.state.localityText.length){
             this.setState({                
                 localityBox: 'boxAnim'
+            });
+        }else{            
+            this.setState({               
+                localityBox: ''
             });
         }
     }
