@@ -29,6 +29,10 @@ const styles = {
     padding:'0px',
     paddingTop: '10px !important',
     top:'-40px'
+  },
+  img : {
+    width: 'auto',
+    height: '150px'
   }
 }
 export default class ImageUpdater extends React.Component {
@@ -182,7 +186,7 @@ export default class ImageUpdater extends React.Component {
                     className="imgUptGridTile"                 
                     title={this.state.pendingStatus}
                     subtitle={this.state.pendingMsg}>                  
-                    <img width="auto" height="150px" src={this.state.image}/>
+                    <img width="auto" height="150px" styles={styles.img} src={this.state.image}/>
                   </GridTile>
                 </div>                
                 {  
@@ -195,7 +199,7 @@ export default class ImageUpdater extends React.Component {
                           className="imgUptGridTile"                        
                           title={<span className="mainText">{"Pending"}</span>}
                           subtitle={<span className="subText"><b>{"for approval"}</b></span>}>
-                          <img src={imageUrl} width="auto" height="150px" /></GridTile>
+                          <img src={imageUrl} width="auto" height="150px"  styles={styles.img} /></GridTile>
                       </div>
                     );
                   })

@@ -49,4 +49,21 @@ i{
 .storeMap{
 	width: 100%;
 	height: 200px;
+	margin-bottom: 15px;
+}
+.inputBox{
+	position: relative;
+	margin-top: 8px;
+}
+.floatingLabel{
+	position: absolute;
+	top: 5px;
+	left: 0px;
+	color: rgba(0,0,0,0.5);
+	font-size: small;
+}
+.small{
+	font-size: small;
+	display: block;
+	margin-bottom: 5px;
 }

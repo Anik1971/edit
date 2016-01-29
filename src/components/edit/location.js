@@ -10,6 +10,11 @@ import Popover from 'material-ui/lib/popover/popover';
 import LocationIcon from 'material-ui/lib/svg-icons/device/location-searching';
 import ClearIcon from 'material-ui/lib/svg-icons/content/clear';
 
+const styles = {
+    mapDialogue : {
+        maxHeight:'inherit'
+    }
+}
 class Location extends React.Component {
 	constructor(props){
 		super(props);	
@@ -202,7 +207,10 @@ class Location extends React.Component {
             anchorEl:e.currentTarget,
             gpsUpdateText:'UPDATE'
         });
-        this.onPickLocation();
+        let _this = this;
+        setTimeout(function(){
+            _this.onPickLocation();
+        },500);
     }
     closePopover(){
         this.setState({
@@ -238,24 +246,27 @@ class Location extends React.Component {
         });
     }
 	render(){
-
         const locationStyle = {
             position: 'relative',
             top: 6
         }
 		return (<div style={this.props.styles.slide}>
-                    <Geosuggest 
-                        placeholder={"City"}
-                        className={"GeoSuggestList"}
-                        inputClassName={"GeoSuggestinput"}
-                        autoActivateFirstSuggest={false}
-                        country={"in"}                        
-                        getSuggestLabel={this.getCitySuggestLabel.bind(this)}
-                        skipSuggest={this.skipCitySuggest.bind(this)}
-                        onChange={this.cityOnChange.bind(this)}
-                        onBlur={this.cityOnBlur.bind(this)}
-                        onSuggestSelect={this.onCitySuggestSelect.bind(this)}
-                        initialValue={this.state.city} />
+                    <div className="inputBox">
+                        <Geosuggest 
+                            placeholder={"City"}
+                            className={"GeoSuggestList"}
+                            inputClassName={"GeoSuggestinput"}
+                            autoActivateFirstSuggest={false}
+                            country={"in"}                        
+                            getSuggestLabel={this.getCitySuggestLabel.bind(this)}
+                            skipSuggest={this.skipCitySuggest.bind(this)}
+                            onChange={this.cityOnChange.bind(this)}
+                            onBlur={this.cityOnBlur.bind(this)}
+                            onSuggestSelect={this.onCitySuggestSelect.bind(this)}
+                            initialValue={this.state.city} />
+                        <label className="floatingLabel">City</label>
+                    </div>
+                    <div className="inputBox">
                     <Geosuggest 
                         placeholder={"Locality"}
                         className={"GeoSuggestList"}
@@ -266,6 +277,8 @@ class Location extends React.Component {
                         skipSuggest={this.skipLocalitySuggest.bind(this)}
                         onSuggestSelect={this.onLocalitySuggestSelect.bind(this)} 
                         initialValue = {this.state.locality} />
+                        <label className="floatingLabel">Locality</label>
+                    </div>
                     <TextField fullWidth={true}
                         floatingLabelText="Address"
                         value={this.state.address} 
@@ -280,14 +293,15 @@ class Location extends React.Component {
                             <LocationIcon style={locationStyle}/>                                               
                         </RaisedButton>
                         <Dialog 
+                          ref={"mapDialogue"}
                           canAutoPosition = { true }
                           open={this.state.activePopover === 'pop'}                          
-                          onRequestClose={this.closePopover.bind(this, 'pop')} >
+                          onRequestClose={this.closePopover.bind(this, 'pop')} 
+                          contentStyle={styles.mapDialogue}>
                           <div className="dialogueCancel"><ClearIcon onClick={this.closePopover.bind(this, 'pop')} /></div>
-                          <div style={{padding:20}}>                            
-                            <p>WARNING: This will update the store location to the current location</p><br />
+                          <div style={{padding:2}}> 
+                            <span className="small">Update store location</span>                           
                             <div id="storeMap" className={"storeMap"}></div>
-                            <br />
                             <RaisedButton 
                                 fullWidth = { true}
                                 secondary={true} 

@@ -5,7 +5,6 @@ import Request from 'superagent';
 
 export default class DocumentUploader extends React.Component {
   constructor(props) {
-     debugger;
     super(props);
     this.state = {
       open: false,

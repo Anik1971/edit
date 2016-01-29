@@ -4,7 +4,7 @@ let bData_dummy =
   "activeFavouriteCount": 2,
   "activityTabHeader": "",
   "appExtras": "",
-  "businessAddress": "{\"address\":\"1122\",\"locality\":\"zzzzxxx\",\"placeId\":\"ChIJfVMt45EUrjsRPFkE3PLPKkk\",\"city\":\" Mangalore\"}",
+  "businessAddress": "{\"address\":\"1122\",\"locality\":\"zzzzxxx\",\"placeId\":\"ChIJfVMt45EUrjsRPFkE3PLPKkk\",\"city\":\"Mangalore\"}",
   "businessAddressLine1": "1122",
   "businessAddressLine2": "HSR Layout",
   "businessAddressLine3": "Bengaluru",
