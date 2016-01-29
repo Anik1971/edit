@@ -60,6 +60,10 @@ class Delivery extends React.Component {
       deliveryPricingCustom = 'hidden';
       deliveryPricingStandard = '';
       deliveryPricing = 'standard';
+    }else if(!customDeliveryPricing){
+      deliveryPricingCustom = 'hidden';
+      deliveryPricingStandard = '';
+      deliveryPricing = 'standard';
     }else{
       deliveryPricingStandard = 'hidden';
       deliveryPricingCustom = '';
@@ -427,6 +431,10 @@ class Delivery extends React.Component {
       serviceAreas: serviceAreas,
       serviceAreasObj: serviceAreasObj
     },function(){
+      let tempServiceAreas = {};
+      tempServiceAreas.areas = [];
+      tempServiceAreas.areas = this.state.serviceAreasObj;
+      this.props.manageSave('show','serviceAreas',tempServiceAreas);
       if(this.state.homeDeliveryEnabled && this.state.serviceAreas.length == 0){
           let errorText = this.state.errorText;
           errorText['serviceAreas'] = 'Service Areas is required';
