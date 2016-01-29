@@ -230,13 +230,17 @@ class Location extends React.Component {
             locality: this.state._locality,
             address:this.state._address,
             activePopover:'notPop',
-            gpsUpdateText:'UPDATE'
+            gpsUpdateText:'UPDATE',
+            cityText: this.state._city,
+            localityText: this.state._locality
         },function(){
             let businessAddress = {};
             businessAddress.city = this.state.city;
             businessAddress.locality = this.state.locality;
             businessAddress.address = this.state.address;
             this.props.manageSave('show','businessAddress',businessAddress);
+            this.cityOnBlur();
+            this.localityOnBlur();
         });        
     }
     onAddressChange(e){
@@ -268,11 +272,13 @@ class Location extends React.Component {
                 cityBox: ''
             });
         }
+
     }
     cityOnFocus(){
         this.setState({
             cityBox: 'boxAnim blueFont'
         });
+        this.props.manageSave('hidden');        
     }
     localityOnChange(keyWord){
         this.setState({            
@@ -295,6 +301,10 @@ class Location extends React.Component {
         this.setState({
             localityBox: 'boxAnim blueFont'
         });
+        this.props.manageSave('hidden');
+    }
+    componentDidMount(){
+        console.log('componentDidMount');
     }
 	render(){
         const locationStyle = {
