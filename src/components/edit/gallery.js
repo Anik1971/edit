@@ -5,6 +5,8 @@ import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import SwipeableViews from 'react-swipeable-views';
+import DocumentUploader from './../dialogues/documentUploader';
+
 
 const tilesData = [{
   img: 'http://lorempixel.com/600/337/nature/',
@@ -83,13 +85,18 @@ class Gallery extends React.Component {
       slideIndex: value,
     });
   }
-
+  handlePostImageUpload(value) {
+    console.log(value);
+  }
   render() {
     return (<div id="gallery">
               <SwipeableViews
                 index={this.state.slideIndex}
                 onChangeIndex={this.handleChange.bind(this)}>
-                {photos}
+                <div key={photos.length} style={styles.slide}>
+                  <DocumentUploader postUpload={this.handlePostImageUpload.bind(this)}>
+                  </DocumentUploader>
+                </div>
               </SwipeableViews>
               <div style={styles.indicatorContainer}>
                 {tilesData.map((tile,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
