@@ -333,7 +333,6 @@ class Description extends React.Component {
 		});
 	}
 	onBusinessPhoneBlur(index,textField){
-		debugger;
 		console.log('onBusinessPhoneBlur',index);
 		this.state.businessPhone[index] = textField.target.value;
 		this.props.manageSave('show','businessPhone',this.state.businessPhone.join());

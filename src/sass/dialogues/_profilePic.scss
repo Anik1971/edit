@@ -1,6 +1,21 @@
 .editIcon{
-    float: right;
-    padding-top: 5px;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    z-index: 1;
+    padding: 4px;
+    background: white;
+    border-radius: 14px;
+}
+.editIcon.userUpdater{
+	top:auto;
+}
+.dialogueCancel{
+	float: right;
+    position: absolute;
+    z-index: 1;
+    right: 4px;
+    top: 4px;
 }
 .profileBtn{
     float: right;

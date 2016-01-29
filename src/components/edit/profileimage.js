@@ -8,11 +8,11 @@ import FloatingActionButton from 'material-ui/lib/floating-action-button';
 class ProfileImage extends React.Component {
 	constructor(props) {
 		super(props);
-		let businessImageCover = 'http://www.mp3alive.com/no_photo.jpg';
+		let businessImageCover = '';
 		if(this.props.bData.appExtras.approved && this.props.bData.appExtras.approved.coverImage){
 			businessImageCover = this.props.bData.appExtras.approved.coverImage;
 		}
-		let businessImage = 'http://www.mp3alive.com/no_photo.jpg';
+		let businessImage = '';
 		if(this.props.bData.appExtras.approved && this.props.bData.appExtras.approved.businessImage){
 			console.log('pend cov img',this.props.bData.appExtras.pending.coverImage);
 			businessImage = this.props.bData.appExtras.approved.businessImage;
@@ -28,7 +28,8 @@ class ProfileImage extends React.Component {
 		this.state = {
 		  profilePicDialogue: false,
 		  businessImageCover: {
-		    backgroundImage: 'url('+businessImageCover+')'
+		    backgroundImage: 'url('+businessImageCover+')',
+		    backgroundColor: '#D8D4D4'
 		  },
 		  businessImage: {
 		    backgroundImage: 'url('+businessImage+')'
@@ -36,8 +37,8 @@ class ProfileImage extends React.Component {
 		  businessImageCoverUrl:businessImageCover,
 		  businessImageUrl:businessImage,
 		  pending_businessImageCover:pending_businessImageCover,
-		  pending_businessImage:pending_businessImage,		  
-		  profileImage: 'http://lorempixel.com/600/337/nature/'
+		  pending_businessImage:pending_businessImage,	
+		  businessName:this.props.bData.businessName
 		};
 	}
 	putBusiData(json){
@@ -80,17 +81,23 @@ class ProfileImage extends React.Component {
 		this.props.manageSave('show','pending',pending);
 	}
     render() {
+    	let businessNameTag = '';
+    	if(!this.state.businessImageUrl && this.state.businessName){
+    		businessNameTag = this.state.businessName.substr(1,1);
+    	}
         return (
         <div style={this.state.businessImageCover} id="profile-image-cover">
         	<ImageUpdater 
         		image={this.state.businessImageCoverUrl}        		
         		postUpload={this.coverImageUpdate.bind(this)} 
         		pending = {this.state.pending_businessImageCover}/>
-            <div style={this.state.businessImage} id="profile-image">     	
-				<ImageUpdater 
+            <div style={this.state.businessImage} id="profile-image">
+            	<ImageUpdater 
         			image={this.state.businessImageUrl}         		
         			postUpload={this.businessImageUpdate.bind(this)} 
-        			pending = {this.state.pending_businessImage}/>
+        			pending = {this.state.pending_businessImage}/> 	
+        		<div className="businessNameTag">
+        			{this.state.businessName.substr(0,1)}</div>
             </div>
         </div>);
     }

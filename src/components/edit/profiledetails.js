@@ -6,10 +6,11 @@ import ContentInbox from 'material-ui/lib/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/lib/svg-icons/action/grade';
 import ImageUpdater from './../dialogues/imageUpdater';
 import UserUpdater from './../dialogues/userUpdater';
+const defaultUserIcon = 'https://cdn0.iconfinder.com/data/icons/users-android-l-lollipop-icon-pack/24/user-128.png';
 class ProfileDetail extends React.Component {
 	constructor(props) {
 		super(props);
-		let userImage = 'http://www.mp3alive.com/no_photo.jpg';
+		let userImage = '';
 		let userName = '';
 		if(this.props.bData.appExtras.approved && this.props.bData.appExtras.approved.userImage){
 			userImage = this.props.bData.appExtras.approved.userImage;
@@ -21,7 +22,7 @@ class ProfileDetail extends React.Component {
 		this.state = {
 			userName:userName,
 			pending:pending_userImage,
-			userImage:userImage || 'http://www.mp3alive.com/no_photo.jpg'
+			userImage:userImage
 		}
 		console.log('STate',this.state)
 	}
@@ -52,19 +53,23 @@ class ProfileDetail extends React.Component {
 		}		
 	}
     render() {
-        return (
+    	let userImage = this.state.userImage || defaultUserIcon;
+       
+        let userName = this.state.userName || 'Your Name';
+
+        return (        
         <div id="profile-detail">
             <div className="business-name">{this.props.bData.businessName}</div>
 	        <div className="">
 				<List>
 			      <ListItem
 			      	className="profile-name"
-			        primaryText={this.state.userName}
+			        primaryText={userName}
 			        leftAvatar={
-				        <Avatar src={this.state.userImage} />
+				        <Avatar src={userImage} />
 				    }>
 			    	<UserUpdater 			        		 
-		        		image={this.state.userImage} 
+		        		image={userImage} 
 		        		name={this.state.userName}  
 		        		pending={this.state.pending}     		
 				        postUpload={this.userImageUpdate.bind(this)} />

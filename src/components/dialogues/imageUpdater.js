@@ -18,7 +18,7 @@ import Dropzone from 'react-dropzone';
 import Request from 'superagent';
 import CircularProgress from 'material-ui/lib/circular-progress';
 import SwipeableViews from 'react-swipeable-views';
-
+import ClearIcon from 'material-ui/lib/svg-icons/content/clear';
 import GridList from 'material-ui/lib/grid-list/grid-list';
 import GridTile from 'material-ui/lib/grid-list/grid-tile';
 import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
@@ -140,11 +140,17 @@ export default class ImageUpdater extends React.Component {
   render() {
     const actions = [
       <FlatButton
-        label="Cancel"
-        secondary={true}
-        onTouchTap={this.cancelImageUpload.bind(this)} />,
-      <FlatButton
         label="Update"
+        secondary={true}>
+        <Dropzone 
+          className="imageUploadButton"
+          id="profilePicUploadButton"
+          onDrop={this.startImageUpload.bind(this)}>
+          <div>Try dropping some files here, or click to select files to upload.</div>
+        </Dropzone>
+      </FlatButton>,
+      <FlatButton
+        label="Save"
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
@@ -152,16 +158,10 @@ export default class ImageUpdater extends React.Component {
 
     return (
       <div>
-        <FlatButton 
-          secondary={true} 
-          labelPosition="after"
-          className="imageUpdaterButton"
-          onTouchTap = {this.editImage.bind(this)} >
-          <EditIcon 
+         <EditIcon 
             className="editIcon" 
-            color={Colors.black} />
-        </FlatButton> 
-        
+            color={Colors.black} 
+            onClick={this.editImage.bind(this)} />        
         <Dialog
           actions={actions}
           modal={false}
@@ -170,6 +170,7 @@ export default class ImageUpdater extends React.Component {
           autoDetectWindowHeight={false}
           repositionOnUpdate={false}
           style={styles.dialog } >
+          <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
           <Card zDepth={0}>
             <CardMedia>
               <SwipeableViews
@@ -206,18 +207,7 @@ export default class ImageUpdater extends React.Component {
               </div>
             </CardMedia>
             <CardActions>          
-              <div className="row">              
-                  <RaisedButton
-                      className="profilePicChangeBtn"
-                      secondary={true}                      
-                      label="CHANGE">                    
-                    <Dropzone 
-                      className="imageUploadButton"
-                      id="profilePicUploadButton"
-                      onDrop={this.startImageUpload.bind(this)}>
-                      <div>Try dropping some files here, or click to select files to upload.</div>
-                    </Dropzone>
-                  </RaisedButton>                   
+              <div className="row">                                
                   <CircularProgress 
                     className={this.state.loader} 
                     mode="indeterminate" 

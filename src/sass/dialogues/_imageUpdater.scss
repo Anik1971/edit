@@ -18,10 +18,12 @@
 	padding: 10px;
 }
 .nextBtn{
-	float: right;
-	padding: 3px;
-	background-color: bisque;
+    padding: 3px;
+    background-color: bisque;
     border-radius: 15px;
+    top: -76%;
+    position: absolute;
+    right: 2px;
 }
 #navButtons{
 	position: absolute;
@@ -29,8 +31,10 @@
     width: 100%
 }
 .prevBtn{
-	float: left;
 	padding: 3px;
-	background-color: bisque;
+    background-color: bisque;
     border-radius: 15px;
+    top: -76%;
+    position: absolute;
+    left: 2px;
 }
