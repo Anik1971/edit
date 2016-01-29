@@ -373,10 +373,24 @@ i {
 
 .floatingLabel {
   position: absolute;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: medium;
+  left: 0;
+  top: 30px;
+  transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  transform: scale(1) translate3d(0px, 0px, 0px);
+  transform-origin: left top; }
+
+.boxAnim .floatingLabel {
   top: 5px;
   left: 0px;
-  color: rgba(0, 0, 0, 0.5);
-  font-size: small; }
+  font-size: small;
+  transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  transform: scale(1) translate3d(0px, 0px, 0px);
+  transform-origin: left top; }
+
+.blueFont .floatingLabel {
+  color: #00bcd4; }
 
 .small {
   font-size: small;

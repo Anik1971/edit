@@ -28,8 +28,18 @@ class Location extends React.Component {
             locality:address.locality || '',
             address:address.address || '',
             activePopover: 'notPop',
-            gpsUpdateText: 'UPDATE'
+            gpsUpdateText: 'UPDATE',
+            cityBox: '',
+            cityText: address.city,
+            localityBox: '',
+            localityText: address.locality
         };
+        if(this.state.cityText.length){
+            this.state.cityBox =  'boxAnim';
+        }
+        if(this.state.localityText.length){
+            this.state.localityBox =  'boxAnim';
+        }
 	}	
     onCitySuggestSelect(location){
         console.log('onCitySuggestSelect',location); 
@@ -42,6 +52,7 @@ class Location extends React.Component {
             businessAddress.locality = this.state.locality;
             businessAddress.address = this.state.address;
             this.props.manageSave('show','businessAddress',businessAddress);
+            this.cityOnBlur();
         });      
     }
     onLocalitySuggestSelect(location){
@@ -55,6 +66,7 @@ class Location extends React.Component {
             businessAddress.locality = this.state.locality;
             businessAddress.address = this.state.address;
             this.props.manageSave('show','businessAddress',businessAddress);
+            this.localityOnBlur();
         });
     }
     getLocation(callback){
@@ -152,10 +164,20 @@ class Location extends React.Component {
         console.log('city onChange');
         this.setState({
             citySuggest: [],
+            cityText:keyWord
         });
     }
-    cityOnBlur(){
+    cityOnBlur(e){
         console.log('cityOnBlur');
+        if(this.state.cityText.length == 0 || !this.state.city){
+            this.setState({               
+                cityBox: ''
+            });
+        }else{
+            this.setState({                
+                cityBox: 'boxAnim'
+            });
+        }
     }
     skipCitySuggest(suggest){
         let city = '',termsLength = 0;
@@ -245,15 +267,44 @@ class Location extends React.Component {
             this.props.manageSave('show','businessAddress',businessAddress);
         });
     }
+    cityOnFocus(){
+        this.setState({
+            cityBox: 'boxAnim blueFont'
+        });
+    }
+    localityOnChange(keyWord){
+        this.setState({            
+            localityText:keyWord
+        });
+    }
+    localityOnBlur(){
+        console.log('localityOnBlur');
+        if(this.state.localityText.length == 0 || !this.state.locality){
+            this.setState({               
+                localityBox: ''
+            });
+        }else{
+            this.setState({                
+                localityBox: 'boxAnim'
+            });
+        }
+    }
+    localityOnFocus(){
+        this.setState({
+            localityBox: 'boxAnim blueFont'
+        });
+    }
 	render(){
         const locationStyle = {
             position: 'relative',
             top: 6
         }
+        let cityBox = 'inputBox '+this.state.cityBox;
+        let localityBox = 'inputBox '+this.state.localityBox;
 		return (<div style={this.props.styles.slide}>
-                    <div className="inputBox">
+                    <div className={cityBox}>
                         <Geosuggest 
-                            placeholder={"City"}
+                            placeholder={""}
                             className={"GeoSuggestList"}
                             inputClassName={"GeoSuggestinput"}
                             autoActivateFirstSuggest={false}
@@ -262,19 +313,23 @@ class Location extends React.Component {
                             skipSuggest={this.skipCitySuggest.bind(this)}
                             onChange={this.cityOnChange.bind(this)}
                             onBlur={this.cityOnBlur.bind(this)}
+                            onFocus={this.cityOnFocus.bind(this)}
                             onSuggestSelect={this.onCitySuggestSelect.bind(this)}
                             initialValue={this.state.city} />
                         <label className="floatingLabel">City</label>
                     </div>
-                    <div className="inputBox">
+                    <div className={localityBox}>
                     <Geosuggest 
-                        placeholder={"Locality"}
+                        placeholder={""}
                         className={"GeoSuggestList"}
                         inputClassName={"GeoSuggestinput"}
                         autoActivateFirstSuggest={true}
                         country={"in"}                        
                         getSuggestLabel={this.getLocatlitySuggestLabel.bind(this)}
                         skipSuggest={this.skipLocalitySuggest.bind(this)}
+                        onChange={this.localityOnChange.bind(this)}
+                        onBlur={this.localityOnBlur.bind(this)}
+                        onFocus={this.localityOnFocus.bind(this)}
                         onSuggestSelect={this.onLocalitySuggestSelect.bind(this)} 
                         initialValue = {this.state.locality} />
                         <label className="floatingLabel">Locality</label>
