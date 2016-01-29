@@ -8,15 +8,13 @@ export default class DocumentUploader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false,
-            image: this.props.image || 'http://www.mp3alive.com/no_photo.jpg',
-            loader: 'hidden'
+            uploading: false
         };
     }
     startDocumentUpload(files) {
         let _this = this;
         this.setState({
-            loader: ''
+            uploading: true
         });
         Request
             .post('https://chat.tsepak.com/goodbox/image_resize')
@@ -24,15 +22,14 @@ export default class DocumentUploader extends React.Component {
             .end(function(err, res) {
                 if (err || !res.ok) {
                     _this.setState({
-                        loader: 'hidden'
+                        uploading: false
                     });
                 }
                 else {
                     let response = JSON.parse(res.text);
                     if (response.status == 0) {
                         _this.setState({
-                            image: response.url,
-                            loader: 'hidden'
+                            uploading: false
                         }, function() {
                             _this.props.postUpload(_this.state.image);
                         });
@@ -44,23 +41,35 @@ export default class DocumentUploader extends React.Component {
         const dropzoneStyle = {
             margin: 'auto',
             position: 'relative',
-            top: 200,
+            top: 100,
             borderRadius: '100%',
             height: 50,
             width: 50
         };
-        return (
-            <Dropzone 
-                 onDrop={this.startDocumentUpload}
-                 style={dropzoneStyle}
-                 postUpload={this.props.postUpload}
-                 accept='image/*'
-                 multiple={false}>
-                <FloatingActionButton mini={true}>
-                    <ContentAdd />
-                </FloatingActionButton>
-            </Dropzone>
-        );
+        debugger;
+        if (this.state.uploading)
+        {
+            return (
+                <div style={dropzoneStyle}>
+                    Please wait uploading the image..
+                </div>
+                );
+        }
+        else
+        {
+            return (
+                <Dropzone 
+                     onDrop={this.startDocumentUpload}
+                     style={dropzoneStyle}
+                     postUpload={this.props.postUpload}
+                     accept='image/*'
+                     multiple={false}>
+                    <FloatingActionButton mini={true}>
+                        <ContentAdd />
+                    </FloatingActionButton>
+                </Dropzone>
+            );
+        }
     }
 }
 export default DocumentUploader;
