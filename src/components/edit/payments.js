@@ -72,12 +72,10 @@ class Payments extends React.Component {
             image = 'http://www.mp3alive.com/no_photo.jpg';
         }
         return (<div style={this.props.styles.slide}>
-                    <TextField
-                        hintText="Status"
-                        disabled={true}
-                        fullWidth={true}
-                        defaultValue={this.state.paymentStatus}
-                        floatingLabelText="Status" />
+                    <div className="paymentBox">
+                        <label className="paymentLabel">Payment status</label>
+                        <span className="textView">{this.state.paymentStatus}</span>
+                    </div>                    
                     <SelectField value={this.state.businessType}
 	                	floatingLabelText="Business Type"
 	            	    onChange={this.businessTypeChange.bind(this)}>

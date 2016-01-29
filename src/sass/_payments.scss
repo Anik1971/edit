@@ -6,3 +6,18 @@
     top: 0;
     left: 0;
 }
+.paymentBox{
+	margin-top:14px;
+	height:auto;
+	.paymentLabel{
+		width: 100%;
+		display: block;
+		font-size: small;
+		color: rgba(0,0,0,0.5);
+	}
+	.textView{
+		width: 100%;
+		display: block;
+		margin-top: 8px;
+	}
+}

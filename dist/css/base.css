@@ -329,6 +329,19 @@ table {
   top: 0;
   left: 0; }
 
+.paymentBox {
+  margin-top: 14px;
+  height: auto; }
+  .paymentBox .paymentLabel {
+    width: 100%;
+    display: block;
+    font-size: small;
+    color: rgba(0, 0, 0, 0.5); }
+  .paymentBox .textView {
+    width: 100%;
+    display: block;
+    margin-top: 8px; }
+
 *, *::after, *::before {
   box-sizing: border-box; }
 
