@@ -53,18 +53,6 @@ class BusinessDetail extends React.Component {
     }
 
     handleChange(value) {
-        let errorFlag = false;
-        let errorData = {};
-        for(let key in window.errorStack){
-            errorData = window.errorStack[key];
-            if(errorData){
-                errorFlag = true;                 
-                break;
-            }
-        }
-        if(errorFlag){
-            this.props.toast(errorData.text);
-        }
         this.setState({
             slideIndex: value
         });    

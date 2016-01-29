@@ -207,6 +207,10 @@ class Index extends React.Component {
               let status = window.Android.saveBusinessData(convertToStringBusinessProfileObj);
               console.log("....................save business data status............");
               console.log(status);
+              this.setState({
+                snackbar: true,
+                snackbarMsg:'Saved successfully'
+              });
             } catch (e) {
               console.log("....................save business data failed due to crash............");
               console.log(e);
@@ -215,7 +219,6 @@ class Index extends React.Component {
             console.error('window.Android.saveBusinessData not found');
           } 
     }
-    
   }
   onSnackBarClose(){
     this.setState({

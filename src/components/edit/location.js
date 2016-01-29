@@ -5,7 +5,11 @@ import Geosuggest from 'react-geosuggest';
 import RaisedButton from 'material-ui/lib/raised-button';
 import Colors from 'material-ui/lib/styles/colors';
 import FontIcon from 'material-ui/lib/font-icon';
+import Dialog from 'material-ui/lib/dialog';
 import Popover from 'material-ui/lib/popover/popover';
+import LocationIcon from 'material-ui/lib/svg-icons/device/location-searching';
+import ClearIcon from 'material-ui/lib/svg-icons/content/clear';
+
 class Location extends React.Component {
 	constructor(props){
 		super(props);	
@@ -234,6 +238,11 @@ class Location extends React.Component {
         });
     }
 	render(){
+
+        const locationStyle = {
+            position: 'relative',
+            top: 6
+        }
 		return (<div style={this.props.styles.slide}>
                     <Geosuggest 
                         placeholder={"City"}
@@ -267,25 +276,25 @@ class Location extends React.Component {
                             fullWidth={true}
                             label="UPDATE STORE ADDRESS USING GPS"                            
                             labelPosition="after"
-                            onClick={this.showPop.bind(this, "pop")} >
-                            <FontIcon className="material-icons">
-                            </FontIcon>
+                            onClick={this.showPop.bind(this, "pop")}>
+                            <LocationIcon style={locationStyle}/>                                               
                         </RaisedButton>
-                        <Popover 
-                          anchorEl = {this.state.anchorEl}
+                        <Dialog 
                           canAutoPosition = { true }
                           open={this.state.activePopover === 'pop'}                          
                           onRequestClose={this.closePopover.bind(this, 'pop')} >
+                          <div className="dialogueCancel"><ClearIcon onClick={this.closePopover.bind(this, 'pop')} /></div>
                           <div style={{padding:20}}>                            
                             <p>WARNING: This will update the store location to the current location</p><br />
                             <div id="storeMap" className={"storeMap"}></div>
+                            <br />
                             <RaisedButton 
                                 fullWidth = { true}
                                 secondary={true} 
                                 label={this.state.gpsUpdateText}
                                 onTouchTap={this.onLocationSelect.bind(this)} />
                           </div>
-                        </Popover>
+                        </Dialog>
                     </div>
                     <div className={"Timings"}>
                         <Link  to="/timings" >Timings</Link>

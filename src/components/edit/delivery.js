@@ -136,8 +136,16 @@ class Delivery extends React.Component {
             tab: 2 
           };
         }
+
         if(this.state.deliveryCharge && this.state.deliveryCharge.length && isNaN(this.state.deliveryCharge)){
           errorText['deliveryCharge'] = 'Delivery Charge must be a number';
+          this.state.errorText = errorText;
+          window.errorStack['deliveryCharge'] = {
+            text: errorText['deliveryCharge'],
+            tab: 2 
+          };
+        }else if(this.state.freeDeliveryAbove>0 && this.state.deliveryCharge==''){
+          errorText['deliveryCharge'] = 'Delivery Charge must be entered with Free Delivery Amount';
           this.state.errorText = errorText;
           window.errorStack['deliveryCharge'] = {
             text: errorText['deliveryCharge'],
@@ -151,6 +159,7 @@ class Delivery extends React.Component {
             tab: 2 
           };
         }
+
         if(this.state.freeDeliveryAbove && this.state.freeDeliveryAbove.length && isNaN(this.state.freeDeliveryAbove)){
           errorText['freeDeliveryAbove'] = 'Free Delivery Amount must be a number';
           this.state.errorText = errorText;
@@ -165,7 +174,7 @@ class Delivery extends React.Component {
             text: errorText['freeDeliveryAbove'],
             tab: 2 
           };
-        }else if(this.state.minimumOrder > this.state.freeDeliveryAbove){
+        }else if((+this.state.minimumOrder) > (+this.state.freeDeliveryAbove)){
           errorText['freeDeliveryAbove'] = 'Free Delivery Amount must be greater than Minimum Order';
           this.state.errorText = errorText;
           window.errorStack['freeDeliveryAbove'] = {
