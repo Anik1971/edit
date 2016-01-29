@@ -30,7 +30,7 @@ let styles = {
     inkbar: {
         backgroundColor: "#76D1F2",
         height: 4,
-        margin: '3px -10px 0px -10px'
+        margin: '10px -10px 0px -10px'
     },
     tabs: {
         backgroundColor: "#F7F3F3",
@@ -44,7 +44,8 @@ let styles = {
         display: 'inline-block',
         padding: 15,
         paddingBottom: 0,
-        color: 'rgba(0,0,0,0.6)'
+        color: 'rgba(0,0,0,0.6)',
+        fontSize:14
     },
     floatRight: {
         float: "right"
@@ -62,13 +63,8 @@ class BusinessDetail extends React.Component {
     }
 
     handleChange(value) {
-        this.setState({
-            slideIndex: value
-        });
-    }
-    handleTabChange(value) {
         if (value == 3)
-            this.refs.tabWrapper.scrollLeft = 20;
+            this.refs.tabWrapper.scrollLeft = 24;
         if (value == 0)
             this.refs.tabWrapper.scrollLeft = 0;
         this.setState({
@@ -86,17 +82,6 @@ class BusinessDetail extends React.Component {
         };
     }
 
-    getTabStyle(tabStyle, index, activeIndex) {
-        if (index == activeIndex) {
-            tabStyle.color = 'black';
-        }
-        else
-        {
-            tabStyle.color = 'rgba(0,0,0,0.6)';
-        }
-        return tabStyle;
-    }
-
     render() {
         let saveBtn = this.props.saveBtn + " floatingBtn";
         if (window.moveTab) {
@@ -109,7 +94,7 @@ class BusinessDetail extends React.Component {
                 <div style={styles.tabs}>
                 {
                     TAB_HEADERS.map((header, index) => {
-                        return (<div onClick={this.handleTabChange.bind(this,index)} key={index} style={this.getTabStyle(styles.tab, index, this.state.slideIndex)}>
+                        return (<div className={this.state.slideIndex==index?'active-tab':'no-active-tab'} onClick={this.handleChange.bind(this,index)} key={index} style={styles.tab}>
                                   {header}
                                   <div className={this.state.slideIndex==index?'ink-bar':'no-ink-bar'} style={styles.inkbar}></div>
                                </div>);

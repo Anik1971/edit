@@ -37,6 +37,7 @@
   "dependencies": {
     "babel-core": "^6.1.21",
     "classnames": "^2.2.3",
+    "fbemitter": "^2.0.1",
     "history": "^1.17.0",
     "material-ui": "^0.14.0",
     "react": "^0.14.5",
@@ -46,7 +47,6 @@
     "react-router": "^1.0.3",
     "react-swipeable-views": "^0.3.5",
     "react-tap-event-plugin": "^0.2.1",
-    "superagent": "~1.6.1",
-    "fbemitter": "~2.0.1"
+    "superagent": "~1.6.1"
   }
 }
