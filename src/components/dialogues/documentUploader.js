@@ -15,27 +15,28 @@ export default class DocumentUploader extends React.Component {
         let _this = this;
         this.setState({
             uploading: true
-        });
-        Request
-            .post('https://chat.tsepak.com/goodbox/image_resize')
-            .attach('image', files[0], files[0].name)
-            .end(function(err, res) {
-                if (err || !res.ok) {
-                    _this.setState({
-                        uploading: false
-                    });
-                }
-                else {
-                    let response = JSON.parse(res.text);
-                    if (response.status == 0) {
+        }, function() {
+            Request
+                .post('https://chat.tsepak.com/goodbox/image_resize')
+                .attach('image', files[0], files[0].name)
+                .end(function(err, res) {
+                    if (err || !res.ok) {
                         _this.setState({
                             uploading: false
-                        }, function() {
-                            _this.props.postUpload(_this.state.image);
                         });
                     }
-                }
-            });
+                    else {
+                        let response = JSON.parse(res.text);
+                        if (response.status == 0) {
+                            _this.setState({
+                                uploading: false
+                            }, function() {
+                                _this.props.postUpload(response.url);
+                            });
+                        }
+                    }
+                });
+        });
     }
     render() {
         const dropzoneStyle = {
@@ -46,17 +47,14 @@ export default class DocumentUploader extends React.Component {
             height: 50,
             width: 50
         };
-        debugger;
-        if (this.state.uploading)
-        {
+        if (this.state.uploading) {
             return (
                 <div style={dropzoneStyle}>
                     Please wait uploading the image..
                 </div>
-                );
+            );
         }
-        else
-        {
+        else {
             return (
                 <Dropzone 
                      onDrop={this.startDocumentUpload}

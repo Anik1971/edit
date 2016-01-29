@@ -16,6 +16,10 @@
 * , *::after, *::before {
     box-sizing: border-box;
 }
+.no-ink-bar
+{
+	background-color: transparent !important;
+}
 body {
     background-color: #d5d6d9;
     font-family: 'Open Sans', sans-serif;

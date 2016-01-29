@@ -48,8 +48,7 @@ class Gallery extends React.Component {
       display: 'inline-block',
       marginRight: 5
     };
-    if (index == this.state.slideIndex)
-    {
+    if (index == this.state.slideIndex) {
       indicatorStyle.backgroundColor = 'rgba(255,255,255,0.9)';
       indicatorStyle.height = 10;
       indicatorStyle.width = 10;
@@ -58,7 +57,8 @@ class Gallery extends React.Component {
   }
   handleChange(value) {
     this.setState({
-      slideIndex: value    });
+      slideIndex: value
+    });
   }
   handlePostImageUpload(value) {
     let newSlideImages = this.state.slideImages.slice();
@@ -69,7 +69,6 @@ class Gallery extends React.Component {
   }
   render() {
     const photos = this.state.slideImages.map((image, index) => <div key={index} style={Object.assign({},styles.slide,{backgroundImage:"url(" + image  +")"})}></div>);
-
     return (<div id="gallery">
               <SwipeableViews
                 index={this.state.slideIndex}

@@ -12,7 +12,7 @@ import Delivery from './delivery';
 import Payments from './payments';
 import RaisedButton from 'material-ui/lib/raised-button';
 import SaveIcon from 'material-ui/lib/svg-icons/content/save';
-const styles = {
+let styles = {
     headline: {
         fontSize: 24,
         paddingTop: 16,
@@ -29,13 +29,22 @@ const styles = {
     },
     inkbar: {
         backgroundColor: "#76D1F2",
-        height: 4
+        height: 4,
+        margin: '3px -10px 0px -10px'
     },
     tabs: {
-        backgroundColor: "#F7F3F3"
+        backgroundColor: "#F7F3F3",
+        width: 454
+    },
+    tabWrapper: {
+        overflowX: 'scroll'
     },
     tab: {
-        textTransform: "uppercase"
+        textTransform: "uppercase",
+        display: 'inline-block',
+        padding: 15,
+        paddingBottom: 0,
+        color: 'rgba(0,0,0,0.6)'
     },
     floatRight: {
         float: "right"
@@ -55,8 +64,18 @@ class BusinessDetail extends React.Component {
     handleChange(value) {
         this.setState({
             slideIndex: value
-        });    
+        });
     }
+    handleTabChange(value) {
+        if (value == 3)
+            this.refs.tabWrapper.scrollLeft = 20;
+        if (value == 0)
+            this.refs.tabWrapper.scrollLeft = 0;
+        this.setState({
+            slideIndex: value
+        });
+    }
+
     getChildContext() {
         return {
             muiTheme: ThemeManager.getMuiTheme({
@@ -67,30 +86,37 @@ class BusinessDetail extends React.Component {
         };
     }
 
-    render() {
-        let saveBtn = this.props.saveBtn+" floatingBtn";
-        if (window.moveTab)
+    getTabStyle(tabStyle, index, activeIndex) {
+        if (index == activeIndex) {
+            tabStyle.color = 'black';
+        }
+        else
         {
+            tabStyle.color = 'rgba(0,0,0,0.6)';
+        }
+        return tabStyle;
+    }
+
+    render() {
+        let saveBtn = this.props.saveBtn + " floatingBtn";
+        if (window.moveTab) {
             this.state.slideIndex = this.props.tab;
             window.moveTab = false;
         }
         return (
             <div>
-                <Tabs
-                  onChange={this.handleChange.bind(this)}
-                  initialSelectedIndex={this.state.slideIndex}
-                  value={this.state.slideIndex}
-                  inkBarStyle = {styles.inkbar}
-                  style = {styles.tabs}
-                  tabItemContainerStyle = {styles.tab}
-                  className = "profile-tabs">
-                  {
+                <div ref="tabWrapper" style={styles.tabWrapper}>
+                <div style={styles.tabs}>
+                {
                     TAB_HEADERS.map((header, index) => {
-                        return <Tab label={header} value={index} key={index}/>;
+                        return (<div onClick={this.handleTabChange.bind(this,index)} key={index} style={this.getTabStyle(styles.tab, index, this.state.slideIndex)}>
+                                  {header}
+                                  <div className={this.state.slideIndex==index?'ink-bar':'no-ink-bar'} style={styles.inkbar}></div>
+                               </div>);
                     })
-                  }
-                  
-                </Tabs>
+                }
+                </div>
+                </div>
                 <SwipeableViews
                   index={this.state.slideIndex}
                   onChangeIndex={this.handleChange.bind(this)}>
