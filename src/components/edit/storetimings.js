@@ -31,6 +31,7 @@ class StoreTimings extends React.Component {
 	}
 	render(){
 		const selectOptions = ['All days', 'Weekdays', 'Weekends']
+		const days = this.state.days;
 		const styles = {
 			addTimingsDivStyle:{
 				position:'fixed',
@@ -56,7 +57,6 @@ class StoreTimings extends React.Component {
 				textAlign: 'center'
 			}
 		};
-		const days = this.state.days;
 		return (<div id="store-timings">
 					<div style={styles.addTimingsDivStyle} key={1}><div key={3}>
 						<select>{selectOptions.map((option, index)=><option key={index}>{option}</option>)}</select>
