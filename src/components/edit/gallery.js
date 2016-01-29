@@ -93,6 +93,7 @@ class Gallery extends React.Component {
               <SwipeableViews
                 index={this.state.slideIndex}
                 onChangeIndex={this.handleChange.bind(this)}>
+                {photos}
                 <div key={photos.length} style={styles.slide}>
                   <DocumentUploader postUpload={this.handlePostImageUpload.bind(this)}>
                   </DocumentUploader>

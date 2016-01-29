@@ -29,7 +29,7 @@ export default class ProfilePic extends React.Component {
     this.setState({
       open:true 
     });
-  };
+  }
   startProfilePicUpload(files) {
       console.log('Received files: ', files);
       let _this = this;
@@ -41,7 +41,6 @@ export default class ProfilePic extends React.Component {
            alert('Oh no! error');
          } else {
            let response = JSON.parse(res.text);
-           debugger;
            if(response.status == 0){
             _this.setState({
               image: response.url
@@ -49,17 +48,17 @@ export default class ProfilePic extends React.Component {
            }
          }
        });
-  };
+  }
   cancelProfilePicUpload(){
     console.log('Canceled Profile Pic Uploading');
     this.setState({open: false});
-  };
+  }
   onNameChange(name){
     console.log('onChange',name.target.value);
     this.setState({
       businessName: name.target.value
     });
-  };
+  }
   updateProfile(){
     console.log(this);
     this.props.putBusiData({
@@ -69,7 +68,7 @@ export default class ProfilePic extends React.Component {
     this.setState({
       open: false
     });
-  };
+  }
   render() {
     const actions = [
       <FlatButton

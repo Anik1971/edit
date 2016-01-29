@@ -44,6 +44,7 @@ class ProfileImage extends React.Component {
 	putBusiData(json){
 		this.props.putBusiData(json);
 	}
+
 	coverImageUpdate(imageurl){
 		console.log('imageurl');
 		let pending = this.props.bData.appExtras.pending;
@@ -62,9 +63,8 @@ class ProfileImage extends React.Component {
 		}
 		this.props.manageSave('show','pending',pending);
 	}
+
 	businessImageUpdate(imageurl){
-		console.log('imageurl');
-		//debugger;
 		let pending = this.props.bData.appExtras.pending;
 		if(pending){
 			if(pending.businessImage){

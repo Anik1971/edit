@@ -229,7 +229,6 @@ class Description extends React.Component {
 		}
 		let errorText = {};
 		this.state = {
-            businessType: "Self-Owned",
             businessShortDescription: this.props.bData.businessType || '',
             businessLongDescription: this.props.bData.businessDescription || '',
             selectedBusinessCategory: this.props.bData.category,
@@ -248,13 +247,6 @@ class Description extends React.Component {
         	this.state.phoneClass[i] = '';
         }
 	}	
-	businessTypeChange(e, index, businessType){
-		this.setState({
-			businessType:businessType
-		},function(){
-			this.props.manageSave('show','ownershipType',this.state.businessType);
-		});
-	}
 	languageTypeChange(e, index, languageType){
 		this.setState({
 			languageType:languageType
@@ -354,13 +346,6 @@ class Description extends React.Component {
 	                onBlur={this.onBusinessLongDescBlur.bind(this)}
 	                onChange={this.onBusinessLongDescUpdate.bind(this)}
 	                errorText={this.state.errorText['businessLongDescription']}/> 
-	            <SelectField value={this.state.businessType}
-	            	floatingLabelText="Business Type"
-	            	onChange={this.businessTypeChange.bind(this)}>
-			        <MenuItem value={"Self-Owned"} primaryText="Self-Owned"/>
-			        <MenuItem value={"Partnership"} primaryText="Partnership"/>
-			        <MenuItem value={"Others"} primaryText="Others"/>
-			    </SelectField>
 			    <SelectField value={this.state.languageType}
 	            	floatingLabelText="Language Translation Preference"
 	            	onChange={this.languageTypeChange.bind(this)}>
