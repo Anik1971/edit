@@ -347,6 +347,12 @@ table {
 *, *::after, *::before {
   box-sizing: border-box; }
 
+.paymenthide-true {
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
+  visibility: hidden !important; }
+
 .no-ink-bar {
   background-color: transparent !important; }
 

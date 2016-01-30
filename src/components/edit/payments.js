@@ -70,21 +70,26 @@ class Payments extends React.Component {
                         style={styles.panCard}/>
                     <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
                     <TextField
+                        className={'paymenthide-'+(this.state.businessType!='Individual')}
                         floatingLabelText="PayU authorization letter" 
                         style={styles.panCard}/>
-                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
+                    <RaisedButton className={'paymenthide-'+(this.state.businessType!='Individual')} label="Upload" secondary={true} style={styles.upload}/>
                     <TextField
+                        className={'paymenthide-'+(this.state.businessType!='Individual')}
                         floatingLabelText="Residential Address" 
                         style={styles.panCard}/>
-                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
+                    <RaisedButton className={'paymenthide-'+(this.state.businessType!='Individual')} label="Upload" secondary={true} style={styles.upload}/>
                     <TextField
+                        className={'paymenthide-'+(this.state.businessType!='Individual')}
                         floatingLabelText="Email ID" 
                         style={styles.panCard}/>
                     <TextField 
+                        className={'paymenthide-'+(this.state.businessType=='Individual')}
                         floatingLabelText="VAT / CST / Trade license*" 
                         style={styles.panCard}/>
-                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
-                    <div style={styles.displayHint}>
+                    <RaisedButton className={'paymenthide-'+(this.state.businessType=='Individual')} label="Upload" secondary={true} style={styles.upload}/>
+                    <div className={'paymenthide-'+(this.state.businessType=='Individual')} 
+                         style={styles.displayHint}>
                     * Or other business registration proof issued by government
                     </div>
                     <TextField
