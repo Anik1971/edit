@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import Dropzone from 'react-dropzone';
 import ImageUpdater from './../dialogues/imageUpdater';
+import PaymentUploader from './../dialogues/paymentUploader';
 import SelectField from 'material-ui/lib/SelectField';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import FontIcon from 'material-ui/lib/font-icon';
@@ -20,6 +21,18 @@ class Payments extends React.Component {
         this.state = {
             businessType:  newExtras.ownershipType || "Individual",
             panCard: newExtras.panCard || "",
+            panCard_image: newExtras.panCard_image || "",
+            bankAcc: newExtras.bankAcc || "",
+            bankAcc_image: newExtras.bankAcc_image || "",
+            payU:newExtras.payU || "",
+            payU_image:newExtras.payU_image || "",
+            resAddr:newExtras.resAddr || "",
+            resAddr_image:newExtras.resAddr_image || "",
+            payEmail:newExtras.payEmail || "",
+            licence:newExtras.licence || "",
+            licence_image:newExtras.licence_image || "",
+            regFeeCheck:newExtras.regFeeCheck || "",
+
             paymentEnabled: this.props.bData.paymentEnabled,
             paymentStatus: paymentStatus
         };
@@ -32,7 +45,74 @@ class Payments extends React.Component {
             this.props.manageSave('show', 'ownershipType', this.state.businessType);
         });
     }
-
+    onPanBlur(e){
+        console.log('PAN',e.target.value);
+        this.state.panCard = e.target.value;
+        this.props.manageSave('show', 'panCard', e.target.value);
+    }
+    onBankAccBlur(e){
+        console.log('bankAcc',e.target.value);
+        this.state.bankAcc = e.target.value;
+        this.props.manageSave('show','bankAcc',e.target.value);
+    }
+    onPayUBlur(e){
+        console.log('payU',e.target.value);
+        this.state.payU = e.target.value;
+        this.props.manageSave('show','payU',e.target.value);
+    }
+    onResAddrBlur(e){
+        console.log('ResAddr',e.target.value);
+        this.state.resAddr = e.target.value;
+        this.props.manageSave('show','resAddr',e.target.value);
+    }
+    onPayEmailBlur(e){
+        console.log('onPayEmail',e.target.value);
+        this.state.payEmail = e.target.value;
+        this.props.manageSave('show','payEmail',e.target.value);
+    }
+    onLicenceBlur(e){
+        console.log('licence',e.target.value);
+        this.state.payEmail = e.target.value;
+        this.props.manageSave('show','licence',e.target.value);
+    }
+    onRegFeeCheckBlur(e){
+        console.log('RegFeeCheck',e.target.value);
+        this.state.regFeeCheck = e.target.value;
+        this.props.manageSave('show','regFeeCheck',e.target.value);
+    }
+    panCard_imageUpdate(imageUrl){
+        console.log('panCard_imageUpdate',imageUrl);
+        this.state.panCard_image = imageUrl;
+        this.props.manageSave('show', 'panCard_image', imageUrl);
+    }
+    bankAcc_imageUpdate(imageUrl){
+        console.log('bankAcc_imageUpdate',imageUrl);
+        this.state.bankAcc_image = imageUrl;
+        this.props.manageSave('show', 'bankAcc_image', imageUrl);
+    }
+    payU_imageUpdate(imageUrl){
+        console.log('payU_imageUpdate',imageUrl);
+        this.state.payU_image = imageUrl;
+        this.props.manageSave('show', 'payU_image', imageUrl);
+    }
+    resAddr_imageUpdate(imageUrl){
+        console.log('resAddr_imageUpdate',imageUrl);
+        this.state.resAddr_image = imageUrl;
+        this.props.manageSave('show', 'resAddr_image', imageUrl);
+    }
+    licence_imageUpdate(imageUrl){
+        console.log('licence_imageUpdate',imageUrl);
+        this.state.licence_image = imageUrl;
+        this.props.manageSave('show', 'licence_image', imageUrl);
+    }
+    regFeeCheck_imageUpdate(imageUrl){
+        console.log('regFeeCheck_imageUpdate',imageUrl);
+        this.state.regFeeCheck_image = imageUrl;
+        this.props.manageSave('show', 'regFeeCheck_image', imageUrl);
+    }
+    onPaymentChange(){
+        this.props.manageSave('updation');
+    }
     render() {
         const businessTypes = ['Individual', 'Propreitorship', 'Partnership', 'Pvt Ltd Co'];
         const styles = {
@@ -61,42 +141,91 @@ class Payments extends React.Component {
 			       <div style={styles.displayHint}>
 			        Please fill in below fields and upload relevant documents
 			       </div>
-                    <TextField
-                        floatingLabelText="PAN" 
-                        style={styles.panCard}/>
-                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
-                    <TextField 
-                        floatingLabelText="IFSC:Bank Account Number" 
-                        style={styles.panCard}/>
-                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
-                    <TextField
-                        className={'paymenthide-'+(this.state.businessType!='Individual')}
-                        floatingLabelText="PayU authorization letter" 
-                        style={styles.panCard}/>
-                    <RaisedButton className={'paymenthide-'+(this.state.businessType!='Individual')} label="Upload" secondary={true} style={styles.upload}/>
-                    <TextField
-                        className={'paymenthide-'+(this.state.businessType!='Individual')}
-                        floatingLabelText="Residential Address" 
-                        style={styles.panCard}/>
-                    <RaisedButton className={'paymenthide-'+(this.state.businessType!='Individual')} label="Upload" secondary={true} style={styles.upload}/>
-                    <TextField
-                        className={'paymenthide-'+(this.state.businessType!='Individual')}
-                        floatingLabelText="Email ID" 
-                        style={styles.panCard}/>
-                    <TextField 
-                        className={'paymenthide-'+(this.state.businessType=='Individual')}
-                        floatingLabelText="VAT / CST / Trade license*" 
-                        style={styles.panCard}/>
-                    <RaisedButton className={'paymenthide-'+(this.state.businessType=='Individual')} label="Upload" secondary={true} style={styles.upload}/>
-                    <div className={'paymenthide-'+(this.state.businessType=='Individual')} 
+                   <div className="paymentRow">
+                        <TextField
+                            className="paymentText"
+                            floatingLabelText="PAN" 
+                            style={styles.panCard}
+                            defaultValue={this.state.panCard}
+                            onChange={this.onPaymentChange.bind(this)}
+                            onBlur={this.onPanBlur.bind(this)}/>
+                        <PaymentUploader
+                            image={this.state.panCard_image}                
+                            postUpload={this.panCard_imageUpdate.bind(this)} />
+                    </div>
+                    <div className="paymentRow">
+                        <TextField 
+                            className="paymentText"
+                            floatingLabelText="IFSC:Bank Account Number" 
+                            style={styles.panCard}
+                            defaultValue={this.state.bankAcc}
+                            onChange={this.onPaymentChange.bind(this)}
+                            onBlur={this.onBankAccBlur.bind(this)}/>
+                        <PaymentUploader
+                            image={this.state.bankAcc_image}                
+                            postUpload={this.bankAcc_imageUpdate.bind(this)} />
+                    </div>
+                    <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
+                        <TextField
+                            className="paymentText"
+                            floatingLabelText="PayU authorization letter" 
+                            style={styles.panCard}
+                            defaultValue={this.state.payU}
+                            onChange={this.onPaymentChange.bind(this)}
+                            onBlur={this.onPayUBlur.bind(this)}/>
+                            <PaymentUploader
+                            image={this.state.payU}                
+                            postUpload={this.payU_imageUpdate.bind(this)} />
+                    </div>
+                    <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
+                        <TextField
+                            className="paymentText"
+                            floatingLabelText="Residential Address" 
+                            style={styles.panCard}
+                            defaultValue={this.state.resAddr}
+                            onChange={this.onPaymentChange.bind(this)}
+                            onBlur={this.onResAddrBlur.bind(this)}/>
+                        <PaymentUploader
+                            image={this.state.resAddr_image}                
+                            postUpload={this.resAddr_imageUpdate.bind(this)} />
+                    </div>
+                    <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
+                        <TextField
+                            className="paymentText"
+                            floatingLabelText="Email ID" 
+                            style={styles.panCard}
+                            defaultValue={this.state.payEmail}
+                            onChange={this.onPaymentChange.bind(this)}
+                            onBlur={this.onPayEmailBlur.bind(this)}/>                        
+                    </div>
+                    <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
+                        <TextField
+                            className="paymentText"
+                            floatingLabelText="VAT / CST / Trade license*" 
+                            style={styles.panCard}
+                            defaultValue={this.state.licence}
+                            onChange={this.onPaymentChange.bind(this)}
+                            onBlur={this.onLicenceBlur.bind(this)}/>
+                        <PaymentUploader
+                            image={this.state.licence_image}                
+                            postUpload={this.licence_imageUpdate.bind(this)} />
+                    </div>
+                    <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}
                          style={styles.displayHint}>
                     * Or other business registration proof issued by government
                     </div>
-                    <TextField
-                        floatingLabelText="Registration Fee Cheque" 
-                        style={styles.panCard}/>
-                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
-
+                    <div className="paymentRow">
+                        <TextField
+                            className="paymentText"
+                            floatingLabelText="Registration Fee Cheque" 
+                            style={styles.panCard}
+                            defaultValue={this.state.regFeeCheck}
+                            onChange={this.onPaymentChange.bind(this)}
+                            onBlur={this.onRegFeeCheckBlur.bind(this)}/>
+                        <PaymentUploader
+                            image={this.state.regFeeCheck_image}                
+                            postUpload={this.regFeeCheck_imageUpdate.bind(this)} />
+                    </div>
                   </div>);
     }
 }

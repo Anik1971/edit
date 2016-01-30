@@ -20,7 +20,7 @@ let styles = {
         fontWeight: 400,
     },
     slide: {
-        minHeight: 500,
+        minHeight: 700,
         padding: 10,
         backgroundColor: "white"
     },

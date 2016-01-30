@@ -44,6 +44,8 @@ class App extends React.Component {
          .end(function(err, res){
            if (err || !res.ok) {
             console.error('Response',err);
+            console.info('LOADING dummy Bdata');
+            window.emitter.emit('bData',bData);
            }else {
             //converting level 1 nested json strings to Object
             console.log('Response',res);

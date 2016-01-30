@@ -24,6 +24,7 @@ let bData_dummy =
   "longitude": "",
   "minAmount": 0,
   "mine": false,
+  "newExtras": "",
   "objectId": "",
   "paymentEnabled": false,
   "profilePicUrl": "",

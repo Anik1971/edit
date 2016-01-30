@@ -344,6 +344,24 @@ table {
     display: block;
     margin-top: 8px; }
 
+.paymentRow {
+  width: 100%;
+  float: left;
+  display: block;
+  position: relative; }
+  .paymentRow .paymentText {
+    float: left; }
+  .paymentRow .paymentIcon {
+    float: left;
+    position: absolute;
+    bottom: 11px; }
+
+.paymentIcon {
+  z-index: 1;
+  padding: 4px;
+  background: #70BFF9;
+  border-radius: 14px; }
+
 *, *::after, *::before {
   box-sizing: border-box; }
 
