@@ -45,13 +45,6 @@ table {
   height: 160px;
   width: 100%;
   background-size: cover;
-<<<<<<< Updated upstream
-=======
-  background-image: url(http://lorempixel.com/400/160);
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   background-repeat: no-repeat;
   position: relative;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
@@ -61,13 +54,6 @@ table {
     width: 100px;
     height: 100px;
     min-width: 100px;
-<<<<<<< Updated upstream
-=======
-    background-image: url(http://lorempixel.com/100/100);
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     background-size: 150% auto;
     background-repeat: no-repeat;
     background-position-x: 25%;

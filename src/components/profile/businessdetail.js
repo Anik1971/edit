@@ -158,7 +158,7 @@ class BusinessDetail extends React.Component {
 		let serviceAreas='';
 		console.log('areas:'+areas);
 		let serviceAreasCard = '';
-		if(areas.length){
+		if(areas && areas.length){
 			serviceAreas = 
 				<div>{  
 		            		areas.map((area, index) => {		            				            			
