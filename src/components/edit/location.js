@@ -19,6 +19,7 @@ class Location extends React.Component {
 	constructor(props){
 		super(props);	
         let address = this.props.bData.businessAddress;
+        let errorText = {};
         this.state = {
             selCity: {},
             citySuggest:[],
@@ -34,7 +35,9 @@ class Location extends React.Component {
             localityBox: '',
             localityText: address.locality,
             latitude:this.props.bData.latitude,
-            longitude:this.props.bData.longitude
+            longitude:this.props.bData.longitude,
+            errorText: errorText,
+            errorFlag: false
         };
         if(this.state.cityText && this.state.cityText.length){
             this.state.cityBox =  'boxAnim';
@@ -43,6 +46,35 @@ class Location extends React.Component {
             this.state.localityBox =  'boxAnim';
         }
 	}	
+    locationVaildation(){
+        console.log('locationVaildation');
+        let errorText = this.state.errorText;
+        if(this.state.city.length == 0 || this.state.cityText.length == 0){
+            errorText['city'] = 'City is required';
+            this.state.errorText = errorText;
+            window.errorStack['city'] = {
+              text: errorText['city'],
+              tab: 1 
+            };
+        }else{
+            errorText['city'] = '';
+            this.state.errorText = errorText;
+            delete window.errorStack['city'];
+        }
+
+        if(this.state.locality.length == 0 || this.state.localityText.length == 0){
+            errorText['locality'] = 'Locality is required';
+            this.state.errorText = errorText;
+            window.errorStack['locality'] = {
+              text: errorText['locality'],
+              tab: 1 
+            };
+        }else{
+            errorText['locality'] = '';
+            this.state.errorText = errorText;
+            delete window.errorStack['locality'];
+        }
+    }
     onCitySuggestSelect(location){
         console.log('onCitySuggestSelect',location); 
         this.setState({
@@ -70,7 +102,7 @@ class Location extends React.Component {
             businessAddress.locality = this.state.locality;
             businessAddress.address = this.state.address;
             this.props.manageSave('show','businessAddress',businessAddress);
-            this.localityOnBlur();
+            this.locationVaildation();
         });
     }
     getLocation(callback){
@@ -186,7 +218,7 @@ class Location extends React.Component {
 
     //Locality Selection 
     getLocatlitySuggestLabel(suggest){
-        console.log('locality Label:',suggest);
+        //console.log('locality Label:',suggest);
         let locality = [],termsLength = 0;
         termsLength = suggest.terms.length;
         suggest.terms.forEach(term => {
@@ -197,7 +229,7 @@ class Location extends React.Component {
         return localityLabel;
     }
     skipLocalitySuggest(suggest){
-        console.log('skipLocalitySuggest',suggest);
+        //console.log('skipLocalitySuggest',suggest);
         let city = '',termsLength = 0;
         termsLength = suggest.terms.length;
         city = this.getCitySuggestLabel(suggest);  
@@ -276,10 +308,14 @@ class Location extends React.Component {
         if(this.state.cityText.length){
             this.setState({                
                 cityBox: 'boxAnim'
+            },function(){
+                this.locationVaildation(this);
             });
         }else{
             this.setState({               
                 cityBox: ''
+            },function(){
+                this.locationVaildation(this);
             });
         }
 
@@ -297,6 +333,7 @@ class Location extends React.Component {
     }
     localityOnBlur(){
         console.log('localityOnBlur');
+        this.locationVaildation(this);
         if(this.state.localityText.length){
             this.setState({                
                 localityBox: 'boxAnim'
@@ -306,6 +343,7 @@ class Location extends React.Component {
                 localityBox: ''
             });
         }
+           
     }
     localityOnFocus(){
         this.setState({
@@ -339,6 +377,7 @@ class Location extends React.Component {
                             onSuggestSelect={this.onCitySuggestSelect.bind(this)}
                             initialValue={this.state.city} />
                         <label className="floatingLabel">City</label>
+                        <div className="serviceError">{this.state.errorText['city']}</div>
                     </div>
                     <div className={localityBox}>
                     <Geosuggest 
@@ -355,6 +394,7 @@ class Location extends React.Component {
                         onSuggestSelect={this.onLocalitySuggestSelect.bind(this)} 
                         initialValue = {this.state.locality} />
                         <label className="floatingLabel">Locality</label>
+                        <div className="serviceError">{this.state.errorText['locality']}</div>
                     </div>
                     <TextField fullWidth={true}
                         floatingLabelText="Address"
