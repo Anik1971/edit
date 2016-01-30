@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/lib/text-field';
-import FloatingActionButton from 'material-ui/lib/floating-action-button';
+import RaisedButton from 'material-ui/lib/raised-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import Dropzone from 'react-dropzone';
 import ImageUpdater from './../dialogues/imageUpdater';
@@ -16,15 +16,12 @@ class Payments extends React.Component {
         if (this.props.bData.paymentEnabled) {
             paymentStatus = 'Enabled';
         }
-        let document = '';
-        if (this.props.bData.appExtras && this.props.bData.appExtras.approved && this.props.bData.appExtras.approved.document) {
-            document = this.props.bData.appExtras.approved.document;
-        }
+        let newExtras = this.props.bData.newExtras || {};
         this.state = {
-            businessType: this.props.bData.businessType || "Individual",
+            businessType:  newExtras.ownershipType || "Individual",
+            panCard: newExtras.panCard || "",
             paymentEnabled: this.props.bData.paymentEnabled,
-            paymentStatus: paymentStatus,
-            document: document
+            paymentStatus: paymentStatus
         };
     }
 
@@ -36,30 +33,14 @@ class Payments extends React.Component {
         });
     }
 
-    businessDocUpdate(imageurl) {
-        let pending = this.props.bData.appExtras.pending;
-        if (pending) {
-            if (pending.document) {
-                pending.document.push(imageurl);
-            }
-            else {
-                pending.document = [];
-                pending.document.push(imageurl);
-            }
-        }
-        else {
-            pending = {};
-            pending.document = [];
-            pending.document.push(imageurl);
-        }
-        this.props.manageSave('show', 'pending', pending);
-    }
     render() {
-        let image = this.state.approved;
         const businessTypes = ['Individual', 'Propreitorship', 'Partnership', 'Pvt Ltd Co'];
         const styles = {
             panCard: {
-                width: '70%'
+                width: 'calc(100% - 100px)'
+            },
+            upload: {
+              marginLeft: 10  
             },
             displayHint: {
                 fontSize: '0.7em',
@@ -67,9 +48,6 @@ class Payments extends React.Component {
                 padding: '10px 0'
             }
         };
-        if (!image) {
-            image = 'http://www.mp3alive.com/no_photo.jpg';
-        }
         return (<div style={this.props.styles.slide}>
                     <div className="paymentBox">
                         <label className="paymentLabel">Payment status</label>
@@ -83,24 +61,37 @@ class Payments extends React.Component {
 			       <div style={styles.displayHint}>
 			        Please fill in below fields and upload relevant documents
 			       </div>
-
                     <TextField
                         floatingLabelText="PAN" 
                         style={styles.panCard}/>
-                    <FloatingActionButton mini={true}>
-                        <ContentAdd />
-                    </FloatingActionButton>
+                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
                     <TextField 
-                        floatingLabelText="Cancelled Cheque" 
+                        floatingLabelText="IFSC:Bank Account Number" 
                         style={styles.panCard}/>
-                    <FontIcon className="material-icons">file_upload</FontIcon>
+                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
+                    <TextField
+                        floatingLabelText="PayU authorization letter" 
+                        style={styles.panCard}/>
+                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
+                    <TextField
+                        floatingLabelText="Residential Address" 
+                        style={styles.panCard}/>
+                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
+                    <TextField
+                        floatingLabelText="Email ID" 
+                        style={styles.panCard}/>
                     <TextField 
                         floatingLabelText="VAT / CST / Trade license*" 
                         style={styles.panCard}/>
-                    <FontIcon className="material-icons">file_upload</FontIcon>
+                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
                     <div style={styles.displayHint}>
                     * Or other business registration proof issued by government
                     </div>
+                    <TextField
+                        floatingLabelText="Registration Fee Cheque" 
+                        style={styles.panCard}/>
+                    <RaisedButton label="Upload" secondary={true} style={styles.upload}/>
+
                   </div>);
     }
 }
