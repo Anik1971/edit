@@ -4,8 +4,18 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import ContentInbox from 'material-ui/lib/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/lib/svg-icons/action/grade';
+const defaultUserIcon = 'https://cdn0.iconfinder.com/data/icons/users-android-l-lollipop-icon-pack/24/user-128.png';
+
 class ProfileDetail extends React.Component {
     render() {
+    	let userName = 'Your Name';
+    	if(this.props.bData.newExtras && this.props.bData.newExtras.userName){
+    		userName = this.props.bData.newExtras.userName;
+    	}
+    	let userImage = defaultUserIcon;
+    	if(this.props.bData.newExtras && this.props.bData.newExtras.userImage){
+    		userImage = this.props.bData.newExtras.userImage;
+    	}
         return (
         <div id="profile-detail">
             <div className="business-name">{this.props.bData.businessName}</div>
@@ -14,9 +24,9 @@ class ProfileDetail extends React.Component {
 			<List>
 		      <ListItem
 		      	className="profile-name"
-		        primaryText={this.props.bData.userName}
+		        primaryText={userName}
 		        leftAvatar={
-			        <Avatar src={this.props.bData.userImage} />
+			        <Avatar src={userImage} />
 			    }/>
 		    </List>
         </div>);

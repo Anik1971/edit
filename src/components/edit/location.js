@@ -32,7 +32,9 @@ class Location extends React.Component {
             cityBox: '',
             cityText: address.city,
             localityBox: '',
-            localityText: address.locality
+            localityText: address.locality,
+            latitude:this.props.bData.latitude,
+            longitude:this.props.bData.longitude
         };
         if(this.state.cityText && this.state.cityText.length){
             this.state.cityBox =  'boxAnim';
@@ -144,7 +146,11 @@ class Location extends React.Component {
                         _city: city,
                         _locality: locality,
                         _address:address,
-                        gpsUpdateText:'UPDATE'
+                        gpsUpdateText:'UPDATE',
+                        _latitude:latlng.lat,
+                        _longitude:latlng.lng
+                    },function(){
+                        console.log('state',_this.state);
                     });
                 }
             });                
@@ -232,13 +238,17 @@ class Location extends React.Component {
             activePopover:'notPop',
             gpsUpdateText:'UPDATE',
             cityText: this.state._city,
-            localityText: this.state._locality
+            localityText: this.state._locality,
+            latitude:this.state._latitude,
+            longitude:this.state._longitude
         },function(){
             let businessAddress = {};
             businessAddress.city = this.state.city;
             businessAddress.locality = this.state.locality;
             businessAddress.address = this.state.address;
             this.props.manageSave('show','businessAddress',businessAddress);
+            this.props.manageSave('show','latitude',this.state.latitude);
+            this.props.manageSave('show','longitude',this.state.longitude);
             this.cityOnBlur();
             this.localityOnBlur();
         });        

@@ -47,7 +47,7 @@ class App extends React.Component {
            }else {
             //converting level 1 nested json strings to Object
             console.log('Response',res);
-            try{
+            //try{
               let _bData = JSON.parse(res.text);
               for(let key in _bData){
                 let _currData = _bData[key];        
@@ -61,9 +61,9 @@ class App extends React.Component {
                 _bData['newExtras'] = {};
               }
               window.emitter.emit('bData',_bData);
-            }catch(e){
+            /*}catch(e){
               console.error('Server Data parse',e);
-            }
+            }*/
           }
          });
       }

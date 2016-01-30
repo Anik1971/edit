@@ -19,12 +19,53 @@ const deliveryIcons = {
 const styles={
   card_shadow:{
     boxShadow: '0 1px 6px rgba(118, 209, 242, 0.12), 0 1px 4px rgba(118, 209, 242, 0.24)'
+  },
+  maps:{
+  	height: 150,
+    width: '100%',
+    display: 'block',
+    float: 'left'
   }
 }
 class BusinessDetail extends React.Component {
 	constructor(props){
 		super(props);	
 	}	
+	componentDidMount(){
+		console.log('componentDidMount');
+		if(this.props.bData.latitude && this.props.bData.longitude){
+			let position = {
+				coords: {
+					latitude : this.props.bData.latitude,
+					longitude: this.props.bData.longitude
+				}
+			}
+			let Latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	        let map = new google.maps.Map(document.getElementById('supplierMap'), {
+	            center: Latlng,
+	            zoom: 6
+	        }); 
+	        let geocoder = new google.maps.Geocoder;
+	        let infowindow = new google.maps.InfoWindow;                
+	        let latlng = {
+	            lat: position.coords.latitude, 
+	            lng: position.coords.longitude
+	        };
+	        geocoder.geocode({'location': latlng}, function(results, status) {
+	            if(results[0]){                        
+	                
+	                //marker
+	                map.setZoom(16);
+	                let marker = new google.maps.Marker({
+	                  position: latlng,
+	                  map: map
+	                });
+	                infowindow.setContent('store location');
+	                infowindow.open(map, marker);	                
+	            }
+	        });
+		}
+	}
 	render(){
 		let paymentsCard = '';
 		if(this.props.bData.paymentEnabled){
@@ -43,6 +84,12 @@ class BusinessDetail extends React.Component {
 			 	</Card>	;
 		}
 		let addressCard = <CardText><strong>{"Address: "}</strong><i>Yet to be published.</i></CardText>;
+		let mapCard = '';
+		if(this.props.bData.latitude && this.props.bData.longitude){
+			mapCard = <div style={styles.maps} className={"supplierMap"} id="supplierMap"></div>;
+			/*this.state.latitude = this.props.bData.latitude;
+			this.state.longitude = this.props.bData.longitude;*/
+		}
 		if(this.props.bData.businessAddress.address!='' || this.props.bData.businessAddress.locality!='' || this.props.bData.businessAddress.city!=''){
 			addressCard=
 					<CardText>
@@ -50,14 +97,31 @@ class BusinessDetail extends React.Component {
 				    	{this.props.bData.businessAddress.address}{", "}
 				    	{this.props.bData.businessAddress.locality}{", "}
 				    	{this.props.bData.businessAddress.city}
+				    	{mapCard}
 				    </CardText>;
 		}
 		let storeTimingsCard = <CardText><strong>{"Store Timings: "}</strong><i>Yet to be published.</i></CardText>;
-		if(this.props.bData.storeTimings.length){			
+		if(this.props.bData.storeTimings.length){	
+			let storeTimings = [];
+			if(this.props.bData.storeTimings){
+				storeTimings = this.props.bData.storeTimings;
+			}		
 			storeTimingsCard=
 					<CardText>
 				    	<strong>{"Store Timings: "}</strong>
-				    	{"Has to be displayed"}
+				    	{  
+		            		storeTimings.map((timing, index) => {
+		            			let days = timing.days;
+		            			let openTimings = timing.openTimings;
+		            			let closedTimings = timing.closedTimings;		            			
+		            			return (
+		            			<div key={index}>
+		            				<br />
+		            				{days}<br />
+		            				{"Opens: "}{openTimings} &nbsp;{"Closes: "}{closedTimings} <br />
+		            			</div>);	 
+		            		})
+		            	}   
 				    </CardText>;
 		}
 		let descriptionCard = <CardText><strong>{"Description: "}</strong><i>Yet to be published.</i></CardText>;
@@ -67,37 +131,53 @@ class BusinessDetail extends React.Component {
 				    	<strong>{"Description: "}</strong>{this.props.bData.businessDescription}
 				    </CardText>;
 		}
-		return (
-			<div id="supplier-profile">
-				<Card 
-					style={styles.card_shadow}
-					className="business-card">
-				    <CardTitle 
-				    	className="business-cardHeader" 
-				    	title="Business Details"/>				    
-				    {addressCard}
-				    <CardText>
-				    	<strong>{"Favourites: "}</strong>{this.props.bData.totalFavouriteCount}
-				    </CardText>
-				    {storeTimingsCard}
-				    {descriptionCard}
-			 	</Card>	
-			 	{paymentsCard}			 		
-			 	<Card
+		let deliveryPricing = this.props.bData.deliveryPricing;
+		let cardContent = '';
+		let areas = this.props.bData.serviceAreas.areas;
+		if(!this.props.bData.serviceAreas || !areas || areas.length == 0 || this.props.bData.serviceAreas.length==0){
+			cardContent = <CardText>
+				    	DISABLED
+				    </CardText>;
+		}else if(deliveryPricing.standard){
+			if(deliveryPricing.standard.minimumOrderAmount || 
+				deliveryPricing.standard.deliveryCharge || 
+				deliveryPricing.standard.freeDeliveryAbove){
+				cardContent = <CardText>
+				    	<strong>PRICING</strong><br /><br />
+				    	{"Minimum Order: "}{deliveryPricing.standard.deliveryCharge}<br />
+				    	{"Delivery Charge: "}{deliveryPricing.standard.deliveryCharge}<br />
+				    	{"Free Delivery above: "}{deliveryPricing.standard.freeDeliveryAbove}
+				    </CardText>;
+			}else{
+				cardContent = <CardText>
+				    	<strong>PRICING</strong><br /><br />
+				    	{"Custom delivery: "}{deliveryPricing.custom.customDeliveryPricing}<br />
+				    </CardText>;
+			}
+		}
+		let serviceAreas='';
+		console.log('areas:'+areas);
+		let serviceAreasCard = '';
+		if(areas.length){
+			serviceAreas = 
+				<div>{  
+		            		areas.map((area, index) => {		            				            			
+		            			return (
+		            			<div key={index}>
+		            				{area.name}{", "}
+		            			</div>);	 
+		            		})
+		            	}</div>;
+		    serviceAreasCard = <Card
 			 		style={styles.card_shadow}
 			 		className="business-card">				    
 				    <CardTitle
 				    className="business-cardHeader"
 				    title="Delivery"/>				    			    
-				    <CardText>
-				    	<strong>PRICING</strong><br /><br />
-				    	{"Minimum Order: "}{this.props.bData.deliveryPricing.minOrder}<br />
-				    	{"Delivery Charge: "}{this.props.bData.deliveryPricing.deliveryCharge}<br />
-				    	{"Free Delivery above: "}{this.props.bData.deliveryPricing.freeDeliveryAbove}
-				    </CardText>
+				    	{cardContent}
 				    <CardText>
 				    	<strong>SERVICE AREAS</strong><br /><br />				    	
-				    	let serviceAreas = JSON.parse(this.props.bData.serviceAreas)
+				    	{serviceAreas}
 				    </CardText>
 				    <CardText>
 				    	<strong>ORDER TYPE</strong><br /><br />
@@ -111,7 +191,27 @@ class BusinessDetail extends React.Component {
 				          		</div>)	
 				          	}				    
 				    </CardText>
-			 	</Card>
+			 	</Card>;
+		}
+		return (
+			<div id="supplier-profile">
+				<Card 
+					style={styles.card_shadow}
+					className="business-card">
+				    <CardTitle 
+				    	className="business-cardHeader" 
+				    	title="Business Details"/>	
+				    <CardText>
+				    	<strong>{"Favourites: "}</strong>{this.props.bData.totalFavouriteCount}
+				    </CardText>			    
+				    {descriptionCard}
+				    {storeTimingsCard}
+				    {addressCard}				    
+				    
+				    
+			 	</Card>	
+			 	{paymentsCard}			 		
+			 	{serviceAreasCard}
 			 	<Card
 			 		style={styles.card_shadow}
 			 		className="business-card">				    
