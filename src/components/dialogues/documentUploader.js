@@ -47,7 +47,9 @@ export default class DocumentUploader extends React.Component {
             height: 50,
             width: 50
         };
-        if (this.state.uploading) {
+
+        if (this.state.uploading)
+        {
             return (
                 <div style={dropzoneStyle}>
                     Please wait uploading the image..
