@@ -128,7 +128,7 @@ class Payments extends React.Component {
                 padding: '10px 0'
             }
         };
-        return (<div style={this.props.styles.slide}>
+        return (<div style={this.props.styles.slide} className="paymentWrapper">
                     <div className="paymentBox">
                         <label className="paymentLabel">Payment status</label>
                         <span className="textView">{this.state.paymentStatus}</span>

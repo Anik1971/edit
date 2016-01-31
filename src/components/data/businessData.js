@@ -12,7 +12,7 @@ let bData_dummy =
   "businessHandle": "",
   "businessName": "",
   "businessType": "",
-  "category": "", 
+  "category": "Bakery", 
   "categoryHeader": "",
   "consumerInviteLink": "",
   "consumerInviteText": "",

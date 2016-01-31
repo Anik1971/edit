@@ -15,6 +15,7 @@ import CardMedia from 'material-ui/lib/card/card-media';
 import CardTitle from 'material-ui/lib/card/card-title';
 import Snackbar from 'material-ui/lib/snackbar';
 import Request from 'superagent';
+import RaisedButton from 'material-ui/lib/raised-button';
 import {EventEmitter} from 'fbemitter';
 
 injectTapEventPlugin();
@@ -43,12 +44,11 @@ class App extends React.Component {
          .send('{"supplierLoggedInId":"'+  supplierLoginID + '"}')
          .end(function(err, res){
            if (err || !res.ok) {
-            console.error('Response',err);
-            console.info('LOADING dummy Bdata');
-            window.emitter.emit('bData',bData);
+            console.info('Failed to load data from server');
+            window.emitter.emit('bData',null);
            }else {
             //converting level 1 nested json strings to Object
-            console.log('Response',res);
+            console.log('Got data from server, Response',res);
             //try{
               let _bData = JSON.parse(res.text);
               for(let key in _bData){
@@ -114,11 +114,17 @@ class Index extends React.Component {
   componentWillMount(){
     let _this = this;
     window.emitter.addListener('bData', function(value){
-      console.log('bData event',value);
-      _this.setState({
-        bData: value,
-        bDataLoaded: true
-      })
+      if(value == null){
+         _this.setState({
+          bDataLoaded: null
+        })
+      }else{
+        console.log('bData event',value);
+        _this.setState({
+          bData: value,
+          bDataLoaded: true
+        })
+      }      
     });
   }
   loadParseData(){
@@ -339,8 +345,13 @@ class Index extends React.Component {
       snackbar:false
     });
   };
+  reload(){
+    window.location = "";
+  }
   render() {
-    if(!this.state.bDataLoaded){
+    if(this.state.bDataLoaded == null){
+      return(<div className="loaderWrapper">Please check your network. <RaisedButton label="RETRY" onTouchTap={this.reload.bind(this)} secondary={true} /></div>);
+    }else if(!this.state.bDataLoaded){
       return(<div className="loaderWrapper">Loading...</div>);
     }else{
       let wrapperPadding = "businessWrapper";

@@ -220,6 +220,36 @@ class CategoryAutoComplete extends React.Component{
   		 	    
 	}
 }
+class Category extends React.Component{
+	constructor(props)
+	{
+		super(props);
+        console.log('new',this.props);
+	}
+	loadCateogory(e){
+		let keyWord = e.target.value;
+		console.log('term',keyWord);
+	}
+	render(){
+		let selectedCategory = this.props.selectedCategory.split(',');
+		selectedCategory = [];
+		if(!selectedCategory.length){
+			selectedCategory.push('');
+		}
+		return (<div>
+		    {
+        		selectedCategory.map((cat, index) => {        			
+        			return (<TextField fullWidth={true}
+                		floatingLabelText={'Category'}                		
+                		defaultValue={cat}
+                		onChange={this.loadCateogory.bind(this)}
+                		key={index}/>)	 
+        		})
+        	}                     
+	    </div>);
+	}
+	
+}
 class Description extends React.Component {
 	constructor(props){
 		super(props);

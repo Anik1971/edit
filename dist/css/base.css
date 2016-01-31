@@ -323,6 +323,12 @@ table {
   position: absolute;
   left: 2px; }
 
+.paymentWrapper {
+  height: auto;
+  background: green;
+  display: block;
+  float: left; }
+
 .imageUploadButton {
   opacity: 0;
   width: 100%;
