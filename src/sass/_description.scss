@@ -1,0 +1,21 @@
+.categoryWrapper{
+	height:auto;
+	position:relative;
+	.suggestionWrapper{
+		position: absolute;
+		left: 0;
+		top:63px;
+		z-index: 10;
+		background: white;
+		border:1px solid #EEE;
+		width: 100%;
+		.suggestion{
+			padding-top:15px;
+			padding-bottom: 15px;
+			padding:10px;
+		}
+		.suggestion:hover{
+			background-color:#EEE;
+		}
+	}
+}

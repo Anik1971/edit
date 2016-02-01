@@ -29,18 +29,19 @@ class App extends React.Component {
         
       try{
         let uData = {
-          userId: 'a09bdcd8'
+          userId: 'a09bdcd8',
+          app: 'com.tsepak.supplierchat.debug'
         };
         if(window.Android){
           uData = JSON.parse(window.Android.getUserInfo());
         }
         let supplierLoginID = uData.userId;
-        /*curl 
-            'http://testchat.tsepak.com/goodbox/get_supplier_data' 
-            --data-binary $'{"supplierLoggedInId": "a09bdcd8"}\n' 
-            --compressed */
+        let get_supplier_data_url = 'http://testchat.tsepak.com/goodbox/get_supplier_data';
+        if(uData.app == 'com.tsepak.supplierchat'){
+          get_supplier_data_url = 'http://chat.tsepak.com/goodbox/get_supplier_data';
+        }
         Request
-         .post('http://testchat.tsepak.com/goodbox/get_supplier_data')
+         .post(get_supplier_data_url)
          .send('{"supplierLoggedInId":"'+  supplierLoginID + '"}')
          .end(function(err, res){
            if (err || !res.ok) {
@@ -301,8 +302,20 @@ class Index extends React.Component {
       console.log(this.state.bData);
       
       window.convertToStringBusinessProfileObj = JSON.stringify(exportData);
+      let uData = {
+        userId: 'a09bdcd8',
+        app: 'com.tsepak.supplierchat.debug'
+      };
+      if(window.Android){
+        uData = JSON.parse(window.Android.getUserInfo());
+      }
+      let supplierLoginID = uData.userId;
+      let set_supplier_data_url = 'http://testchat.tsepak.com/goodbox/set_supplier_data';
+      if(uData.app == 'com.tsepak.supplierchat'){
+        set_supplier_data_url = 'http://chat.tsepak.com/goodbox/set_supplier_data';
+      }
       Request
-       .post('http://testchat.tsepak.com/goodbox/set_supplier_data')
+       .post(set_supplier_data_url)
        .type('form')
        .send(window.convertToStringBusinessProfileObj)
        .end(function(err, res){
@@ -350,9 +363,9 @@ class Index extends React.Component {
   }
   render() {
     if(this.state.bDataLoaded == null){
-      return(<div className="loaderWrapper">Please check your network. <RaisedButton label="RETRY" onTouchTap={this.reload.bind(this)} secondary={true} /></div>);
+      return(<div className="loaderWrapper"><br />&nbsp;&nbsp;Please check your network. <RaisedButton label="RETRY" onTouchTap={this.reload.bind(this)} secondary={true} /></div>);
     }else if(!this.state.bDataLoaded){
-      return(<div className="loaderWrapper">Loading...</div>);
+      return(<div className="loaderWrapper">Loading edit page</div>);
     }else{
       let wrapperPadding = "businessWrapper";
       if(this.state.businessWrapperClass){

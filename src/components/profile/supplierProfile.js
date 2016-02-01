@@ -41,8 +41,10 @@ class SupplierProfile extends React.Component {
 	    return bData;
 	}
 	render(){
-		if(!this.state.bDataLoaded){
-	      return(<div className="loaderWrapper">Loading...</div>);
+		if(this.state.bDataLoaded == null){
+	      return(<div className="loaderWrapper"><br />&nbsp;&nbsp;Please check your network. <RaisedButton label="RETRY" onTouchTap={this.reload.bind(this)} secondary={true} /></div>);
+	    }else if(!this.state.bDataLoaded){
+	      return(<div className="loaderWrapper">Loading profile view</div>);
 	    }else{
 			return (
 				<div id="supplier-profile">

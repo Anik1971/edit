@@ -67,183 +67,143 @@ class GenerateCheckBox extends React.Component {
 	  	}	    
 	  }
 }
-
-class CategoryAutoComplete extends React.Component{
+class Suggestions extends React.Component{
 	constructor(props)
 	{
 		super(props);
-		this.state = {
-			dynamicVals:
-				[],
-		    allCategories: categories,
-		    categoryCount:[]		   	
-        }
-        console.log(this.props);
-        let selectedCategory = this.props.selectedBusinessCategory.split(',');
-		for(let i in selectedCategory){
-			if(selectedCategory[i]){
-	    		this.state.dynamicVals.push(
-	        		{
-						categories: [],
-			            specialCategoriesCheckList: [],
-			            selectedCategory: selectedCategory[i]
-			        }
-	        	);
-	        	this.state.categoryCount.push('category'+(this.state.categoryCount.length+1));
-	        }
-    	}
-
-    	if(this.state.categoryCount.length<categoryLimit){
-    		this.state.dynamicVals.push(
-	        		{
-						categories: [],
-			            specialCategoriesCheckList: [],
-			            selectedCategory: ''
-			        }
-	        	);
-    		this.state.categoryCount.push('category'+(this.state.categoryCount.length+1));
-    	}
-        if(typeof this.props.selectedBusinessCategory == 'object' && this.props.selectedBusinessCategory){
-        	for(let i in this.props.selectedBusinessCategory){
-        		this.state.dynamicVals.push(
-	        		{
-						categories: [],
-			            specialCategoriesCheckList: []
-			        }
-	        	);
-	        	categoryCount.push('category'+(this.state.categoryCount.length+1));
-        	}
-        	
-        }
-	}
-	onCategoryRequest(index, category) {
-
-		let state = this.state;	
-
-		//Saving selected category, can be user in onBlur to retain previous value
-		state.dynamicVals[index].selectedCategory = category;
-
-		//Searching for special category
-        let lowerCaseCategory = category.trim().toLowerCase(),
-            searchSpecialCategories = this.props.specialCategories.filter((item)=>{ return item.toLowerCase().startsWith(lowerCaseCategory)});
         
-        //Removing selected category from state
-        let arrIndex = state.allCategories.indexOf(category);        
-        if(arrIndex>-1){
-        	state.allCategories.splice(arrIndex,1); 
-        }	
-
-        //saving specialCategory	
-        if(searchSpecialCategories.length > 0){            
-			state.dynamicVals[index].specialCategoriesCheckList = this.props.specialCategoriesCheckList[searchSpecialCategories];
-			this.setState(state);
-        }else{        	
-			state.dynamicVals[index].specialCategoriesCheckList = [];
-			this.setState(state);
-        }
-
-        //adding new autoselect field
-        if(this.state.dynamicVals.length<categoryLimit){
-        	this.state.dynamicVals.push(
-        		{
-					categories: [],
-		            specialCategoriesCheckList: []
-		        }
-        	);
-        	this.state.categoryCount.push('category'+(this.state.categoryCount.length+1));
-        }
-        //this.props.onCategoryUpdate(this.state.dynamicVals);
-        let categoriesToSave = [];
-        for(let key in this.state.dynamicVals){
-        	let cat = this.state.dynamicVals[key];
-        	if(cat.selectedCategory){
-	        	categoriesToSave.push(cat.selectedCategory);
-        	}
-        }
-        this.props.manageSave('show','category',categoriesToSave.join());
-    }
-    
-    onCategoryUpdate(index, category) {
-        let lowerCaseCategory = category.trim().toLowerCase(),
-            searchCategories = this.props.categories.filter((item)=>{ 
-            		return item.toLowerCase().startsWith(lowerCaseCategory);
-            	});
-        let state = this.state;
-		state.dynamicVals[index].categories = searchCategories;
-		this.setState(state);		
-    }
-
-    onFilter(index,category) {
-     	console.log('Filter is called: ',category);
-     	return;
-    }
-
-    onBlur(index,category){
-    	console.log('Blur called');
-    }
-    onCategoryUpdateInput(index,category){
-    	//console.log('onCategoryUpdateInput',category);
-    }
-	render() {
-		if(this.state.categoryCount){
-			return ( 
-				<div>{  
-		  			this.state.categoryCount.map((count, index) => {
-		  				let categoryName = "Category";
-		  				if(index>0)
-		  					categoryName = "Additional Category "+(index);
-		  				return (        	
-			  				<div key={index}>
-				            	<AutoComplete
-				                    floatingLabelText={categoryName}
-				                    fullWidth={true}
-				                    animated={false}
-				                    dataSource={this.state.allCategories}
-				                    className={"category"}
-				                    searchText={this.state.dynamicVals[index].selectedCategory}
-				                    onFocusLost={this.onBlur.bind(this,index)}
-				                    onNewRequest={this.onCategoryRequest.bind(this, index)} 
-				                    onUpdateInput={this.onCategoryUpdateInput.bind(this, index)} />
-				                <GenerateCheckBox 
-				                	specialCategoriesCheckList={this.state.dynamicVals[index].specialCategoriesCheckList}
-				                	manageSave={this.props.manageSave} />
-				            </div> 
-				        );
-		  			})  
-	  			}</div>  	             
-		    );	 
-		}else{
-			return ( 
-	  			<div></div>
-	  		);
-		}
-  		 	    
 	}
+	render(){
+		if(this.props.suggestions.length){
+			let thisIndex = this.props.index;
+			let suggestionMatches = this.props.suggestions[thisIndex];
+			if(suggestionMatches && suggestionMatches.length){
+			return (<div className="suggestionWrapper" >
+			    {	                				
+					suggestionMatches.map((sug, index) => {        			
+						return (<div
+									className="suggestion"
+									onClick={this.props.onSuggestionSelect.bind(this,thisIndex,sug)}
+							 		key={index}>
+							 		{sug}
+							 	</div>)	 
+					})
+				}                   
+		    	</div>);
+			}else{
+				return (<div></div>);
+			}
+		}else{
+			return (<div></div>);
+		}
+	}
+	
 }
 class Category extends React.Component{
 	constructor(props)
 	{
 		super(props);
         console.log('new',this.props);
+        let suggestions = [];
+        let categoryField = [];
+        let selectedCategory = this.props.selectedCategory.split(',');
+        this.state = {
+        	suggestions: suggestions,
+        	categoryField: categoryField,
+        	selectedCategory: selectedCategory
+        }
 	}
-	loadCateogory(e){
+	loadCategory(index,e){
 		let keyWord = e.target.value;
 		console.log('term',keyWord);
+		let selectedCategory = this.state.selectedCategory;
+		let filterList = categories.filter((cat, index) => {
+			if(cat.toLowerCase().indexOf(keyWord.toLowerCase().trim())>=0){
+				return cat;
+			}		
+		});
+		let suggestions = this.state.suggestions;
+		let filterList2 = [];
+		if(keyWord.length>2){
+		for(let key in filterList){
+			let cat = filterList[key];
+			console.log('cat',cat);
+			console.log('selCat',selectedCategory);
+			if(selectedCategory.indexOf(cat)<0){
+				filterList2.push(cat);
+			}
+		}
+			suggestions[index] = filterList2;
+			console.log('filterList2',filterList2);
+		}else{
+			suggestions[index] = filterList;
+		}		
+		let categoryField = this.state.categoryField;
+		categoryField[index] = keyWord;
+		selectedCategory[index] = '';
+		this.setState({
+			suggestions:suggestions,
+			categoryField:categoryField,
+			selectedCategory:selectedCategory
+		});
+		console.log('cate',filterList);
+	}
+	onSuggestionSelect(index,sug){
+		console.log('on suggestion select 1',index,sug);
+		let suggestions = this.state.suggestions;
+		suggestions[index] = [];
+		let categoryField = this.state.categoryField;
+		categoryField[index] = sug;
+		let selectedCategory = this.state.selectedCategory;
+		selectedCategory[index] = sug;
+		this.setState({
+			suggestions:suggestions,
+			categoryField:categoryField,
+			selectedCategory:selectedCategory
+		},function(){
+			let categoriesToSave = this.state.selectedCategory;
+	        this.props.savedCategory(categoriesToSave);
+		});
+	}
+	categoryOnblur(index,e){
+		let _this = this;
+		setTimeout(function(){
+			let suggestions = _this.state.suggestions;
+			let selectedCategory = _this.state.selectedCategory;
+			let categoryField = _this.state.categoryField;
+			categoryField[index] = selectedCategory[index];
+			suggestions[index] = [];
+			_this.setState({
+				suggestions:suggestions,
+				categoryField:categoryField
+			});
+		},400);
 	}
 	render(){
-		let selectedCategory = this.props.selectedCategory.split(',');
-		selectedCategory = [];
-		if(!selectedCategory.length){
+		let selectedCategory = this.state.selectedCategory;
+		if(selectedCategory.length <= 4 && selectedCategory.indexOf('')<0){
 			selectedCategory.push('');
 		}
 		return (<div>
 		    {
-        		selectedCategory.map((cat, index) => {        			
-        			return (<TextField fullWidth={true}
-                		floatingLabelText={'Category'}                		
-                		defaultValue={cat}
-                		onChange={this.loadCateogory.bind(this)}
-                		key={index}/>)	 
+        		selectedCategory.map((cat, index) => { 
+        			let label = 'Category';
+					if(index>=1){
+						label = 'Additional Category '+(index);
+					}       			
+        			return (<div className="categoryWrapper" 
+        					onBlur={this.categoryOnblur.bind(this,index)}
+        					key={index}>
+	        				<TextField fullWidth={true}
+	                		floatingLabelText={label}                		
+	                		defaultValue={this.state.categoryField[index]}
+	                		onChange={this.loadCategory.bind(this,index)}	                		
+	                		value={this.state.categoryField[index]}/>
+		                	<Suggestions
+		                		onSuggestionSelect={this.onSuggestionSelect.bind(this)}
+		                		index={index} 
+		                		suggestions={this.state.suggestions} />
+                		</div>)	 
         		})
         	}                     
 	    </div>);
@@ -359,6 +319,14 @@ class Description extends React.Component {
 		this.state.businessPhone[index] = textField.target.value;
 		this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
 	}
+	savedCategory(categoriesToSave){
+		console.log('saving categories',categoriesToSave);
+		this.setState({
+			selectedBusinessCategory:categoriesToSave
+		},function(){
+	    	this.props.manageSave('show','category',categoriesToSave.join());
+		});
+	}
 	render(){
 		return (
 		    <div style={this.props.styles.slide}>
@@ -389,14 +357,10 @@ class Description extends React.Component {
 	            	<MenuItem value={"ur"} primaryText="Urdu"/>
 	            	<MenuItem value={"ml"} primaryText="Malayalam"/>
 			    </SelectField>
-	          	<CategoryAutoComplete 
-	          		bData={this.props.bData}
-	          		categories={categories}
-	          		selectedBusinessCategory={this.state.selectedBusinessCategory}
-	          		specialCategories={specialCategories}
-	            	specialCategoriesCheckList={specialCategoriesCheckList}	            	
-	            	onCategoryUpdate={this.onCategoryUpdate.bind(this)}
-	            	manageSave={this.props.manageSave} />	            
+			    <Category 
+			    	selectedCategory={this.state.selectedBusinessCategory} 
+			    	savedCategory={this.savedCategory.bind(this)}
+			    	manageSave={this.props.manageSave} />
 				{  
             		this.state.phoneClass.map((className, index) => {
             			let phoneText = "Business Phone "+(index+1);
