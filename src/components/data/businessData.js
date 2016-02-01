@@ -34,7 +34,7 @@ let bData_dummy =
   "serviceAreas": "",
   "serviceRadius": 0,
   "storeTimings": "",
-  "supplierLoggedInId": "c24017db",
+  "supplierLoggedInId": "",
   "totalFavouriteCount": 0,
   "languageType": "None",
   "userPayHidden": false

@@ -115,29 +115,27 @@ class Category extends React.Component{
 	}
 	loadCategory(index,e){
 		let keyWord = e.target.value;
-		console.log('term',keyWord);
-		let selectedCategory = this.state.selectedCategory;
-		let filterList = categories.filter((cat, index) => {
-			if(cat.toLowerCase().indexOf(keyWord.toLowerCase().trim())>=0){
-				if(selectedCategory.indexOf(cat)>1){
-					console.log("GOT",cat);
-				}else{
+		if(keyWord.length){
+			let selectedCategory = this.state.selectedCategory;
+			let filterList = categories.filter((cat, index) => {
+				if(selectedCategory.indexOf(cat)<0 && cat.toLowerCase().indexOf(keyWord.toLowerCase().trim())>=0){
 					return cat;
-				}
-			}		
-		});
-		let suggestions = this.state.suggestions;
-		let filterList2 = [];
-		suggestions[index] = filterList;		
-		let categoryField = this.state.categoryField;
-		categoryField[index] = keyWord;
-		selectedCategory[index] = '';
-		this.setState({
-			suggestions:suggestions,
-			categoryField:categoryField,
-			selectedCategory:selectedCategory
-		});
-		console.log('cate',filterList);
+				}		
+			});
+			let suggestions = this.state.suggestions;
+			let filterList2 = [];
+			suggestions[index] = filterList;		
+			let categoryField = this.state.categoryField;
+			categoryField[index] = keyWord;
+			selectedCategory[index] = '';
+			this.setState({
+				suggestions:suggestions,
+				categoryField:categoryField
+			});
+		}else{
+			this.onSuggestionSelect(index,keyWord);
+		}
+		//console.log('cate',filterList);
 	}
 	onSuggestionSelect(index,sug){
 		console.log('on suggestion select 1',index,sug);
@@ -186,14 +184,14 @@ class Category extends React.Component{
         					onBlur={this.categoryOnblur.bind(this,index)}
         					key={index}>
 	        				<TextField fullWidth={true}
-	                		floatingLabelText={label}                		
-	                		defaultValue={cat}
-	                		onChange={this.loadCategory.bind(this,index)}	                		
-	                		value={this.state.categoryField[index]}/>
-		                	<Suggestions
-		                		onSuggestionSelect={this.onSuggestionSelect.bind(this)}
-		                		index={index} 
-		                		suggestions={this.state.suggestions} />
+		                		floatingLabelText={label}                		
+		                		defaultValue={cat}
+		                		onChange={this.loadCategory.bind(this,index)}	                		
+		                		value={this.state.categoryField[index] || cat}/>
+			                	<Suggestions
+			                		onSuggestionSelect={this.onSuggestionSelect.bind(this)}
+			                		index={index} 
+			                		suggestions={this.state.suggestions} />
                 		</div>)	 
         		})
         	}                     
@@ -310,8 +308,14 @@ class Description extends React.Component {
 		this.state.businessPhone[index] = textField.target.value;
 		this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
 	}
-	savedCategory(categoriesToSave){
+	savedCategory(value){
 		console.log('saving categories',categoriesToSave);
+		let categoriesToSave = [];
+		for(let key in value){
+			if(value[key] && value[key]!=''){
+				categoriesToSave.push(value[key]);
+			}
+		}
 		this.setState({
 			selectedBusinessCategory:categoriesToSave
 		},function(){
