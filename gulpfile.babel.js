@@ -12,8 +12,8 @@ gulp.task("js", () => {
     .transform("babelify")
     .bundle()
     .pipe(source("bundle.js"))
-    //.pipe(buffer())
-    //.pipe(uglify())
+    .pipe(buffer())
+    .pipe(uglify())
     /*.pipe(gzip({
       gzipOptions: {
         level: 9
