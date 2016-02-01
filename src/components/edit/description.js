@@ -119,25 +119,16 @@ class Category extends React.Component{
 		let selectedCategory = this.state.selectedCategory;
 		let filterList = categories.filter((cat, index) => {
 			if(cat.toLowerCase().indexOf(keyWord.toLowerCase().trim())>=0){
-				return cat;
+				if(selectedCategory.indexOf(cat)>1){
+					console.log("GOT",cat);
+				}else{
+					return cat;
+				}
 			}		
 		});
 		let suggestions = this.state.suggestions;
 		let filterList2 = [];
-		if(keyWord.length>2){
-		for(let key in filterList){
-			let cat = filterList[key];
-			console.log('cat',cat);
-			console.log('selCat',selectedCategory);
-			if(selectedCategory.indexOf(cat)<0){
-				filterList2.push(cat);
-			}
-		}
-			suggestions[index] = filterList2;
-			console.log('filterList2',filterList2);
-		}else{
-			suggestions[index] = filterList;
-		}		
+		suggestions[index] = filterList;		
 		let categoryField = this.state.categoryField;
 		categoryField[index] = keyWord;
 		selectedCategory[index] = '';
@@ -196,9 +187,9 @@ class Category extends React.Component{
         					key={index}>
 	        				<TextField fullWidth={true}
 	                		floatingLabelText={label}                		
-	                		defaultValue={this.state.categoryField[index]}
+	                		defaultValue={cat}
 	                		onChange={this.loadCategory.bind(this,index)}	                		
-	                		value={cat}/>
+	                		value={this.state.categoryField[index]}/>
 		                	<Suggestions
 		                		onSuggestionSelect={this.onSuggestionSelect.bind(this)}
 		                		index={index} 
