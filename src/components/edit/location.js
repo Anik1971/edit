@@ -11,8 +11,13 @@ import LocationIcon from 'material-ui/lib/svg-icons/device/location-searching';
 import ClearIcon from 'material-ui/lib/svg-icons/content/clear';
 
 const styles = {
-    mapDialogue : {
-        maxHeight:'inherit'
+    dialog : {
+        padding:'0px',
+        paddingTop: '10px !important',
+        top:'-40px'
+    },
+    dialogContent : {
+        width:'95%'
     }
 }
 class Location extends React.Component {
@@ -414,7 +419,8 @@ class Location extends React.Component {
                           canAutoPosition = { true }
                           open={this.state.activePopover === 'pop'}                          
                           onRequestClose={this.closePopover.bind(this, 'pop')} 
-                          contentStyle={styles.mapDialogue}>
+                          style={styles.dialog }
+                          contentStyle={styles.dialogContent}>
                           <div className="dialogueCancel"><ClearIcon onClick={this.closePopover.bind(this, 'pop')} /></div>
                           <div style={{padding:2}}> 
                             <span className="small">Update store location</span>                           
