@@ -39,7 +39,8 @@ const styles = {
     minWidth: 'inherit',
     maxWidth: '100%',
     display: 'block',
-    margin: 'auto'
+    margin: 'auto',
+    marginTop: 10
   }
 }
 export default class ImageUpdater extends React.Component {
@@ -130,7 +131,8 @@ export default class ImageUpdater extends React.Component {
       console.log('Received files: ', files);
       let _this = this;
       this.setState({
-        loader:''
+        loader:'',
+        preview:files[0].preview
       });
       this.imageResize(this,files,function(files){
         Request
@@ -158,7 +160,8 @@ export default class ImageUpdater extends React.Component {
               slideIndex:slideIndex,
               pendingMsg:pendingMsg,              
               pendingClass:pendingClass,
-              image:response.url
+              image:response.url,
+              preview:''
             });
            }
          }
@@ -243,13 +246,19 @@ export default class ImageUpdater extends React.Component {
           <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
           <Card zDepth={0}>
             <CardMedia>
-              <img style={styles.img} src={this.state.image}/> 
+              <img style={styles.img} src={this.state.preview || this.state.image}/> 
             </CardMedia>
-            <CardActions>          
-                  <CircularProgress 
-                    className={this.state.loader} 
-                    mode="indeterminate" 
-                    size={.5} />                   
+            <CardActions>  
+              <div className={this.state.loader}>        
+                    <div className="loaderIcon">
+                      <CircularProgress  
+                        mode="indeterminate" 
+                        size={.5} />
+                    </div>
+                    <div className="loaderText">
+                      {" Uploading... Please wait"}
+                    </div>
+              </div>                 
             </CardActions>
           </Card>          
         </Dialog>

@@ -40,7 +40,8 @@ const styles = {
     minWidth: 'inherit',
     maxWidth: '100%',
     display: 'block',
-    margin: 'auto'
+    margin: 'auto',
+    marginTop: 10
   }
 }
 export default class UserUpdater extends React.Component {
@@ -124,7 +125,8 @@ export default class UserUpdater extends React.Component {
       console.log('Received files: ', files);
       let _this = this;
       this.setState({
-        loader:''
+        loader:'',
+        preview:files[0].preview
       });
       this.imageResize(this,files,function(files){
         Request
@@ -148,7 +150,8 @@ export default class UserUpdater extends React.Component {
             _this.setState({
               image: response.url,
               loader:'hidden',
-              uploadSuccess: true             
+              uploadSuccess: true,
+              preview:''            
             });
            }
          }
@@ -230,11 +233,17 @@ export default class UserUpdater extends React.Component {
                   </GridTile>
                 </div>
             </CardMedia>
-            <CardActions>
-              <CircularProgress 
-                className={this.state.loader} 
-                mode="indeterminate" 
-                size={.5} />                                 
+            <CardActions>  
+              <div className={this.state.loader}>        
+                    <div className="loaderIcon">
+                      <CircularProgress  
+                        mode="indeterminate" 
+                        size={.5} />
+                    </div>
+                    <div className="loaderText">
+                      {" Uploading... Please wait"}
+                    </div>
+              </div>                 
             </CardActions>
           </Card>          
         </Dialog>

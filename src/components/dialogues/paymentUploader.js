@@ -39,7 +39,8 @@ const styles = {
     minWidth: 'inherit',
     maxWidth: '100%',
     display: 'block',
-    margin: 'auto'
+    margin: 'auto',
+    marginTop: 10
   }
 }
 export default class PaymentUploader extends React.Component {
@@ -118,7 +119,8 @@ export default class PaymentUploader extends React.Component {
       console.log('Received files: ', files);
       let _this = this;
       this.setState({
-        loader:''
+        loader:'',
+        preview:files[0].preview
       });
       this.imageResize(this,files,function(files){
         Request
@@ -142,7 +144,8 @@ export default class PaymentUploader extends React.Component {
             _this.setState({
               loader:'hidden',
               uploadSuccess: true,
-              image:response.url
+              image:response.url,
+              preview:''
             });
            }
          }
@@ -205,11 +208,17 @@ export default class PaymentUploader extends React.Component {
             <CardMedia>
               <img style={styles.img} src={this.state.image}/> 
             </CardMedia>
-            <CardActions>          
-                  <CircularProgress 
-                    className={this.state.loader} 
-                    mode="indeterminate" 
-                    size={.5} />                   
+            <CardActions>  
+              <div className={this.state.loader}>        
+                    <div className="loaderIcon">
+                      <CircularProgress  
+                        mode="indeterminate" 
+                        size={.5} />
+                    </div>
+                    <div className="loaderText">
+                      {" Uploading... Please wait"}
+                    </div>
+              </div>                 
             </CardActions>
           </Card>          
         </Dialog>
