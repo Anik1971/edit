@@ -60,8 +60,12 @@ class App extends React.Component {
                   _bData[key] = _currData;          
                 }        
               }
+              //some exceptions
               if(!_bData['newExtras']){
                 _bData['newExtras'] = {};
+              }
+              if(!_bData['ownershipType']){
+                _bData['ownershipType'] = 'Individual';
               }
               window.emitter.emit('bData',_bData);
             /*}catch(e){
