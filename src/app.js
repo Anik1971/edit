@@ -269,7 +269,6 @@ class Index extends React.Component {
 
     this.setState({
       saveBtn:'hidden',
-      saveData: {},
       businessWrapperClass:'',
       bData : bData //integrating to bData
     });
@@ -323,14 +322,17 @@ class Index extends React.Component {
           console.error('Response',err);
           _this.setState({
             snackbar: true,
-            snackbarMsg:'Failed to save'
+            snackbarMsg:'Failed to save',
+            saveBtn:''
           });
          }else {
           //converting level 1 nested json strings to Object
           console.log('Response',res);
           _this.setState({
             snackbar: true,
-            snackbarMsg:'Saved successfully'
+            snackbarMsg:'Saved successfully',
+            saveBtn:'hidden',
+            saveData: {}
           });          
         }
        });

@@ -198,7 +198,7 @@ class Category extends React.Component{
 	                		floatingLabelText={label}                		
 	                		defaultValue={this.state.categoryField[index]}
 	                		onChange={this.loadCategory.bind(this,index)}	                		
-	                		value={this.state.categoryField[index]}/>
+	                		value={cat}/>
 		                	<Suggestions
 		                		onSuggestionSelect={this.onSuggestionSelect.bind(this)}
 		                		index={index} 
