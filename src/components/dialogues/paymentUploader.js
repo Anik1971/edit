@@ -105,7 +105,7 @@ export default class PaymentUploader extends React.Component {
         canvas.width = width;
         canvas.height = height;
         canvas.getContext("2d").drawImage(this, 0, 0, width, height);
-        let blob = _this.dataURItoBlob(canvas.toDataURL());
+        let blob = _this.dataURItoBlob(canvas.toDataURL("image/jpeg", 0.85));
         files[0] = blob;
         files[0].name = name;
         files[0].lastModified = lastModified;
@@ -116,13 +116,14 @@ export default class PaymentUploader extends React.Component {
     fileReader.readAsDataURL(files[0]);
   }
   startImageUpload(files) {
-      console.log('Received files: ', files);
+      console.log('Selected file: ', files[0]);
       let _this = this;
       this.setState({
         loader:'',
         preview:files[0].preview
       });
       this.imageResize(this,files,function(files){
+        console.log('Resized image',files[0]);
         Request
        .post('https://chat.tsepak.com/goodbox/image_resize')
        .attach('image', files[0],files[0].name)
