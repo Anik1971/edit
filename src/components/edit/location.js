@@ -427,9 +427,6 @@ class Location extends React.Component {
                           </div>
                         </Dialog>
                     </div>
-                    <div className={"Timings"}>
-                        <Link  to="/timings" >Timings</Link>
-                    </div>
                   </div>
                 );
 	}
