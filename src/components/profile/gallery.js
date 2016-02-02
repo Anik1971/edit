@@ -5,6 +5,8 @@ import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import SwipeableViews from 'react-swipeable-views';
+import objectAssign from 'object-assign';
+
 
 const tilesData = [{
   img: 'http://lorempixel.com/600/337/nature/',
@@ -56,7 +58,7 @@ const styles = {
     textAlign: 'center',
   }
 };
-const photos = tilesData.map((tile, index) => <div key={index} style={Object.assign({},styles.slide,{backgroundImage:"url(" + tile.img  +")"})}></div>);
+const photos = tilesData.map((tile, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + tile.img  +")"})}></div>);
 class Gallery extends React.Component {
   constructor(props) {
     super(props);

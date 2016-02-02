@@ -6,6 +6,8 @@ import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import SwipeableViews from 'react-swipeable-views';
 import DocumentUploader from './../dialogues/documentUploader';
+import Request from 'superagent';
+import objectAssign from 'object-assign';
 
 
 const styles = {
@@ -37,7 +39,6 @@ class Gallery extends React.Component {
       slideIndex: 0,
       slideImages: []
     };
-
   }
   getIndicatorStyle(index) {
     var indicatorStyle = {
@@ -68,7 +69,7 @@ class Gallery extends React.Component {
     });
   }
   render() {
-    const photos = this.state.slideImages.map((image, index) => <div key={index} style={Object.assign({},styles.slide,{backgroundImage:"url(" + image  +")"})}></div>);
+    const photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image  +")"})}></div>);
     return (<div id="gallery">
               <SwipeableViews
                 index={this.state.slideIndex}

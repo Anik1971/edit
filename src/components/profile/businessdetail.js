@@ -43,7 +43,15 @@ class BusinessDetail extends React.Component {
 			let Latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	        let map = new google.maps.Map(document.getElementById('supplierMap'), {
 	            center: Latlng,
-	            zoom: 6
+                zoom: 18,
+                scaleControl: false,
+                scrollwheel: false,
+                scrollwheel: false,
+                navigationControl: false,
+                mapTypeControl: false,
+                scaleControl: false,
+                draggable: false,
+                disableDoubleClickZoom: false
 	        }); 
 	        let geocoder = new google.maps.Geocoder;
 	        let infowindow = new google.maps.InfoWindow;                

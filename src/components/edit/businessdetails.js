@@ -21,7 +21,7 @@ let styles = {
     },
     slide: {
         height:'auto',
-        minHeight:100,
+        minHeight:500,
         padding: 10,
         backgroundColor: "white"
     },
@@ -65,7 +65,7 @@ class BusinessDetail extends React.Component {
 
     handleChange(value) {
         if (value == 3)
-            this.refs.tabWrapper.scrollLeft = 24;
+            this.refs.tabWrapper.scrollLeft = 98;
         if (value == 0)
             this.refs.tabWrapper.scrollLeft = 0;
         this.setState({

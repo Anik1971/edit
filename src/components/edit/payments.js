@@ -165,40 +165,7 @@ class Payments extends React.Component {
                             image={this.state.bankAcc_image}                
                             postUpload={this.bankAcc_imageUpdate.bind(this)} />
                     </div>
-                    <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
-                        <TextField
-                            className="paymentText"
-                            floatingLabelText="PayU authorization letter" 
-                            style={styles.panCard}
-                            defaultValue={this.state.payU}
-                            onChange={this.onPaymentChange.bind(this)}
-                            onBlur={this.onPayUBlur.bind(this)}/>
-                            <PaymentUploader
-                            image={this.state.payU}                
-                            postUpload={this.payU_imageUpdate.bind(this)} />
-                    </div>
-                    <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
-                        <TextField
-                            className="paymentText"
-                            floatingLabelText="Residential Address" 
-                            style={styles.panCard}
-                            defaultValue={this.state.resAddr}
-                            onChange={this.onPaymentChange.bind(this)}
-                            onBlur={this.onResAddrBlur.bind(this)}/>
-                        <PaymentUploader
-                            image={this.state.resAddr_image}                
-                            postUpload={this.resAddr_imageUpdate.bind(this)} />
-                    </div>
-                    <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
-                        <TextField
-                            className="paymentText"
-                            floatingLabelText="Email ID" 
-                            style={styles.panCard}
-                            defaultValue={this.state.payEmail}
-                            onChange={this.onPaymentChange.bind(this)}
-                            onBlur={this.onPayEmailBlur.bind(this)}/>                        
-                    </div>
-                    <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
+                    <div className={'paymentRow paymenthide-'+(this.state.businessType=='Individual')}>
                         <TextField
                             className="paymentText"
                             floatingLabelText="VAT / CST / Trade license*" 
@@ -213,18 +180,6 @@ class Payments extends React.Component {
                     <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}
                          style={styles.displayHint}>
                     * Or other business registration proof issued by government
-                    </div>
-                    <div className="paymentRow">
-                        <TextField
-                            className="paymentText"
-                            floatingLabelText="Registration Fee Cheque" 
-                            style={styles.panCard}
-                            defaultValue={this.state.regFeeCheck}
-                            onChange={this.onPaymentChange.bind(this)}
-                            onBlur={this.onRegFeeCheckBlur.bind(this)}/>
-                        <PaymentUploader
-                            image={this.state.regFeeCheck_image}                
-                            postUpload={this.regFeeCheck_imageUpdate.bind(this)} />
                     </div>
                   </div>);
     }

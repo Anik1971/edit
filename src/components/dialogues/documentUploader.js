@@ -42,7 +42,7 @@ export default class DocumentUploader extends React.Component {
         const dropzoneStyle = {
             margin: 'auto',
             position: 'relative',
-            top: 100,
+            top: 210,
             borderRadius: '100%',
             height: 50,
             width: 50
