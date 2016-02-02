@@ -38,21 +38,24 @@ class Gallery extends React.Component {
     this.state = {
       slideIndex: 0,
       slideImages: [] 
-    };
+    };    
+  }
+  componentWillMount(){
     let _this = this;
     Request
     .post('http://testchat.tsepak.com/goodbox/get_business_photos')
-    .send({supplierLoggedInId: "a09bdcd8"})
+    .send('{"supplierLoggedInId": "a09bdcd8"}')
     .end(function(err, res){
       if(err || !res.ok){
           console.error(err)
       }
       else{
         if (res && res.text){
-           _this.setState({slideImages: res.text})
+           _this.setState({slideImages: JSON.parse(res.text)})
+           console.log(_this.state.newSlideImages)
         }
       }
-    })
+    });
   }
   getIndicatorStyle(index) {
     var indicatorStyle = {
@@ -76,22 +79,66 @@ class Gallery extends React.Component {
     });
   }
   handlePostImageUpload(value) {
+    let _this = this
     let newSlideImages = this.state.slideImages.slice();
-    newSlideImages.push(value);
-    this.setState({
-      slideImages: newSlideImages
-    });
+    let body = {supplierLoggedInId: "a09bdcd8", url: value}
+    Request
+    .post('http://testchat.tsepak.com/goodbox/add_business_photo')
+    .send(body)
+    .end(function(err, res){
+      if (err || !res.ok){
+        console.error(err)
+      }
+      else{
+        if (res && res.text){
+          newSlideImages.push({url: value, objectId:JSON.parse(res.text).objectId});
+          _this.setState({
+            slideImages: newSlideImages
+          });
+        }
+      }
+    })
+    
+  }
+  deletePic(index){
+    let _this = this
+    let newSlideImages = this.state.slideImages.slice()
+    let objectId = this.state.slideImages[index].objectId
+    let body = {supplierLoggedInId: "a09bdcd8", objectId: objectId}  
+    Request
+    .post('http://testchat.tsepak.com/goodbox/remove_business_photo')
+    .send(JSON.stringify(body))
+    .end(function(err, res){
+      if (err || !res.ok){
+        console.error(err)
+      }
+      else{
+        if (res && res.text){
+          if(JSON.parse(res.text).status == 0){
+            console.log("image deleted", newSlideImages)
+            newSlideImages.splice(index, 1)
+            console.log(newSlideImages)
+            _this.setState({
+              slideImages: newSlideImages
+            })
+          }
+        }
+      }
+    })
   }
   render() {
     //add a div absolute postioned button right top
-    const photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image  +")"})}></div>);
+    let photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image  +")"})}>
+        <div className="galleryDelete" onClick={this.deletePic.bind(this,index)}>Delete</div>
+        </div>);
     return (<div id="gallery">
               <SwipeableViews
                 index={this.state.slideIndex}
                 onChangeIndex={this.handleChange.bind(this)}>
                 {photos}
                 <div key={photos.length} style={styles.slide}>
-                  <DocumentUploader postUpload={this.handlePostImageUpload.bind(this)}>
+                  <DocumentUploader 
+                    postUpload={this.handlePostImageUpload.bind(this)}>
                   </DocumentUploader>
                 </div>
               </SwipeableViews>

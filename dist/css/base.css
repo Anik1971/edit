@@ -385,6 +385,14 @@ table {
   background: #70BFF9;
   border-radius: 14px; }
 
+.galleryDelete {
+  float: right;
+  width: 63px;
+  height: auto;
+  padding: 10px;
+  color: #F70404;
+  background-color: white; }
+
 .categoryWrapper {
   height: auto;
   position: relative; }
