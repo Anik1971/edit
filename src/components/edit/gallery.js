@@ -37,8 +37,21 @@ class Gallery extends React.Component {
     super(props);
     this.state = {
       slideIndex: 0,
-      slideImages: []
+      slideImages: [] 
     };
+    Request
+    .post('http://testchat.tsepak.com/goodbox/get_business_photos')
+    .send({supplierLoggedInId: "a09bdcd8"})
+    .end(function(err, res){
+      if(err || !res.ok){
+          console.error(err)
+      }
+      else{
+        if (res && res.text){
+           this.setState({slideImages: res.text})
+        }
+      }
+    })
   }
   getIndicatorStyle(index) {
     var indicatorStyle = {
@@ -63,12 +76,13 @@ class Gallery extends React.Component {
   }
   handlePostImageUpload(value) {
     let newSlideImages = this.state.slideImages.slice();
-    newSlideImages.push(value);
+    newSlideImages.push(value); // request call to add the image
     this.setState({
       slideImages: newSlideImages
     });
   }
   render() {
+    //add a div absolute postioned button right top
     const photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image  +")"})}></div>);
     return (<div id="gallery">
               <SwipeableViews
