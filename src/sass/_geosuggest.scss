@@ -76,3 +76,10 @@
 .device_location_searching:before{
 	content:'device_location_searching';
 }
+.mapWarning{
+	width:100%;
+	margin-bottom:9px;
+	.mapWarningText{
+		color: red;
+	}
+}
