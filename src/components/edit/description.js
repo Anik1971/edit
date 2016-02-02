@@ -118,9 +118,9 @@ class Category extends React.Component{
 		if(keyWord.length){
 			let selectedCategory = this.state.selectedCategory;
 			let filterList = categories.filter((cat, index) => {
-				if(selectedCategory.indexOf(cat)<0 && cat.toLowerCase().indexOf(keyWord.toLowerCase().trim())>=0){
+				if(selectedCategory.indexOf(cat)<0 && cat.substring(0,keyWord.length).toLowerCase().indexOf(keyWord.toLowerCase().trim())>=0){
 					return cat;
-				}		
+				}
 			});
 			let suggestions = this.state.suggestions;
 			let filterList2 = [];

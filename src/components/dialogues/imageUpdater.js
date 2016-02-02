@@ -173,7 +173,6 @@ export default class ImageUpdater extends React.Component {
       dialogueImageTextClass = ''
       imageClass = 'hidden';
     }
-    console.log('uploadSuccess',this.state.uploadSuccess);
     let actions = [
       <FlatButton
         label="Update"
