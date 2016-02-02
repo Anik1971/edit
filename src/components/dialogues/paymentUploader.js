@@ -49,7 +49,7 @@ export default class PaymentUploader extends React.Component {
     console.info('paymentUploader');
     this.state = {
       open: false,
-      image: this.props.image || 'http://www.mp3alive.com/no_photo.jpg',
+      image: this.props.image,
       uploadSuccess: false,
       loader: 'hidden',
     };
@@ -171,7 +171,15 @@ export default class PaymentUploader extends React.Component {
     });
   };
   render() {
-    const actions = [
+    let imageSrc = this.state.preview || this.state.image;
+    let imageClass = ''; 
+    let dialogueImageTextClass = 'hidden';
+    if(!imageSrc){
+      dialogueImageTextClass = ''
+      imageClass = 'hidden';
+    }
+    console.log('uploadSuccess',this.state.uploadSuccess);
+    let actions = [
       <FlatButton
         label="Update"
         secondary={true}>
@@ -183,12 +191,12 @@ export default class PaymentUploader extends React.Component {
         </Dropzone>
       </FlatButton>,
       <FlatButton
+        disabled={!this.state.uploadSuccess}
         label="Save"
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
-    ];
-
+    ];    
     return (
       <div>
          <EditIcon 
@@ -202,12 +210,13 @@ export default class PaymentUploader extends React.Component {
           onRequestClose={this.handleClose}
           autoDetectWindowHeight={false}
           repositionOnUpdate={false}
-          style={styles.dialog }
+          style={styles.dialog } 
           contentStyle={styles.dialogContent}>
           <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
           <Card zDepth={0}>
             <CardMedia>
-              <img style={styles.img} src={this.state.image}/> 
+              <div className={dialogueImageTextClass}><span className="dialogueImageText" style={styles.img}><br /><br /><br /><br />{"No Image"}</span></div>
+              <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
             </CardMedia>
             <CardActions>  
               <div className={this.state.loader}>        
