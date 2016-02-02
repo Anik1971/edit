@@ -54,7 +54,7 @@ export default class UserUpdater extends React.Component {
     this.state = {
       open: false,
       image: this.props.image,
-      uploadSuccess: true,
+      uploadSuccess: false,
       loader: 'hidden',
       name:name
     };
@@ -141,8 +141,7 @@ export default class UserUpdater extends React.Component {
          } else {
            let response = JSON.parse(res.text);
            if(response.status == 0){
-            console.log('Image uploaded');           
-            slideIndex = pending.length;           
+            console.log('Image uploaded');                   
             _this.setState({
               image: response.url,
               loader:'hidden',
