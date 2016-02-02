@@ -48,7 +48,6 @@ export default class UserUpdater extends React.Component {
   constructor(props) {
     super(props);
     console.info('UserUpdater');
-    let pendingClass = 'hidden',pending = [],pendingMsg = '',pendingStatus = '',name='';
     if(this.props.name){
       name = this.props.name;
     }
@@ -143,10 +142,6 @@ export default class UserUpdater extends React.Component {
            let response = JSON.parse(res.text);
            if(response.status == 0){
             console.log('Image uploaded');           
-            let pendingClass = '';
-            let pending = response.url;
-            let pendingMsg = pending.length+" image(s) waiting for approval";                    
-            let slideIndex = _this.state.slideIndex;
             slideIndex = pending.length;           
             _this.setState({
               image: response.url,
@@ -181,7 +176,14 @@ export default class UserUpdater extends React.Component {
     this.state.name = name.target.value;
   };
   render() {
-    const actions = [
+    let imageSrc = this.state.image;
+    let imageClass = ''; 
+    let dialogueImageTextClass = 'hidden';
+    if(!imageSrc){
+      dialogueImageTextClass = ''
+      imageClass = 'hidden';
+    }
+    let actions = [
       <FlatButton
         label="Update Photo"
         secondary={true}>
@@ -195,10 +197,10 @@ export default class UserUpdater extends React.Component {
       <FlatButton
         label="Save"
         primary={true}
+        disabled={!this.state.uploadSuccess}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
-    ];
-    let imagePreview = this.state.image || defaultUserIcon;
+    ];    
     return (
       <div>
         <EditIcon 
@@ -224,15 +226,9 @@ export default class UserUpdater extends React.Component {
                   onChange={this.onNameChange.bind(this)} />
               </div>
             </CardActions>
-            <CardMedia>
-              <div className={"imageGallery"}>   
-                  <GridTile   
-                    className="imgUptGridTile"                 
-                    title={this.state.pendingStatus}
-                    subtitle={this.state.pendingMsg}>                  
-                    <img style={styles.img} src={imagePreview}/>
-                  </GridTile>
-                </div>
+            <CardMedia>      
+              <div className={dialogueImageTextClass}><span className="dialogueImageText" style={styles.img}><br /><br /><br /><br />{"No Image"}</span></div>
+              <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
             </CardMedia>
             <CardActions>  
               <div className={this.state.loader}>        
