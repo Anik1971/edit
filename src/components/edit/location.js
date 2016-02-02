@@ -154,10 +154,8 @@ class Location extends React.Component {
                 zoom: 18,
                 scaleControl: false,
                 scrollwheel: false,
-                scrollwheel: false,
                 navigationControl: false,
                 mapTypeControl: false,
-                scaleControl: false,
                 draggable: false,
                 disableDoubleClickZoom: false
             }); 

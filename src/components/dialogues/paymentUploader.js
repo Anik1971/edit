@@ -2,7 +2,7 @@ import React from 'react';
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
-import EditIcon from 'material-ui/lib/svg-icons/file/file-upload';
+import EditIcon from 'material-ui/lib/svg-icons/image/camera-alt';
 import NextIcon from 'material-ui/lib/svg-icons/navigation/chevron-right';
 import PrevIcon from 'material-ui/lib/svg-icons/navigation/chevron-left';
 import Colors from 'material-ui/lib/styles/colors';
