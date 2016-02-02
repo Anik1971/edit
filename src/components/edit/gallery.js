@@ -39,6 +39,7 @@ class Gallery extends React.Component {
       slideIndex: 0,
       slideImages: [] 
     };
+    let _this = this;
     Request
     .post('http://testchat.tsepak.com/goodbox/get_business_photos')
     .send({supplierLoggedInId: "a09bdcd8"})
@@ -48,7 +49,7 @@ class Gallery extends React.Component {
       }
       else{
         if (res && res.text){
-           this.setState({slideImages: res.text})
+           _this.setState({slideImages: res.text})
         }
       }
     })
@@ -76,7 +77,7 @@ class Gallery extends React.Component {
   }
   handlePostImageUpload(value) {
     let newSlideImages = this.state.slideImages.slice();
-    newSlideImages.push(value); // request call to add the image
+    newSlideImages.push(value);
     this.setState({
       slideImages: newSlideImages
     });
