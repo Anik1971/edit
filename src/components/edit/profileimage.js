@@ -84,17 +84,20 @@ class ProfileImage extends React.Component {
     	if(!this.state.businessImageUrl && !this.state.pending_businessImage && this.state.businessName){
     		businessNameTag = this.state.businessName.substr(0,1);
     	}
+    	let coverImageTextClass = 'hidden';
+    	if(!this.state.businessImageCoverUrl){
+    		coverImageTextClass = ''
+    	}
         return (
         <div style={this.state.businessImageCover} id="profile-image-cover">
+        	<div className={coverImageTextClass}><span className="coverImageText"><br /><br />{"Upload Business Cover Image"}</span></div>
         	<ImageUpdater 
         		image={this.state.businessImageCoverUrl}        		
-        		postUpload={this.coverImageUpdate.bind(this)} 
-        		pending = {this.state.pending_businessImageCover}/>
+        		postUpload={this.coverImageUpdate.bind(this)} />
             <div style={this.state.businessImage} id="profile-image">
             	<ImageUpdater 
         			image={this.state.businessImageUrl}         		
-        			postUpload={this.businessImageUpdate.bind(this)} 
-        			pending = {this.state.pending_businessImage}/> 	
+        			postUpload={this.businessImageUpdate.bind(this)} /> 	
         		<div className="businessNameTag">
         			{businessNameTag}</div>
             </div>

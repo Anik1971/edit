@@ -47,23 +47,11 @@ export default class ImageUpdater extends React.Component {
   constructor(props) {
     super(props);
     console.info('ImageUpdater');
-    let pendingClass = 'hidden',pending = '',pendingMsg = '',pendingStatus = '';
-    if(this.props.pending){
-      pendingClass = '';
-      pending = this.props.pending;
-      pendingMsg = this.props.pending.length+" image(s) waiting for approval";
-      pendingStatus = 'Approved';
-    }
     this.state = {
       open: false,
-      image: this.props.image || 'http://www.mp3alive.com/no_photo.jpg',
+      image: this.props.image,
       uploadSuccess: false,
-      loader: 'hidden',
-      pendingClass:pendingClass,
-      slideIndex: 0,
-      pending:pending,
-      pendingMsg:pendingMsg,
-      pendingStatus:pendingStatus
+      loader: 'hidden'
     };
   }
   editImage(){
@@ -148,19 +136,10 @@ export default class ImageUpdater extends React.Component {
          } else {
            let response = JSON.parse(res.text);
            if(response.status == 0){
-            console.log('Image uploaded');           
-            let pendingClass = '';
-            let pending = response.url;
-            let pendingMsg = pending.length+" image(s) waiting for approval";                    
-            let slideIndex = _this.state.slideIndex;
-            slideIndex = pending.length;           
+            console.log('Image uploaded');                     
             _this.setState({
-              pending: pending,
               loader:'hidden',
               uploadSuccess: true,
-              slideIndex:slideIndex,
-              pendingMsg:pendingMsg,              
-              pendingClass:pendingClass,
               image:response.url,
               preview:''
             });
@@ -180,38 +159,22 @@ export default class ImageUpdater extends React.Component {
       open: false
     },function(){
       if(_this.state.open == false && _this.state.uploadSuccess){
-        _this.props.postUpload(_this.state.pending);
+        _this.props.postUpload(_this.state.image);
       }else{
         console.error('Upload failure');
       }
     });
   };
-  onIndexChange(value){
-    this.setState({
-      slideIndex: value,
-    });
-  };
-  prevClick(){
-    console.log('prev clicked',this.state);
-    let slideIndex = this.state.slideIndex;
-    if(slideIndex>0){
-      this.setState({
-        slideIndex:slideIndex-1
-      });
-    }
-  };
-  nextClick(){
-    console.log('next clicked');
-    let slideIndex = this.state.slideIndex;
-    let pending = this.state.pending;
-    if(slideIndex<pending.length){
-      this.setState({
-        slideIndex:slideIndex+1
-      })
-    }
-  };
   render() {
-    const actions = [
+    let imageSrc = this.state.preview || this.state.image;
+    let imageClass = ''; 
+    let dialogueImageTextClass = 'hidden';
+    if(!imageSrc){
+      dialogueImageTextClass = ''
+      imageClass = 'hidden';
+    }
+    console.log('uploadSuccess',this.state.uploadSuccess);
+    let actions = [
       <FlatButton
         label="Update"
         secondary={true}>
@@ -223,12 +186,12 @@ export default class ImageUpdater extends React.Component {
         </Dropzone>
       </FlatButton>,
       <FlatButton
+        disabled={!this.state.uploadSuccess}
         label="Save"
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
-    ];
-
+    ];    
     return (
       <div>
          <EditIcon 
@@ -247,7 +210,8 @@ export default class ImageUpdater extends React.Component {
           <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
           <Card zDepth={0}>
             <CardMedia>
-              <img style={styles.img} src={this.state.preview || this.state.image}/> 
+              <div className={dialogueImageTextClass}><span className="dialogueImageText" style={styles.img}><br /><br /><br /><br />{"No Image"}</span></div>
+              <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
             </CardMedia>
             <CardActions>  
               <div className={this.state.loader}>        

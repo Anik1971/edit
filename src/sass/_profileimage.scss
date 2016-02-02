@@ -10,6 +10,11 @@ $profile-image-offset: 20px;
     position: relative;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
     margin-bottom: $profile-image-offset;
+    .coverImageText{
+        width:100%;
+        text-align: center;
+        display: block;
+    }
     
     #profile-image {
         position: absolute;

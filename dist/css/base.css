@@ -49,6 +49,10 @@ table {
   position: relative;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
   margin-bottom: 20px; }
+  #profile-image-cover .coverImageText {
+    width: 100%;
+    text-align: center;
+    display: block; }
   #profile-image-cover #profile-image {
     position: absolute;
     width: 100px;
@@ -329,6 +333,12 @@ table {
 .loaderText {
   float: left;
   margin-top: 20px; }
+
+.dialogueImageText {
+  width: 100%;
+  text-align: center;
+  display: block;
+  border: 1px solid #EEE; }
 
 .paymentWrapper {
   height: auto;
