@@ -55,6 +55,7 @@ export default class UserUpdater extends React.Component {
       open: false,
       image: this.props.image,
       uploadSuccess: false,
+      change: false,
       loader: 'hidden',
       name:name
     };
@@ -146,6 +147,7 @@ export default class UserUpdater extends React.Component {
               image: response.url,
               loader:'hidden',
               uploadSuccess: true,
+              change:true,
               preview:''            
             });
            }
@@ -173,6 +175,9 @@ export default class UserUpdater extends React.Component {
   onNameChange(name){
     console.log('onChange',name.target.value);
     this.state.name = name.target.value;
+    this.setState({
+      change: true
+    });
   };
   render() {
     let imageSrc = this.state.image;
@@ -196,7 +201,7 @@ export default class UserUpdater extends React.Component {
       <FlatButton
         label="Save"
         primary={true}
-        disabled={!this.state.uploadSuccess}
+        disabled={!this.state.change}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
     ];    

@@ -429,7 +429,7 @@ class Index extends React.Component {
 ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={App}>
-          <IndexRoute component={SupplierProfile}/>
+          <IndexRoute component={Index}/>
           <Route path="/timings" component={StoreTimings}/>
           <Route path="/profile" component={SupplierProfile}/>
         </Route>

@@ -2,10 +2,11 @@
 	height:auto;
 	position:relative;
 	.suggestionWrapper{
-		position: absolute;
+		/* position: absolute;
 		left: 0;
 		top:63px;
-		z-index: 10;
+		z-index: 10; */
+		display: block;
 		background: white;
 		border:1px solid #EEE;
 		width: 100%;

@@ -433,6 +433,10 @@ class Location extends React.Component {
                           <div style={{padding:2}}> 
                             <span className="small">Update store location</span>                           
                             <div id="storeMap" className={"storeMap"}></div>
+                            <div className="mapWarning">
+                                <span className="mapWarningText small"><b className="black">{"Warning: "}</b>{"The store location will be updated to the location shown in the map."}</span>
+                            </div>
+
                             <RaisedButton 
                                 fullWidth = { true}
                                 secondary={true} 
