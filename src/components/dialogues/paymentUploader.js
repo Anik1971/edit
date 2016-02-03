@@ -209,6 +209,7 @@ export default class PaymentUploader extends React.Component {
           autoDetectWindowHeight={false}
           repositionOnUpdate={false}
           style={styles.dialog } 
+          title={this.props.title}
           contentStyle={styles.dialogContent}>
           <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
           <Card zDepth={0}>

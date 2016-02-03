@@ -65,7 +65,8 @@ class ProfileDetail extends React.Component {
 			    	<UserUpdater 			        		 
 		        		image={userImagePreview} 
 		        		name={this.state.userName}      		
-				        postUpload={this.userImageUpdate.bind(this)} />
+				        postUpload={this.userImageUpdate.bind(this)} 
+				        title={'User Details'}/>
 				    </ListItem>
 			    </List>
 			</div>

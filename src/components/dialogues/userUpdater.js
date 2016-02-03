@@ -176,6 +176,8 @@ export default class UserUpdater extends React.Component {
     this.state.name = name.target.value;
     this.setState({
       change: true
+    },function(){
+      this.props.postUpload(this.state.image,this.state.name);
     });
   };
   render() {
@@ -198,7 +200,7 @@ export default class UserUpdater extends React.Component {
         </Dropzone>
       </FlatButton>,
       <FlatButton
-        label="Save"
+        label="DONE"
         primary={true}
         disabled={!this.state.change}
         keyboardFocused={true}
@@ -218,6 +220,7 @@ export default class UserUpdater extends React.Component {
           autoDetectWindowHeight={false}
           repositionOnUpdate={false}
           style={styles.dialog}
+          title={this.props.title}
           contentStyle={styles.dialogContent}>
           <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
           <Card zDepth={0}>

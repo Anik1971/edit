@@ -422,13 +422,13 @@ class Location extends React.Component {
                         <Dialog 
                           ref={"mapDialogue"}
                           canAutoPosition = { true }
-                          open={this.state.activePopover === 'pop'}                          
+                          open={this.state.activePopover === 'pop'}  
+                          title={'Update store location'}                        
                           onRequestClose={this.closePopover.bind(this, 'pop')} 
                           style={styles.dialog }
                           contentStyle={styles.dialogContent}>
                           <div className="dialogueCancel"><ClearIcon onClick={this.closePopover.bind(this, 'pop')} /></div>
-                          <div style={{padding:2}}> 
-                            <span className="small">Update store location</span>                           
+                          <div style={{padding:2}}>                         
                             <div id="storeMap" className={"storeMap"}></div>
                             <div className="mapWarning">
                                 <span className="mapWarningText small"><b className="black">{"Warning: "}</b>{"The store location will be updated to the location shown in the map."}</span>
