@@ -47,7 +47,7 @@ table {
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+  box-shadow: 1px 1px 1px rgba(242, 242, 242, 0.7);
   margin-bottom: 20px; }
   #profile-image-cover .coverImageText {
     width: 100%;
@@ -117,7 +117,7 @@ table {
 
 .business-cardHeader {
   background-color: rgba(247, 243, 243, 0.48);
-  box-shadow: 0px 1px 9px #76d1f2; }
+  box-shadow: 0px 1px 1px gray; }
   .business-cardHeader span {
     color: #76d1f2; }
 
