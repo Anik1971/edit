@@ -8,25 +8,40 @@ import FloatingActionButton from 'material-ui/lib/floating-action-button';
 class ProfileImage extends React.Component {
 	constructor(props) {
 		super(props);
-		let businessImageCover = '';
-		if(this.props.bData.newExtras.approved && this.props.bData.newExtras.approved.coverImage){
-			businessImageCover = this.props.bData.newExtras.approved.coverImage;
-		}
-		let businessImage = '';
-		if(this.props.bData.newExtras.approved && this.props.bData.newExtras.approved.businessImage){
-			console.log('pend cov img',this.props.bData.newExtras.pending.coverImage);
-			businessImage = this.props.bData.newExtras.approved.businessImage;
-		}
-		let pending_businessImageCover = '';		
-		if(this.props.bData.newExtras.pending && this.props.bData.newExtras.pending.coverImage){
-			pending_businessImageCover = this.props.bData.newExtras.pending.coverImage;
-		}
-		let pending_businessImage = '';		
-		if(this.props.bData.newExtras.pending && this.props.bData.newExtras.pending.businessImage){
-			pending_businessImage = this.props.bData.newExtras.pending.businessImage;
-		}
-		let coverBg = pending_businessImageCover || businessImageCover;
-		let profileBg = pending_businessImage || businessImage;
+		let approved = '';
+        let pending = '';
+    	let coverBg = '';
+        let coverBgApproved = false;
+        let businessImage = '';
+        let businessImageApproved = false;
+        if(this.props.bData.newExtras && this.props.bData.newExtras.approved){
+            approved =  this.props.bData.newExtras.pending;
+        }
+        if(this.props.bData.newExtras && this.props.bData.newExtras.pending){
+            pending =  this.props.bData.newExtras.pending;
+        }
+        //coverImage
+    	if(pending.coverImage){
+    		coverBg = pending.coverImage;
+            coverBgApproved = false;
+    	}else{
+            if(approved.coverImage){
+               coverBg = approved.coverImage; 
+               coverBgApproved = true;
+            }
+        }
+
+        //businessImage
+        if(pending.businessImage){
+            businessImage = pending.businessImage;
+            businessImageApproved = false;
+        }else{
+            if(approved.businessImage){
+               businessImage = approved.businessImage; 
+               businessImageApproved = true;
+            }
+        }
+		
 		this.state = {
 		  profilePicDialogue: false,
 		  businessImageCover: {
@@ -34,13 +49,13 @@ class ProfileImage extends React.Component {
 		    backgroundColor: '#D8D4D4'
 		  },
 		  businessImage: {
-		    backgroundImage: 'url('+profileBg+')'
+		    backgroundImage: 'url('+businessImage+')'
 		  },
-		  businessImageCoverUrl:pending_businessImageCover || businessImageCover,
-		  businessImageUrl:pending_businessImage || businessImage,
-		  pending_businessImageCover:pending_businessImageCover,
-		  pending_businessImage:pending_businessImage,	
-		  businessName:this.props.bData.businessName
+		  businessImageCoverUrl:coverBg,
+		  businessImageUrl:businessImage,
+		  businessName:this.props.bData.businessName,
+		  businessImageApproved:businessImageApproved,
+		  coverBgApproved:coverBgApproved
 		};
 	}
 	putBusiData(json){
@@ -58,11 +73,11 @@ class ProfileImage extends React.Component {
 		    backgroundColor: '#D8D4D4'
 		  },		  
 		  businessImageCoverUrl:imageurl,
-		  pending_businessImageCover:imageurl
+		  coverBgApproved: false
 		});
 	}
 
-	businessImageUpdate(imageurl){
+	businessImageUpdate(imageurl){ 
 		let pending = this.props.bData.newExtras.pending || {};
 		pending.businessImage = imageurl;
 		this.props.manageSave('show','pending',pending);
@@ -71,25 +86,33 @@ class ProfileImage extends React.Component {
 		    backgroundImage: 'url('+imageurl+')'
 		  },
 		  businessImageUrl:imageurl,
-		  pending_businessImage:imageurl,
+		  businessImageApproved:false
 		});
 	}
     render() {
     	let businessNameTag = '';
+    	let businessImageApproved = this.state.businessImageApproved;
+    	let coverBgApproved = this.state.coverBgApproved;
+    	let bottomPanel = 'bottomPanel';
     	if(!this.state.businessImageUrl && !this.state.pending_businessImage && this.state.businessName){
     		businessNameTag = this.state.businessName.substr(0,1);
+    		bottomPanel = 'hidden';
     	}
     	let coverImageTextClass = 'hidden';
+    	let topPanel = 'topPanel';
     	if(!this.state.businessImageCoverUrl){
-    		coverImageTextClass = ''
+    		coverImageTextClass = '';
+    		topPanel = 'hidden';
     	}
         return (
         <div style={this.state.businessImageCover} id="profile-image-cover">
         	<div className={coverImageTextClass}><span className="coverImageText"><br /><br />{"Upload Business Cover Image"}</span></div>
+        	<div className={topPanel}>{businessImageApproved?'Approved':'Pending'}</div>
         	<ImageUpdater 
         		image={this.state.businessImageCoverUrl}        		
         		postUpload={this.coverImageUpdate.bind(this)} />
             <div style={this.state.businessImage} id="profile-image">
+            	<div className={bottomPanel}>{coverBgApproved?'Approved':'Pending'}</div>
             	<ImageUpdater 
         			image={this.state.businessImageUrl}         		
         			postUpload={this.businessImageUpdate.bind(this)} /> 	

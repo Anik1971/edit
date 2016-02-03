@@ -68,6 +68,21 @@ table {
     left: 0;
     right: 0;
     background-color: #BF89BF; }
+  #profile-image-cover .topPanel {
+    width: 100%;
+    height: 42px;
+    line-height: 21px;
+    padding: 10px;
+    color: white;
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0.45); }
+  #profile-image-cover .bottomPanel {
+    width: 100%;
+    height: 30px;
+    padding: 10px;
+    color: white;
+    font-size: 10px;
+    background-color: rgba(0, 0, 0, 0.45); }
 
 .businessNameTag {
   font-size: 59px;
