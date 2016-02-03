@@ -393,11 +393,19 @@ table {
 
 .galleryDelete {
   float: right;
-  width: 63px;
+  width: auto;
   height: auto;
   padding: 10px;
   color: #F70404;
-  background-color: white; }
+  background-color: rgba(0, 0, 0, 0.45); }
+
+.docUpLoading {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+  text-align: center; }
 
 .categoryWrapper {
   height: auto;
