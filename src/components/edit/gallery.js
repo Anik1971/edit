@@ -12,7 +12,9 @@ import DocumentUploader from './../dialogues/documentUploader';
 import Request from 'superagent';
 import objectAssign from 'object-assign';
 import CircularProgress from 'material-ui/lib/circular-progress';
-
+import Dialog from 'material-ui/lib/dialog';
+import ClearIcon from 'material-ui/lib/svg-icons/content/clear';
+import FlatButton from 'material-ui/lib/flat-button';
 
 
 const styles = {
@@ -49,9 +51,16 @@ const styles = {
   progressText : {
     fontSize: 12,
     margin: 'auto',
-    color:'white'
+    color:'#02a8f3'
+  },
+  dialog : {
+      padding:'0px',
+      paddingTop: '10px !important',
+      top:'-40px'
+  },
+  dialogContent : {
+      width:'95%'
   }
-
 }; 
 class Gallery extends React.Component {
   constructor(props) {
@@ -59,7 +68,9 @@ class Gallery extends React.Component {
     this.state = {
       slideIndex: 0,
       slideImages: [],
-      uploading: false
+      uploading: false,
+      deletePopover: 'notPop',
+      deletePicIndex: -1
     };    
   }
   componentWillMount(){
@@ -113,6 +124,7 @@ class Gallery extends React.Component {
       }
       else{
         if (res && res.text){
+          console.log('resp',res.text);
           newSlideImages.push({url: value, objectId:JSON.parse(res.text).objectId});
           _this.updateUploadingStatus(false);
           _this.setState({
@@ -123,26 +135,44 @@ class Gallery extends React.Component {
     })
     
   }
-  deletePic(index){
-    let _this = this
-    let newSlideImages = this.state.slideImages.slice()
-    let objectId = this.state.slideImages[index].objectId
-    let body = {supplierLoggedInId: "a09bdcd8", objectId: objectId}  
+  deletePicPrompt(index){
+    console.log('deletePicPrompt',index);
+    this.setState({
+      deletePopover: 'pop',
+      deletePicIndex: index
+    });
+  }
+  deletePic(){
+    let _this = this;
+    let index = this.state.deletePicIndex;
+    let slideImages = this.state.slideImages.slice();
+    let _slideImages = this.state.slideImages.slice();
+    let objectId = this.state.slideImages[index].objectId;
+    let body = {supplierLoggedInId: "a09bdcd8", objectId: objectId}; 
+    slideImages.splice(index, 1);
+    this.setState({
+      slideImages: slideImages
+    },function(){
+      this.closePopover();
+    });
     Request
     .post('http://testchat.tsepak.com/goodbox/remove_business_photo')
     .send(JSON.stringify(body))
     .end(function(err, res){
       if (err || !res.ok){
-        console.error(err)
+        console.error(err);
+        _this.setState({
+          slideImages:_slideImages
+        });
       }
       else{
         if (res && res.text){
           if(JSON.parse(res.text).status == 0){
-            newSlideImages.splice(index, 1)
-            console.log(newSlideImages)
+            console.log('deleted image');
+            /*newSlideImages.splice(index, 1);
             _this.setState({
               slideImages: newSlideImages
-            })
+            });*/
           }
         }
       }
@@ -153,6 +183,12 @@ class Gallery extends React.Component {
       uploading:value
     });
   }
+  closePopover(){
+        this.setState({
+            deletePopover:'notPop',
+            deletePicIndex: -1
+        });
+    }
   render() {
     //add a div absolute postioned button right top
     let docUpLoading = 'hidden';
@@ -161,8 +197,20 @@ class Gallery extends React.Component {
       docUpLoading = 'docUpLoading';
       addBtnClass = 'hidden';
     }
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        secondary={true}
+        onTouchTap={this.closePopover.bind(this, 'pop')} />,
+      <FlatButton
+        label="Delete"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.handleClose}
+        onTouchTap={this.deletePic.bind(this)}/>
+    ];
     let photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image.url  +")"})}>
-        <div className="galleryDelete" onClick={this.deletePic.bind(this,index)}><DeleteIcon color={'rgba(255,255,255,0.85)'}/></div>
+        <div className="galleryDelete">{image.verified?'Approved':'Pending'} <DeleteIcon className="deleteIcon" onClick={this.deletePicPrompt.bind(this,index)} color={'rgba(255,255,255,0.85)'}/></div>
         </div>);
     return (<div id="gallery">
               <SwipeableViews
@@ -174,7 +222,7 @@ class Gallery extends React.Component {
                     <CircularProgress  
                         mode="indeterminate" 
                         size={.5}/>
-                    <div style={styles.progressText}>Please wait uploading the file</div>
+                    <div style={styles.progressText}>{"Please wait... Uploading Image"}</div>
                   </div>
                   <div className={addBtnClass}>
                     <DocumentUploader 
@@ -187,6 +235,14 @@ class Gallery extends React.Component {
               <div style={styles.indicatorContainer}>
                 {photos.map((photo,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
               </div>
+               <Dialog
+                  title="Delete Photo"
+                  actions={actions}
+                  modal={false}
+                  open={this.state.deletePopover === 'pop'}  
+                  onRequestClose={this.closePopover.bind(this, 'pop')}>
+                  Are you sure ?
+                </Dialog>
             </div>);
   }
 }

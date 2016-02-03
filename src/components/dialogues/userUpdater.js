@@ -167,7 +167,7 @@ export default class UserUpdater extends React.Component {
       if(_this.state.open == false && _this.state.uploadSuccess){
         _this.props.postUpload(_this.state.image,_this.state.name);
       }else{
-        console.error('Upload failure');
+        //console.error('Upload failure');
       }
     });
   };
