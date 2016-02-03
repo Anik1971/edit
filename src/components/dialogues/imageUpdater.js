@@ -185,7 +185,7 @@ export default class ImageUpdater extends React.Component {
       </FlatButton>,
       <FlatButton
         disabled={!this.state.uploadSuccess}
-        label="Save"
+        label="DONE"
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
@@ -203,6 +203,7 @@ export default class ImageUpdater extends React.Component {
           onRequestClose={this.handleClose}
           autoDetectWindowHeight={false}
           repositionOnUpdate={false}
+          title={this.props.title}
           style={styles.dialog } 
           contentStyle={styles.dialogContent}>
           <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>

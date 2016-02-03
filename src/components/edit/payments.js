@@ -151,7 +151,8 @@ class Payments extends React.Component {
                             onBlur={this.onPanBlur.bind(this)}/>
                         <PaymentUploader
                             image={this.state.panCard_image}                
-                            postUpload={this.panCard_imageUpdate.bind(this)} />
+                            postUpload={this.panCard_imageUpdate.bind(this)} 
+                            title={'PAN card'} />
                     </div>
                     <div className="paymentRow">
                         <TextField 
@@ -163,7 +164,8 @@ class Payments extends React.Component {
                             onBlur={this.onBankAccBlur.bind(this)}/>
                         <PaymentUploader
                             image={this.state.bankAcc_image}                
-                            postUpload={this.bankAcc_imageUpdate.bind(this)} />
+                            postUpload={this.bankAcc_imageUpdate.bind(this)} 
+                            title={'Bank Account'}/>
                     </div>
                      <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
                          <TextField
@@ -175,7 +177,8 @@ class Payments extends React.Component {
                              onBlur={this.onResAddrBlur.bind(this)}/>
                          <PaymentUploader
                              image={this.state.resAddr_image}                
-                             postUpload={this.resAddr_imageUpdate.bind(this)} />
+                             postUpload={this.resAddr_imageUpdate.bind(this)} 
+                             title={'Bank Account'}/>
                     </div>
                     <div className={'paymentRow paymenthide-'+(this.state.businessType=='Individual')}>
                         <TextField
@@ -187,7 +190,8 @@ class Payments extends React.Component {
                             onBlur={this.onLicenceBlur.bind(this)}/>
                         <PaymentUploader
                             image={this.state.licence_image}                
-                            postUpload={this.licence_imageUpdate.bind(this)} />
+                            postUpload={this.licence_imageUpdate.bind(this)} 
+                            title={'Licence'}/>
                     </div>
                     <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}
                          style={styles.displayHint}>
