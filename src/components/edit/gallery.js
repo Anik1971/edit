@@ -128,7 +128,7 @@ class Gallery extends React.Component {
     //add a div absolute postioned button right top
     let photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image.url  +")"})}>
         <div className="galleryDelete" onClick={this.deletePic.bind(this,index)}>Delete</div>
-        </div>);
+        </div>);  
     return (<div id="gallery">
               <SwipeableViews
                 index={this.state.slideIndex}

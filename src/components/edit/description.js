@@ -236,6 +236,7 @@ class Description extends React.Component {
             errorFlag: false
         };	
         this.state.phoneClass[0] = '';
+        this.state.errorText['businessPhone'] = ['']
         for(let i=1;i<this.state.phoneLimit;i++){
         	this.state.phoneClass.push('hidden');
         }
@@ -322,8 +323,23 @@ class Description extends React.Component {
 	}
 	onBusinessPhoneBlur(index,textField){
 		console.log('onBusinessPhoneBlur',index);
+		let errorText = this.state.errorText;
 		this.state.businessPhone[index] = textField.target.value;
-		this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
+		errorText['businessPhone'] = [];
+		var pattern = /^\+{0,2}([\-\. ])?(\(?\d{0,3}\))?([\-\. ])?\(?\d{0,3}\)?([\-\. ])?\d{3}([\-\. ])?\d{4}/
+		if (pattern.test(textField.target.value) && textField.target.value.replace(/[^\d]/g, '').length === 10){
+			errorText['businessPhone'][index] = ''
+			delete window.errorStack['businessPhone'];
+			this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
+		}
+		else{
+			errorText['businessPhone'][index] = 'Please enter a valid phone number';
+			window.errorStack['businessPhone'] = {
+				text: errorText['businessPhone'][index],
+				tab : 0
+			};
+		};
+		this.setState({errorText: errorText});
 	}
 	savedCategory(value){
 		console.log('saving categories',categoriesToSave);
@@ -384,6 +400,7 @@ class Description extends React.Component {
 	                		floatingLabelText={phoneText}
 	                		onBlur={this.onBusinessPhoneBlur.bind(this,index)}
 	                		onChange={this.onBusinessPhoneChange.bind(this,index)}
+	                		errorText={this.state.errorText['businessPhone'][index]}
 	                		defaultValue={phoneNum}
 	                		className={className} 
 	                		maxLimit={10}
