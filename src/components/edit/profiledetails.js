@@ -31,10 +31,7 @@ class ProfileDetail extends React.Component {
 	userImageUpdate(imageurl,userName){
 		if(imageurl.length){
 			console.log('imageurl');			
-			let pending = this.props.bData.newExtras.pending;
-			if(!pending){
-				pending = {};
-			}
+			let pending = this.props.bData.newExtras.pending || {};
 			pending.userImage = imageurl;
 			this.props.manageSave('show','pending',pending);
 			this.setState({
