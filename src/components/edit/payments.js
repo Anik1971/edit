@@ -152,7 +152,7 @@ class Payments extends React.Component {
                         <PaymentUploader
                             image={this.state.panCard_image}                
                             postUpload={this.panCard_imageUpdate.bind(this)} 
-                            title={'PAN card'} />
+                            title={'PAN'} />
                     </div>
                     <div className="paymentRow">
                         <TextField 
@@ -165,7 +165,7 @@ class Payments extends React.Component {
                         <PaymentUploader
                             image={this.state.bankAcc_image}                
                             postUpload={this.bankAcc_imageUpdate.bind(this)} 
-                            title={'Bank Account'}/>
+                            title={'IFSC:Bank Account Number'}/>
                     </div>
                      <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
                          <TextField
@@ -178,7 +178,7 @@ class Payments extends React.Component {
                          <PaymentUploader
                              image={this.state.resAddr_image}                
                              postUpload={this.resAddr_imageUpdate.bind(this)} 
-                             title={'Bank Account'}/>
+                             title={'Residential Address'}/>
                     </div>
                     <div className={'paymentRow paymenthide-'+(this.state.businessType=='Individual')}>
                         <TextField
@@ -191,7 +191,7 @@ class Payments extends React.Component {
                         <PaymentUploader
                             image={this.state.licence_image}                
                             postUpload={this.licence_imageUpdate.bind(this)} 
-                            title={'Licence'}/>
+                            title={'VAT / CST / Trade license'}/>
                     </div>
                     <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}
                          style={styles.displayHint}>
