@@ -104,11 +104,13 @@ class ProfileImage extends React.Component {
     		coverImageTextClass = '';
     		topPanel = 'hidden';
     	}
+        const editIconClass = {right: 10, top: 9}
         return (
         <div style={this.state.businessImageCover} id="profile-image-cover">
         	<div className={coverImageTextClass}><span className="coverImageText"><br /><br />{"Upload Business Cover Image"}</span></div>
         	<div className={topPanel}>{businessImageApproved?'Approved':'Pending'}</div>
         	<ImageUpdater 
+                class={editIconClass}
         		image={this.state.businessImageCoverUrl}        		
         		postUpload={this.coverImageUpdate.bind(this)} />
             <div style={this.state.businessImage} id="profile-image">
