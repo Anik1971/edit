@@ -85,6 +85,8 @@ class BusinessDetail extends React.Component {
 
     render() {
         let saveBtn = this.props.saveBtn + " floatingBtn";
+        const savBtnStyle = {padding: 5, backgroundColor: '#008800', height: 48};
+        const savLabelStyle = {bottom: 5}
         if (window.moveTab) {
             this.state.slideIndex = this.props.tab;
             window.moveTab = false;
@@ -133,11 +135,14 @@ class BusinessDetail extends React.Component {
                 </SwipeableViews>
                 <div className={saveBtn}>
                     <RaisedButton 
-                      backgroundColor={"#24BF37"}
+                      backgroundColor={"#008800"}
                       secondary={true} 
                       fullWidth={true}
-                      label="SAVE CHANGES"                            
-                      labelPosition="after"                      
+                      label="SAVE CHANGES"
+                      labelColor="white"                            
+                      labelPosition="after"
+                      labelStyle={savLabelStyle}
+                      style={savBtnStyle}                      
                       className={this.props.saveBtn}                       
                       onClick={this.props.executeSave}>                      
                     </RaisedButton>
