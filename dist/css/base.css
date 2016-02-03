@@ -344,7 +344,7 @@ table {
   width: 100%;
   text-align: center;
   display: block;
-  border: 1px solid #EEE; }
+  border: 2px solid #DDD; }
 
 .paymentWrapper {
   height: auto;
@@ -392,12 +392,18 @@ table {
   border-radius: 14px; }
 
 .galleryDelete {
-  float: right;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 46px;
+  line-height: 25px;
   padding: 10px;
-  color: #F70404;
+  color: white;
+  font-size: 20px;
   background-color: rgba(0, 0, 0, 0.45); }
+  .galleryDelete .deleteIcon {
+    color: #F70404;
+    width: 44px;
+    height: auto;
+    float: right; }
 
 .docUpLoading {
   width: 100%;
