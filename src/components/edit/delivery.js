@@ -95,7 +95,7 @@ class Delivery extends React.Component {
     for(let i=0;i<tempServiceAreas.length+1;i++){
       this.state.serviceClass.push('hidden');
     }
-    this.deliveryVaildation.bind(this);
+    this.deliveryVaildation(this);
 	}	
   deliveryVaildation(){
     console.log('deliveryVaildation');
