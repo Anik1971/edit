@@ -303,14 +303,15 @@ class Description extends React.Component {
 	                onBlur={this.onBusinessShortDescBlur.bind(this)}
 	                onChange={this.onBusinessShortDescUpdate.bind(this)}
 	                errorText={this.state.errorText['businessShortDescription']}
-	                maxLimit={50}/>
+	                maxLength={50}/>
 	            <TextField fullWidth={true}
 	                floatingLabelText="Business Long Description"
 	                multiLine={true} 
 	                defaultValue={this.state.businessLongDescription} 
 	                onBlur={this.onBusinessLongDescBlur.bind(this)}
 	                onChange={this.onBusinessLongDescUpdate.bind(this)}
-	                errorText={this.state.errorText['businessLongDescription']}/> 
+	                errorText={this.state.errorText['businessLongDescription']}
+	                maxLength={300}/> 
 			    <SelectField value={this.state.languageType}
 	            	floatingLabelText="Language Translation Preference"
 	            	onChange={this.languageTypeChange.bind(this)}>
