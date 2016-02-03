@@ -46,7 +46,6 @@ const styles = {
 export default class ImageUpdater extends React.Component {
   constructor(props) {
     super(props);
-    console.info('ImageUpdater');
     this.state = {
       open: false,
       image: this.props.image,

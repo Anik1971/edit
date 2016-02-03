@@ -298,12 +298,8 @@ class Index extends React.Component {
     } 
     
 
-    console.log('Merged data:',bData);
     console.log('ExportData data:',exportData);
-    let _this = this;
-    //if(window.Android){
-      console.log(this.state.bData);
-      
+    let _this = this;      
       window.convertToStringBusinessProfileObj = JSON.stringify(exportData);
       let uData = {
         userId: 'a09bdcd8',
@@ -340,24 +336,6 @@ class Index extends React.Component {
           });          
         }
        });
-      /*console.log('convertToStringBusinessProfileObj',convertToStringBusinessProfileObj);
-      if(window.Android.saveBusinessData){
-        try {
-          let status = window.Android.saveBusinessData(convertToStringBusinessProfileObj);
-          console.log("....................save business data status............");
-          console.log(status);
-          this.setState({
-            snackbar: true,
-            snackbarMsg:'Saved successfully'
-          });
-        } catch (e) {
-          console.log("....................save business data failed due to crash............");
-          console.log(e);
-        } 
-      }else{
-        console.error('window.Android.saveBusinessData not found');
-      } */
-    //}
   }
   onSnackBarClose(){
     this.setState({

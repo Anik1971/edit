@@ -99,11 +99,11 @@ class Suggestions extends React.Component{
 	}
 	
 }
+let catChangeFlag = false;
 class Category extends React.Component{
 	constructor(props)
 	{
 		super(props);
-        console.log('new',this.props);
         let suggestions = [];
         let categoryField = [];
         let selectedCategory = this.props.selectedCategory.split(',');
@@ -114,6 +114,10 @@ class Category extends React.Component{
         }
 	}
 	loadCategory(index,e){
+		if(!catChangeFlag){
+			this.props.manageSave('hidden');
+			catChangeFlag = true;
+		}
 		let keyWord = e.target.value;
 		if(keyWord.length){
 			let selectedCategory = this.state.selectedCategory;
@@ -127,12 +131,13 @@ class Category extends React.Component{
 			suggestions[index] = filterList;		
 			let categoryField = this.state.categoryField;
 			categoryField[index] = keyWord;
-			selectedCategory[index] = '';
+			//selectedCategory[index] = '';
 			this.setState({
 				suggestions:suggestions,
 				categoryField:categoryField
 			});
 		}else{
+			catChangeFlag = false;
 			this.onSuggestionSelect(index,keyWord);
 		}
 		//console.log('cate',filterList);
@@ -156,17 +161,28 @@ class Category extends React.Component{
 	}
 	categoryOnblur(index,e){
 		let _this = this;
-		setTimeout(function(){
+		setTimeout(function(){ 
 			let suggestions = _this.state.suggestions;
 			let selectedCategory = _this.state.selectedCategory;
 			let categoryField = _this.state.categoryField;
-			categoryField[index] = selectedCategory[index];
+			categoryField[index] = selectedCategory[index] || categoryField[index];
 			suggestions[index] = [];
 			_this.setState({
 				suggestions:suggestions,
 				categoryField:categoryField
 			});
+			if(catChangeFlag){
+				_this.props.manageSave('show');
+				catChangeFlag = false;
+			}
 		},400);
+	}
+	categoryOnFocus(index,e){
+		/*let offsetHeight = e.target.offsetHeight;
+		console.log('e.target.offsetHeight',offsetHeight);
+		let winY = window.scrollY;
+		console.log('window',winY);
+		window.scrollTo(0, winY-offsetHeight-100);*/
 	}
 	render(){
 		let selectedCategory = this.state.selectedCategory;
@@ -186,7 +202,8 @@ class Category extends React.Component{
 	        				<TextField fullWidth={true}
 		                		floatingLabelText={label}                		
 		                		defaultValue={cat}
-		                		onChange={this.loadCategory.bind(this,index)}	                		
+		                		onChange={this.loadCategory.bind(this,index)}	
+		                		onFocus={this.categoryOnFocus.bind(this,index)}
 		                		value={this.state.categoryField[index] || cat}/>
 			                	<Suggestions
 			                		onSuggestionSelect={this.onSuggestionSelect.bind(this)}

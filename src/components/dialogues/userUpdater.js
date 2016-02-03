@@ -47,7 +47,6 @@ const styles = {
 export default class UserUpdater extends React.Component {
   constructor(props) {
     super(props);
-    console.info('UserUpdater');
     if(this.props.name){
       name = this.props.name;
     }

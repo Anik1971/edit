@@ -46,7 +46,6 @@ const styles = {
 export default class PaymentUploader extends React.Component {
   constructor(props) {
     super(props);
-    console.info('paymentUploader');
     this.state = {
       open: false,
       image: this.props.image,

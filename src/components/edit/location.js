@@ -364,9 +364,6 @@ class Location extends React.Component {
         });
         this.props.manageSave('hidden');
     }
-    componentDidMount(){
-        console.log('componentDidMount');
-    }
 	render(){
         const locationStyle = {
             position: 'relative',

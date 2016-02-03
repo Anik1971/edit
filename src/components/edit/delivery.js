@@ -339,6 +339,7 @@ class Delivery extends React.Component {
     },function(){
       let uploadData = {};
       uploadData.custom = {};
+      uploadData.standard = {};
       uploadData.standard.minimumOrderAmount = this.state.minimumOrder;
       uploadData.standard.deliveryCharge = this.state.deliveryCharge;
       uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove; 

@@ -27,7 +27,6 @@ class ProfileDetail extends React.Component {
 			pending:pending_userImage,
 			userImage:userImage || pending_userImage
 		}
-		console.log('STate',this.state)
 	}
 	userImageUpdate(imageurl,userName){
 		if(imageurl.length){
