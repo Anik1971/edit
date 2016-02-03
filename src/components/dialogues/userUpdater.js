@@ -183,7 +183,7 @@ export default class UserUpdater extends React.Component {
     let imageClass = ''; 
     let dialogueImageTextClass = 'hidden';
     if(!imageSrc){
-      dialogueImageTextClass = ''
+      dialogueImageTextClass = 'dialogueImageText';
       imageClass = 'hidden';
     }
     let actions = [
@@ -230,7 +230,7 @@ export default class UserUpdater extends React.Component {
               </div>
             </CardActions>
             <CardMedia>      
-              <div className={dialogueImageTextClass}><span className="dialogueImageText" style={styles.img}><br /><br /><br /><br />{"No Image"}</span></div>
+              <div className={dialogueImageTextClass} style={styles.img}>{"No Image"}</div>
               <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
             </CardMedia>
             <CardActions>  

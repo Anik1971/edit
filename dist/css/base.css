@@ -344,7 +344,9 @@ table {
   width: 100%;
   text-align: center;
   display: block;
-  border: 2px solid #DDD; }
+  border: 2px solid #DDD;
+  line-height: 250px;
+  color: #DDD; }
 
 .paymentWrapper {
   height: auto;

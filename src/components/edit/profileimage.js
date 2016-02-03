@@ -49,11 +49,8 @@ class ProfileImage extends React.Component {
 
 	coverImageUpdate(imageurl){
 		console.log('imageurl');
-		let pending = this.props.bData.newExtras.pending;
-		console.log('pending',pending);
-		if(pending){
-			pending.coverImage = imageurl;
-		}
+		let pending = this.props.bData.newExtras.pending || {} ;
+		pending.coverImage = imageurl;
 		this.props.manageSave('show','pending',pending);
 		this.setState({
 		  businessImageCover: {
@@ -66,10 +63,8 @@ class ProfileImage extends React.Component {
 	}
 
 	businessImageUpdate(imageurl){
-		let pending = this.props.bData.newExtras.pending;
-		if(pending){
-			pending.businessImage = imageurl;
-		}
+		let pending = this.props.bData.newExtras.pending || {};
+		pending.businessImage = imageurl;
 		this.props.manageSave('show','pending',pending);
 		this.setState({
 		  businessImage: {
