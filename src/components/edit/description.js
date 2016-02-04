@@ -53,12 +53,20 @@ class Category extends React.Component{
         }
 	}
 	loadCategory(index,e){
+		let keyWord = e.target.value;
 		if(!catChangeFlag){
 			this.props.manageSave('hidden');
 			catChangeFlag = true;
 		}
-		let keyWord = e.target.value;
-		if(keyWord.length){
+		if(keyWord.length>0 && keyWord.length<2){
+			let categoryField = this.state.categoryField;
+			categoryField[index] = keyWord;
+			this.setState({
+				suggestions:[],
+				categoryField:categoryField
+			});
+			return;
+		}else if(keyWord.length){
 			let selectedCategory = this.state.selectedCategory;
 			let filterList = categories.filter((cat, index) => {
 				if(selectedCategory.indexOf(cat)<0 && cat.substring(0,keyWord.length).toLowerCase().indexOf(keyWord.toLowerCase().trim())>=0){
@@ -70,7 +78,6 @@ class Category extends React.Component{
 			suggestions[index] = filterList;		
 			let categoryField = this.state.categoryField;
 			categoryField[index] = keyWord;
-			//selectedCategory[index] = '';
 			this.setState({
 				suggestions:suggestions,
 				categoryField:categoryField
@@ -104,7 +111,7 @@ class Category extends React.Component{
 			let suggestions = _this.state.suggestions;
 			let selectedCategory = _this.state.selectedCategory;
 			let categoryField = _this.state.categoryField;
-			categoryField[index] = selectedCategory[index] || categoryField[index];
+			categoryField[index] = selectedCategory[index] || '';
 			suggestions[index] = [];
 			_this.setState({
 				suggestions:suggestions,
@@ -283,7 +290,7 @@ class Description extends React.Component {
 		this.setState({errorText: errorText});
 	}
 	savedCategory(value){
-		console.log('saving categories',categoriesToSave);
+		console.log('saving categories',value);
 		let categoriesToSave = [];
 		for(let key in value){
 			if(value[key] && value[key]!=''){
