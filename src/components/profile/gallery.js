@@ -127,7 +127,6 @@ class Gallery extends React.Component {
               </SwipeableViews>
               <div style={styles.indicatorContainer}>
                 {photos.map((photo,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
-                <div key={photos.length} style={this.getIndicatorStyle(photos.length)}></div>
               </div>
             </div>);
   }
