@@ -100,7 +100,7 @@ class BusinessDetail extends React.Component {
 			address += this.props.bData.businessAddress.city;
 			addressCard=
 					<CardText>
-				    	<strong>{"ADDRESS"}</strong>
+				    	<strong>{"ADDRESS"}</strong><br />
 				    	<br/>
 				    	{address}
 				    	{mapCard}
@@ -135,7 +135,7 @@ class BusinessDetail extends React.Component {
 		if(this.props.bData.businessDescription){
 			descriptionCard = 
 					<CardText>
-				    	<strong>{"DESCRIPTION"}</strong><br/>{this.props.bData.businessDescription}
+				    	<strong>{"DESCRIPTION"}</strong><br/><br />{this.props.bData.businessDescription}
 				    </CardText>;
 		}
 		let deliveryPricing = this.props.bData.deliveryPricing;
@@ -209,7 +209,7 @@ class BusinessDetail extends React.Component {
 				    	className="business-cardHeader" 
 				    	title="Business Details"/>	
 				    <CardText>
-				    	<strong>{"FAVOURITES"}</strong><br/>{this.props.bData.activeFavouriteCount}
+				    	<strong>{"FAVOURITES"}</strong><br/><br/>{this.props.bData.activeFavouriteCount}
 				    </CardText>			    
 				    {descriptionCard}
 				    {storeTimingsCard}
