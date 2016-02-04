@@ -96,13 +96,8 @@ class Gallery extends React.Component {
   componentWillMount(){
     let _this = this;
     Request
-<<<<<<< Updated upstream
-    .post('http://testchat.tsepak.com/goodbox/get_business_photos')
-    .send('{"supplierLoggedInId": "'+this.props.bData.supplierLoggedInId+'"}')
-=======
     .post(this.state.photoAPIurl + 'get_business_photos')
     .send('{"supplierLoggedInId": "'+ this.state.supplierLoggedInId + '"}')
->>>>>>> Stashed changes
     .end(function(err, res){
       if(err || !res.ok){
           console.error(err);
