@@ -232,7 +232,7 @@ class Description extends React.Component {
 		console.log('onBusinessPhoneChange',index);
 		this.state.businessPhone[index] = textField.target.value;
 		this.props.manageSave('updation');
-		if(textField.target.value.length>9 && this.state.phoneLimit > index+1){
+		if(textField.target.value.length>=6 && this.state.phoneLimit > index+1){
 			let phoneClass = this.state.phoneClass;
 			phoneClass[index+1] = '';
 			this.setState({
@@ -265,7 +265,9 @@ class Description extends React.Component {
 		let errorText = this.state.errorText;
 		this.state.businessPhone[index] = textField.target.value;
 		errorText['businessPhone'] = [];
-		if (textField.target.value.length === 10){
+		let phoneNo = textField.target.value
+		let pattern = /[0-9]{6,10}/
+		if (pattern.test(phoneNo)){
 			errorText['businessPhone'][index] = ''
 			delete window.errorStack['businessPhone'];
 			this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
