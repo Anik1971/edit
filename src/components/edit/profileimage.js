@@ -15,7 +15,7 @@ class ProfileImage extends React.Component {
         let businessImage = '';
         let businessImageApproved = false;
         if(this.props.bData.newExtras && this.props.bData.newExtras.approved){
-            approved =  this.props.bData.newExtras.pending;
+            approved =  this.props.bData.newExtras.approved;
         }
         if(this.props.bData.newExtras && this.props.bData.newExtras.pending){
             pending =  this.props.bData.newExtras.pending;

@@ -41,7 +41,6 @@ const styles = {
   dropzoneStyle: {
       margin: 'auto',
       position: 'relative',
-      top: 210,
       borderRadius: '100%',
       height: 50,
       width: 50,
@@ -65,7 +64,28 @@ const styles = {
 class Gallery extends React.Component {
   constructor(props) {
     super(props);
+    let userData = {
+        userId: 'a09bdcd8',
+        app: 'com.tsepak.supplierchat.debug'
+    };
+    let url = 'http://testchat.tsepak.com/goodbox/';
+    try {
+      if(window.Android)
+      {
+        userData = window.Android.getUserInfo();
+        if(userData.app == 'com.tsepak.supplierchat'){
+          url = 'http://chat.tsepak.com/goodbox/';
+        }
+
+      }
+    }
+    catch(e)
+    {
+      console.log(e);
+    }
     this.state = {
+      supplierLoggedInId: userData.userId,
+      photoAPIurl: url,
       slideIndex: 0,
       slideImages: [],
       uploading: false,
@@ -76,11 +96,11 @@ class Gallery extends React.Component {
   componentWillMount(){
     let _this = this;
     Request
-    .post('http://testchat.tsepak.com/goodbox/get_business_photos')
-    .send('{"supplierLoggedInId": "a09bdcd8"}')
+    .post(this.state.photoAPIurl + 'get_business_photos')
+    .send('{"supplierLoggedInId": "'+ this.state.supplierLoggedInId + '"}')
     .end(function(err, res){
       if(err || !res.ok){
-          console.error(err)
+          console.error(err);
       }
       else{
         if (res && res.text){
@@ -111,16 +131,16 @@ class Gallery extends React.Component {
     });
   }
   handlePostImageUpload(value) {
-    let _this = this
+    let _this = this;
     let newSlideImages = this.state.slideImages.slice();
-    let body = {supplierLoggedInId: "a09bdcd8", url: value}
+    let body = {supplierLoggedInId: this.state.supplierLoggedInId, url: value};
     Request
-    .post('http://testchat.tsepak.com/goodbox/add_business_photo')
+    .post(this.state.photoAPIurl + 'add_business_photo')
     .send(body)
     .end(function(err, res){
       if (err || !res.ok){
         console.error(err);
-        this.updateUploadingStatus(false);
+        _this.updateUploadingStatus(false);
       }
       else{
         if (res && res.text){
@@ -148,7 +168,7 @@ class Gallery extends React.Component {
     let slideImages = this.state.slideImages.slice();
     let _slideImages = this.state.slideImages.slice();
     let objectId = this.state.slideImages[index].objectId;
-    let body = {supplierLoggedInId: "a09bdcd8", objectId: objectId}; 
+    let body = {supplierLoggedInId: this.state.supplierLoggedInId, objectId: objectId};
     slideImages.splice(index, 1);
     this.setState({
       slideImages: slideImages
@@ -156,7 +176,7 @@ class Gallery extends React.Component {
       this.closePopover();
     });
     Request
-    .post('http://testchat.tsepak.com/goodbox/remove_business_photo')
+    .post(this.state.photoAPIurl + 'remove_business_photo')
     .send(JSON.stringify(body))
     .end(function(err, res){
       if (err || !res.ok){
@@ -206,7 +226,6 @@ class Gallery extends React.Component {
         label="Delete"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClose}
         onTouchTap={this.deletePic.bind(this)}/>
     ];
     let photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image.url  +")"})}>
@@ -234,6 +253,7 @@ class Gallery extends React.Component {
               </SwipeableViews>
               <div style={styles.indicatorContainer}>
                 {photos.map((photo,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
+                <div key={photos.length} style={this.getIndicatorStyle(photos.length)}></div>
               </div>
                <Dialog
                   title="Delete Photo"

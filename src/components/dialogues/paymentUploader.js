@@ -190,7 +190,7 @@ export default class PaymentUploader extends React.Component {
       </FlatButton>,
       <FlatButton
         disabled={!this.state.uploadSuccess}
-        label="Save"
+        label="Done"
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
