@@ -188,11 +188,9 @@ export default class UserUpdater extends React.Component {
   };
   onNameChange(name){
     console.log('onChange',name.target.value);
-    this.state.name = name.target.value;
     this.setState({
-      change: true
-    },function(){
-      this.props.postUpload(this.state.image,this.state.name);
+      change: true,
+      name: name.target.value
     });
   };
   render() {

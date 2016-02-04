@@ -6,34 +6,59 @@ import ContentInbox from 'material-ui/lib/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/lib/svg-icons/action/grade';
 import ImageUpdater from './../dialogues/imageUpdater';
 import UserUpdater from './../dialogues/userUpdater';
+import Request from 'superagent'
 const defaultUserIcon = 'https://cdn0.iconfinder.com/data/icons/users-android-l-lollipop-icon-pack/24/user-128.png';
 class ProfileDetail extends React.Component {
 	constructor(props) {
 		super(props);
 		let userImage = '';
 		let userName = '';
-		if(this.props.bData.newExtras.userName){
-			userName = this.props.bData.newExtras.userName;
-		}
-		if(this.props.bData.newExtras.approved && this.props.bData.newExtras.approved.userImage){
-			userImage = this.props.bData.newExtras.approved.userImage;
-		}		
-		let pending_userImage = '';		
-		if(this.props.bData.newExtras.pending && this.props.bData.newExtras.pending.userImage){
-			pending_userImage = this.props.bData.newExtras.pending.userImage;
-		}		
 		this.state = {
 			userName:userName,
-			pending:pending_userImage,
-			userImage:userImage || pending_userImage
+			userImage:userImage,
+			userDataLoaded: false
 		}
 	}
+	componentWillMount(){
+		console.log('ProfileEdit componentDidMount');
+        let url = 'http://testchat.tsepak.com/goodbox/get_details'
+        try {
+          if (window.Android) {
+            let userData = JSON.parse(window.Android.getUserInfo());
+            if (userData.app == 'com.tsepak.supplierchat') {
+              url = 'http://chat.tsepak.com/goodbox/get_details';
+            }
+
+          }
+        }
+        catch (e) {
+          console.log(e);
+        }
+        let user_info = JSON.parse(Android.getUserInfo());
+        let _this = this;
+        Request
+        .get(url)
+        .set('AUTHTOKEN', user_info.authToken)
+        .set('CLIENTID', user_info.clientId)
+        .end(function(err, res){
+            if(err || !res.ok){
+                alert("error occured")
+            }
+            else{
+                console.log(res.text);
+                let resp = JSON.parse(res.text);
+                _this.setState({
+                    userName:resp.name,
+                    userImage:resp.profile_pic,
+                    userDataLoaded:true
+                })   
+            }
+        })
+    }
 	userImageUpdate(imageurl,userName){
+		console.log('userImageUpdate');
 		if(imageurl.length){
 			console.log('imageurl');			
-			let pending = this.props.bData.newExtras.pending || {};
-			pending.userImage = imageurl;
-			this.props.manageSave('show','pending',pending);
 			this.setState({
 				userImage: imageurl
 			});
@@ -42,15 +67,52 @@ class ProfileDetail extends React.Component {
 			this.setState({
 				userName:userName
 			});
-			this.props.manageSave('show','userName',userName);
-		}		
+			// this.props.manageSave('show','userName',userName);
+		}
+		let user_info = JSON.parse(Android.getUserInfo());
+		let url = 'http://testchat.tsepak.com/goodbox/set_details';
+		try {
+	      if (window.Android) {
+	        let userData = JSON.parse(window.Android.getUserInfo());
+	        if (userData.app == 'com.tsepak.supplierchat') {
+	          url = 'http://chat.tsepak.com/goodbox/set_details';
+	        }
+
+	      }
+	    }
+	    catch (e) {
+	      console.log(e);
+	    }
+		let body = JSON.stringify({name: userName, profile_pic: imageurl})
+		Request
+		.post(url)
+		.set('AUTHTOKEN', user_info.authToken)
+		.set('CLIENTID', user_info.clientId)
+		.send(body)
+		.end(function(err, res){
+			if(err || !res.ok){
+				alert('Error Spotted')
+			}
+			else{
+				let response = JSON.parse(res.text);
+			}
+		})		
 	}
     render() {
-    	let userImage = this.state.userImage || this.state.pending || defaultUserIcon;
+    	let userImage = this.state.userImage || defaultUserIcon;
        
         let userName = this.state.userName || 'Your Name';
 
-        let userImagePreview = this.state.userImage || this.state.pending;
+        let userImagePreview = this.state.userImage;
+
+        let userUpdater = '';
+
+        if(this.state.userDataLoaded){
+        	userUpdater = <UserUpdater 			        		 
+		        		image={userImagePreview} 
+		        		name={this.state.userName}      		
+				        postUpload={this.userImageUpdate.bind(this)} />;        
+		}
         return (        
         <div id="profile-detail">
             <div className="business-name">{this.props.bData.businessName}</div>
@@ -62,11 +124,7 @@ class ProfileDetail extends React.Component {
 			        leftAvatar={
 				        <Avatar src={userImage} />
 				    }>
-			    	<UserUpdater 			        		 
-		        		image={userImagePreview} 
-		        		name={this.state.userName}      		
-				        postUpload={this.userImageUpdate.bind(this)} 
-				        title={'User Details'}/>
+			    	{userUpdater}
 				    </ListItem>
 			    </List>
 			</div>
