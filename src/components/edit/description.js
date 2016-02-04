@@ -312,6 +312,8 @@ class Description extends React.Component {
 	                errorText={this.state.errorText['businessLongDescription']}
 	                maxLength={300}/> 
 			    <SelectField value={this.state.languageType}
+			    	anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          			targetOrigin={{horizontal: 'left', vertical: 'top'}}	
 	            	floatingLabelText="Language Translation Preference"
 	            	onChange={this.languageTypeChange.bind(this)}>
 	            	<MenuItem value={"None"} primaryText="None"/>

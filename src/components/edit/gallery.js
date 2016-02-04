@@ -41,7 +41,6 @@ const styles = {
   dropzoneStyle: {
       margin: 'auto',
       position: 'relative',
-      top: 210,
       borderRadius: '100%',
       height: 50,
       width: 50,
@@ -206,7 +205,6 @@ class Gallery extends React.Component {
         label="Delete"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClose}
         onTouchTap={this.deletePic.bind(this)}/>
     ];
     let photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image.url  +")"})}>

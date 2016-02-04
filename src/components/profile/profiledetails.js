@@ -12,10 +12,31 @@ class ProfileDetail extends React.Component {
     	if(this.props.bData.newExtras && this.props.bData.newExtras.userName){
     		userName = this.props.bData.newExtras.userName;
     	}
-    	let userImage = defaultUserIcon;
-    	if(this.props.bData.newExtras && this.props.bData.newExtras.userImage){
-    		userImage = this.props.bData.newExtras.userImage;
-    	}
+
+
+        let userImage = '';
+        let userImageApproved = false;
+        let approved = '';
+        let pending = '';
+        if(this.props.bData.newExtras && this.props.bData.newExtras.approved){
+            approved =  this.props.bData.newExtras.approved;
+        }
+        if(this.props.bData.newExtras && this.props.bData.newExtras.pending){
+            pending =  this.props.bData.newExtras.pending;
+        }
+        //coverImage
+        if(pending.userImage){
+            userImage = pending.userImage;
+            userImageApproved = false;
+        }else{
+            if(approved.userImage){
+               userImage = approved.userImage; 
+               userImageApproved = true;
+            }
+        }
+        if(!userImage){
+            userImage = defaultUserIcon;
+        }
         return (
         <div id="profile-detail">
             <div className="business-name">{this.props.bData.businessName}</div>
