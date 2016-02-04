@@ -210,6 +210,7 @@ export default class PaymentUploader extends React.Component {
           repositionOnUpdate={false}
           style={styles.dialog } 
           title={this.props.title}
+          titleClassName={'dialogTitle'}
           contentStyle={styles.dialogContent}>
           <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
           <Card zDepth={0}>

@@ -106,17 +106,19 @@ class ProfileImage extends React.Component {
     	}
         return (
         <div style={this.state.businessImageCover} id="profile-image-cover">
-        	<div className={coverImageTextClass}><span className="coverImageText"><br /><br />{"Upload Business Cover Image"}</span></div>
-        	<div className={topPanel}>{businessImageApproved?'Approved':'Pending'}</div>
+        	<div className={coverImageTextClass}><span className="coverImageText"><br />{"Upload Business Cover"}</span></div>
         	<div  className={"businessImageCoverIcon"}>
                 <ImageUpdater 
+                    approvedClass={topPanel}
+                    approvedText={businessImageApproved?'Approved':'Pending'}
             		image={this.state.businessImageCoverUrl}        		
             		postUpload={this.coverImageUpdate.bind(this)} 
             		title={'Business Cover Image'} />
             </div>
             <div style={this.state.businessImage} id="profile-image">
-            	<div className={bottomPanel}>{coverBgApproved?'Approved':'Pending'}</div>
             	<ImageUpdater 
+            	    approved={bottomPanel}
+            	    approvedText={coverBgApproved?'Approved':'Pending'}
         			image={this.state.businessImageUrl}         		
         			postUpload={this.businessImageUpdate.bind(this)} 
         			title={'Business Logo'} /> 	

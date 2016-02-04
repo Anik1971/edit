@@ -52,7 +52,6 @@ class BusinessDetail extends React.Component {
                 disableDoubleClickZoom: false
 	        }); 
 	        let geocoder = new google.maps.Geocoder;
-	        let infowindow = new google.maps.InfoWindow;                
 	        let latlng = {
 	            lat: position.coords.latitude, 
 	            lng: position.coords.longitude
@@ -66,8 +65,6 @@ class BusinessDetail extends React.Component {
 	                  position: latlng,
 	                  map: map
 	                });
-	                infowindow.setContent('store location');
-	                infowindow.open(map, marker);	                
 	            }
 	        });
 		}
@@ -89,7 +86,7 @@ class BusinessDetail extends React.Component {
 				    </CardText>	   
 			 	</Card>	;
 		}
-		let addressCard = <CardText><strong>{"Address: "}</strong><i>Yet to be published.</i></CardText>;
+		let addressCard = '';
 		let mapCard = '';
 		if(this.props.bData.latitude && this.props.bData.longitude){
 			mapCard = <div style={styles.maps} className={"supplierMap"} id="supplierMap"></div>;
@@ -97,16 +94,19 @@ class BusinessDetail extends React.Component {
 			this.state.longitude = this.props.bData.longitude;*/
 		}
 		if(this.props.bData.businessAddress.address!='' || this.props.bData.businessAddress.locality!='' || this.props.bData.businessAddress.city!=''){
+			let address = this.props.bData.businessAddress.address;
+			address = address ? (address + ", ") : "";
+			address += this.props.bData.businessAddress.locality ? (this.props.bData.businessAddress.locality + ", ") : "";
+			address += this.props.bData.businessAddress.city;
 			addressCard=
 					<CardText>
-				    	<strong>{"Address: "}</strong>
-				    	{this.props.bData.businessAddress.address}{", "}
-				    	{this.props.bData.businessAddress.locality}{", "}
-				    	{this.props.bData.businessAddress.city}
+				    	<strong>{"ADDRESS"}</strong>
+				    	<br/>
+				    	{address}
 				    	{mapCard}
 				    </CardText>;
 		}
-		let storeTimingsCard = <CardText><strong>{"Store Timings: "}</strong><i>Yet to be published.</i></CardText>;
+		let storeTimingsCard ='';
 		if(this.props.bData.storeTimings.length){	
 			let storeTimings = [];
 			if(this.props.bData.storeTimings){
@@ -114,7 +114,8 @@ class BusinessDetail extends React.Component {
 			}		
 			storeTimingsCard=
 					<CardText>
-				    	<strong>{"Store Timings: "}</strong>
+				    	<strong>{"STORE TIMINGS"}</strong>
+				    	<br/>
 				    	{  
 		            		storeTimings.map((timing, index) => {
 		            			let days = timing.days;
@@ -130,11 +131,11 @@ class BusinessDetail extends React.Component {
 		            	}   
 				    </CardText>;
 		}
-		let descriptionCard = <CardText><strong>{"Description: "}</strong><i>Yet to be published.</i></CardText>;
+		let descriptionCard = <CardText><strong>{"DESCRIPTION"}</strong><br/><i>Yet to be published.</i></CardText>;
 		if(this.props.bData.businessDescription){
 			descriptionCard = 
 					<CardText>
-				    	<strong>{"Description: "}</strong>{this.props.bData.businessDescription}
+				    	<strong>{"DESCRIPTION"}</strong><br/>{this.props.bData.businessDescription}
 				    </CardText>;
 		}
 		let deliveryPricing = this.props.bData.deliveryPricing;
@@ -208,7 +209,7 @@ class BusinessDetail extends React.Component {
 				    	className="business-cardHeader" 
 				    	title="Business Details"/>	
 				    <CardText>
-				    	<strong>{"Favourites: "}</strong>{this.props.bData.totalFavouriteCount}
+				    	<strong>{"FAVOURITES"}</strong><br/>{this.props.bData.totalFavouriteCount}
 				    </CardText>			    
 				    {descriptionCard}
 				    {storeTimingsCard}

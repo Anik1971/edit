@@ -45,10 +45,10 @@ class ProfileImage extends React.Component {
         
     	let styles = {
 		    profile_image_cover: {
-		        'background-image': 'url('+coverBg+')'
+		        backgroundImage: 'url('+coverBg+')'
 		    },
 		    profile_image: {
-		        'background-image': 'url('+businessImage+')'
+		        backgroundImage: 'url('+businessImage+')'
 		    }
 		};
 		let businessNameTag = '';

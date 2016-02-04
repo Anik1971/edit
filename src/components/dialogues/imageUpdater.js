@@ -189,7 +189,12 @@ export default class ImageUpdater extends React.Component {
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
-    ];    
+    ];   
+    let approvedDiv = '';
+    if(this.props.approvedText)
+    {
+      approvedDiv = <div className={'imageStatus'}>{this.props.approvedText}</div>;
+    }
     return (
       <div>
          <EditIcon 
@@ -204,13 +209,18 @@ export default class ImageUpdater extends React.Component {
           autoDetectWindowHeight={false}
           repositionOnUpdate={false}
           title={this.props.title}
+          titleClassName={'dialogTitle'}
           style={styles.dialog } 
+          autoScrollBodyContent={true}
           contentStyle={styles.dialogContent}>
           <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
           <Card zDepth={0}>
             <CardMedia>
               <div className={dialogueImageTextClass} style={styles.img}>{"No Image"}</div>
-              <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
+              <div className={imageClass}>
+                {approvedDiv}
+                <img style={styles.img} src={imageSrc}/>
+              </div>
             </CardMedia>
             <CardActions>  
               <div className={this.state.loader}>        

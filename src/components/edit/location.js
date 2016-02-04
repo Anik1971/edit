@@ -426,6 +426,7 @@ class Location extends React.Component {
                           title={'Update store location'}                        
                           onRequestClose={this.closePopover.bind(this, 'pop')} 
                           style={styles.dialog }
+                          autoScrollBodyContent={true}
                           contentStyle={styles.dialogContent}>
                           <div className="dialogueCancel"><ClearIcon onClick={this.closePopover.bind(this, 'pop')} /></div>
                           <div style={{padding:2}}>                         

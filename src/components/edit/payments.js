@@ -117,7 +117,8 @@ class Payments extends React.Component {
         const businessTypes = ['Individual', 'Propreitorship', 'Partnership', 'Pvt Ltd Co'];
         const styles = {
             panCard: {
-                width: 'calc(100% - 100px)'
+                width: 'calc(100% - 30px)',
+                marginRight:4
             },
             upload: {
               marginLeft: 10  
@@ -157,7 +158,7 @@ class Payments extends React.Component {
                     <div className="paymentRow">
                         <TextField 
                             className="paymentText"
-                            floatingLabelText="IFSC:Bank Account Number" 
+                            floatingLabelText="IFSC & Bank Account Number" 
                             style={styles.panCard}
                             defaultValue={this.state.bankAcc}
                             onChange={this.onPaymentChange.bind(this)}
@@ -165,13 +166,16 @@ class Payments extends React.Component {
                         <PaymentUploader
                             image={this.state.bankAcc_image}                
                             postUpload={this.bankAcc_imageUpdate.bind(this)} 
-                            title={'Bank Account'}/>
+                            title={'Canceled Cheque'}/>
                     </div>
                      <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}>
                          <TextField
                              className="paymentText"
                              floatingLabelText="Residential Address" 
                              style={styles.panCard}
+                             multiLine={true}
+                             rows={2}
+                             rowsMax={4}
                              defaultValue={this.state.resAddr}
                              onChange={this.onPaymentChange.bind(this)}
                              onBlur={this.onResAddrBlur.bind(this)}/>
@@ -191,11 +195,11 @@ class Payments extends React.Component {
                         <PaymentUploader
                             image={this.state.licence_image}                
                             postUpload={this.licence_imageUpdate.bind(this)} 
-                            title={'Licence'}/>
+                            title={'VAT / CST / Trade license*'}/>
                     </div>
                     <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}
                          style={styles.displayHint}>
-                    * Or other business registration proof issued by government
+                    * Or other business registration proof issued by Government
                     </div>
                   </div>);
     }

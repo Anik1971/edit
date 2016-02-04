@@ -265,8 +265,7 @@ class Description extends React.Component {
 		let errorText = this.state.errorText;
 		this.state.businessPhone[index] = textField.target.value;
 		errorText['businessPhone'] = [];
-		var pattern = /^\+{0,2}([\-\. ])?(\(?\d{0,3}\))?([\-\. ])?\(?\d{0,3}\)?([\-\. ])?\d{3}([\-\. ])?\d{4}/
-		if (pattern.test(textField.target.value) && textField.target.value.replace(/[^\d]/g, '').length === 10){
+		if (textField.target.value.length === 10){
 			errorText['businessPhone'][index] = ''
 			delete window.errorStack['businessPhone'];
 			this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
@@ -298,7 +297,7 @@ class Description extends React.Component {
 		return (
 		    <div style={this.props.styles.slide}>
 	            <TextField fullWidth={true}
-	            	floatingLabelText={"One Line Description"}
+	            	floatingLabelText={"Short Description (max 50 chars)"}
 	                defaultValue={this.state.businessShortDescription} 
 	                onBlur={this.onBusinessShortDescBlur.bind(this)}
 	                onChange={this.onBusinessShortDescUpdate.bind(this)}
@@ -337,6 +336,7 @@ class Description extends React.Component {
             				phoneNum = this.state.businessPhone[index];
             			}
             			return (<TextField fullWidth={true}
+            			    type="number"
 	                		floatingLabelText={phoneText}
 	                		onBlur={this.onBusinessPhoneBlur.bind(this,index)}
 	                		onChange={this.onBusinessPhoneChange.bind(this,index)}

@@ -85,7 +85,7 @@ class BusinessDetail extends React.Component {
 
     render() {
         let saveBtn = this.props.saveBtn + " floatingBtn";
-        const savBtnStyle = {backgroundColor: '#008800', borderRadius:0};
+        const savBtnStyle = {backgroundColor: '#008800'};
         if (window.moveTab) {
             this.state.slideIndex = this.props.tab;
             window.moveTab = false;

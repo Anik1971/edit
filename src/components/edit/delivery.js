@@ -102,7 +102,7 @@ class Delivery extends React.Component {
     let errorText = this.state.errorText;
     if(this.state.homeDeliveryEnabled){
       if(this.state.serviceAreas.length == 0){
-        errorText['serviceAreas'] = 'Service Areas is required';
+        errorText['serviceAreas'] = 'Service Areas are required';
         this.state.errorText = errorText;
         window.errorStack['serviceAreas'] = {
           text: errorText['serviceAreas'],
@@ -487,6 +487,7 @@ class Delivery extends React.Component {
                   <div className={this.state.deliveryPricingStandard} id="deliveryPricingStandard">
                     <div className="subContent">
                       <TextField fullWidth={true}
+                          type={"number"}
                           floatingLabelText={"Minimum Order"}
                           errorText={this.state.errorText['minimumOrder']}
                           defaultValue={this.state.minimumOrder} 
@@ -494,12 +495,14 @@ class Delivery extends React.Component {
                           onBlur = {this.onMinimumOrderBlur.bind(this)}/>
                       <TextField fullWidth={true}
                           floatingLabelText="Delivery Charge"                        
+                          type={"number"}
                           defaultValue={this.state.deliveryCharge} 
                           errorText={this.state.errorText['deliveryCharge']}
                           onChange = {this.onDeliveryChargeChange.bind(this)} 
                           onBlur = {this.onDeliveryChargeBlur.bind(this)}/>
                       <TextField fullWidth={true}
                           floatingLabelText="Free Delivery Above"                        
+                          type={"number"}
                           defaultValue={this.state.freeDeliveryAbove} 
                           errorText={this.state.errorText['freeDeliveryAbove']}
                           onChange = {this.onFreeDeliveryAboveChange.bind(this)} 
@@ -533,7 +536,7 @@ class Delivery extends React.Component {
                     </div>
                     <Geosuggest 
                         ref="geoSug"
-                        placeholder={"Enter service area"}
+                        placeholder={"Enter Service Areas"}
                         className={"GeoSuggestList"}
                         inputClassName={"GeoSuggestinput"}
                         autoActivateFirstSuggest={true}

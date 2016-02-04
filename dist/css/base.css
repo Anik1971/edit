@@ -459,6 +459,19 @@ table {
 *, *::after, *::before {
   box-sizing: border-box; }
 
+.dialogTitle {
+  font-size: 17px !important;
+  line-height: 17px !important;
+  margin-bottom: -20px !important;
+  padding: 10px 24px 0 24px !important; }
+
+.imageStatus {
+  position: absolute;
+  width: 100%;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white; }
+
 .paymenthide-true {
   display: none !important;
   height: 0 !important;
@@ -497,7 +510,6 @@ i {
   position: fixed;
   bottom: 0px;
   width: 100%;
-  height: auto;
   z-index: 1; }
 
 .storeMap {

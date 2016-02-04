@@ -97,6 +97,8 @@ export default class ProfilePic extends React.Component {
           actions={actions}
           modal={false}
           open={this.state.open}
+          autoScrollBodyContent={true}
+          titleClassName={'dialogTitle'}
           onRequestClose={this.handleClose}>
           <Card zDepth={1}>
             <CardMedia>
