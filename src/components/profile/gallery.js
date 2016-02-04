@@ -42,7 +42,7 @@ class Gallery extends React.Component {
     let url = 'http://testchat.tsepak.com/goodbox/';
     try {
       if (window.Android) {
-        userData = window.Android.getUserInfo();
+        userData = JSON.parse(window.Android.getUserInfo());
         if (userData.app == 'com.tsepak.supplierchat') {
           url = 'http://chat.tsepak.com/goodbox/';
         }
@@ -52,7 +52,6 @@ class Gallery extends React.Component {
     catch (e) {
       console.log(e);
     }
-
     this.state = {
       supplierLoggedInId: userData.userId,
       photoAPIurl: url,

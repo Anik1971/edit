@@ -23,7 +23,7 @@ class Delivery extends React.Component {
     let homeDeliveryEnabled = false;
     let tempServiceAreas = [];
     let serviceAreasObj = [];
-    if(this.props.bData.serviceAreas.areas){
+    if(this.props.bData.serviceAreas.areas && this.props.bData.serviceAreas.areas.length){
       homeDelivery = '';
       homeDeliveryEnabled = true;
       for(let key in this.props.bData.serviceAreas.areas){
@@ -98,7 +98,6 @@ class Delivery extends React.Component {
     this.deliveryVaildation(this);
 	}	
   deliveryVaildation(){
-    console.log('deliveryVaildation');
     let errorText = this.state.errorText;
     if(this.state.homeDeliveryEnabled){
       if(this.state.serviceAreas.length == 0){
@@ -115,7 +114,7 @@ class Delivery extends React.Component {
       }
 
       if(this.state.deliveryPricing == 'standard'){
-        if(!this.state.minimumOrder || this.state.minimumOrder <=0 ){
+        if(!this.state.minimumOrder || this.state.minimumOrder <0 ){
           errorText['minimumOrder'] = 'Minimum Order is required';
           this.state.errorText = errorText;
           window.errorStack['minimumOrder'] = {
@@ -232,6 +231,7 @@ class Delivery extends React.Component {
         uploadData.standard.deliveryCharge = this.state.deliveryCharge;
         uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove;   
         this.deliveryVaildation(this);
+        this.props.manageSave('show','')
         this.props.manageSave('show','deliveryPricing',uploadData);
       });
     }else{
@@ -248,11 +248,13 @@ class Delivery extends React.Component {
     }
   }
   onDeliveryStatusToggle(e, deliveryStatus){
-      console.log(deliveryStatus);
       if(deliveryStatus){
         this.setState({
           homeDelivery: '',
-          homeDeliveryEnabled: true
+          homeDeliveryEnabled: true,
+          serviceAreas:[],
+          serviceAreasObj:[],
+          geoInitialVal:''
         },function(){
           let uploadData = {};
           uploadData.standard = {};
@@ -260,6 +262,10 @@ class Delivery extends React.Component {
           uploadData.standard.deliveryCharge = this.state.deliveryCharge;
           uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove;   
           this.props.manageSave('show','deliveryPricing',uploadData);
+          let tempServiceAreas = {};
+          tempServiceAreas.areas = [];
+          tempServiceAreas.areas = this.state.serviceAreasObj;
+          this.props.manageSave('show','serviceAreas',tempServiceAreas);
           this.deliveryVaildation(this);          
         });
       }else{

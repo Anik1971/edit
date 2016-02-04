@@ -229,7 +229,7 @@ class Gallery extends React.Component {
         onTouchTap={this.deletePic.bind(this)}/>
     ];
     let photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image.url  +")"})}>
-        <div className="galleryDelete">{image.verified?'Approved':'Pending'} <DeleteIcon className="deleteIcon" onClick={this.deletePicPrompt.bind(this,index)} color={'rgba(255,255,255,0.85)'}/></div>
+        <div className="galleryDelete">{image.verified?'Approved':'Pending Approval'} <DeleteIcon className="deleteIcon" onClick={this.deletePicPrompt.bind(this,index)} color={'rgba(255,255,255,0.85)'}/></div>
         </div>);
     return (<div id="gallery">
               <SwipeableViews

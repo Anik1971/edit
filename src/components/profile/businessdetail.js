@@ -78,11 +78,11 @@ class BusinessDetail extends React.Component {
 				    <CardTitle
 				    className="business-cardHeader"
 				    title="Payments"/>				    
-				    <CardText>
-				    	{"VISA"}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				    	{"MASTER-CARD"}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				    	{"MAESTRO"}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				    	{"NET-BANKING"}
+				    <CardText className="paymentsCards">
+				    	<span>{"VISA"}</span>
+				    	<span>{"MASTER-CARD"}</span>
+				    	<span>{"MAESTRO"}</span>
+				    	<span>{"NET-BANKING"}</span>
 				    </CardText>	   
 			 	</Card>	;
 		}
@@ -100,7 +100,7 @@ class BusinessDetail extends React.Component {
 			address += this.props.bData.businessAddress.city;
 			addressCard=
 					<CardText>
-				    	<strong>{"ADDRESS"}</strong>
+				    	<strong>{"ADDRESS"}</strong><br />
 				    	<br/>
 				    	{address}
 				    	{mapCard}
@@ -135,25 +135,25 @@ class BusinessDetail extends React.Component {
 		if(this.props.bData.businessDescription){
 			descriptionCard = 
 					<CardText>
-				    	<strong>{"DESCRIPTION"}</strong><br/>{this.props.bData.businessDescription}
+				    	<strong>{"DESCRIPTION"}</strong><br/><br />{this.props.bData.businessDescription}
 				    </CardText>;
 		}
 		let deliveryPricing = this.props.bData.deliveryPricing;
 		let cardContent = '';
 		let areas = this.props.bData.serviceAreas.areas;
-		if(!this.props.bData.serviceAreas || !areas || areas.length == 0 || this.props.bData.serviceAreas.length==0){
+		if(!this.props.bData.serviceAreas || !areas || areas.length == 0){
 			cardContent = <CardText>
 				    	DISABLED
 				    </CardText>;
 		}else if(deliveryPricing.standard){
 			if(deliveryPricing.standard.minimumOrderAmount || 
 				deliveryPricing.standard.deliveryCharge || 
-				deliveryPricing.standard.freeDeliveryAbove){
+				deliveryPricing.standard.freeDeliveryAmount){
 				cardContent = <CardText>
 				    	<strong>PRICING</strong><br /><br />
-				    	{"Minimum Order: "}{deliveryPricing.standard.deliveryCharge}<br />
+				    	{"Minimum Order: "}{deliveryPricing.standard.minimumOrderAmount}<br />
 				    	{"Delivery Charge: "}{deliveryPricing.standard.deliveryCharge}<br />
-				    	{"Free Delivery above: "}{deliveryPricing.standard.freeDeliveryAbove}
+				    	{"Free Delivery above: "}{deliveryPricing.standard.freeDeliveryAmount}
 				    </CardText>;
 			}else{
 				cardContent = <CardText>
@@ -209,7 +209,7 @@ class BusinessDetail extends React.Component {
 				    	className="business-cardHeader" 
 				    	title="Business Details"/>	
 				    <CardText>
-				    	<strong>{"FAVOURITES"}</strong><br/>{this.props.bData.activeFavouriteCount}
+				    	<strong>{"FAVOURITES"}</strong><br/><br/>{this.props.bData.activeFavouriteCount}
 				    </CardText>			    
 				    {descriptionCard}
 				    {storeTimingsCard}
