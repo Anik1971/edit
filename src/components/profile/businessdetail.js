@@ -141,19 +141,19 @@ class BusinessDetail extends React.Component {
 		let deliveryPricing = this.props.bData.deliveryPricing;
 		let cardContent = '';
 		let areas = this.props.bData.serviceAreas.areas;
-		if(!this.props.bData.serviceAreas || !areas || areas.length == 0 || this.props.bData.serviceAreas.length==0){
+		if(!this.props.bData.serviceAreas || !areas || areas.length == 0){
 			cardContent = <CardText>
 				    	DISABLED
 				    </CardText>;
 		}else if(deliveryPricing.standard){
 			if(deliveryPricing.standard.minimumOrderAmount || 
 				deliveryPricing.standard.deliveryCharge || 
-				deliveryPricing.standard.freeDeliveryAbove){
+				deliveryPricing.standard.freeDeliveryAmount){
 				cardContent = <CardText>
 				    	<strong>PRICING</strong><br /><br />
-				    	{"Minimum Order: "}{deliveryPricing.standard.deliveryCharge}<br />
+				    	{"Minimum Order: "}{deliveryPricing.standard.minimumOrderAmount}<br />
 				    	{"Delivery Charge: "}{deliveryPricing.standard.deliveryCharge}<br />
-				    	{"Free Delivery above: "}{deliveryPricing.standard.freeDeliveryAbove}
+				    	{"Free Delivery above: "}{deliveryPricing.standard.freeDeliveryAmount}
 				    </CardText>;
 			}else{
 				cardContent = <CardText>
