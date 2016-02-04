@@ -23,7 +23,7 @@ class Delivery extends React.Component {
     let homeDeliveryEnabled = false;
     let tempServiceAreas = [];
     let serviceAreasObj = [];
-    if(this.props.bData.serviceAreas.areas.length){
+    if(this.props.bData.serviceAreas.areas && this.props.bData.serviceAreas.areas.length){
       homeDelivery = '';
       homeDeliveryEnabled = true;
       for(let key in this.props.bData.serviceAreas.areas){
