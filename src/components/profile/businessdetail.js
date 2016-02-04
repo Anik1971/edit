@@ -131,7 +131,7 @@ class BusinessDetail extends React.Component {
 		            	}   
 				    </CardText>;
 		}
-		let descriptionCard = <CardText><strong>{"DESCRIPTION"}</strong><br/><i>Yet to be published.</i></CardText>;
+		let descriptionCard = '';
 		if(this.props.bData.businessDescription){
 			descriptionCard = 
 					<CardText>
@@ -155,11 +155,13 @@ class BusinessDetail extends React.Component {
 				    	{"Delivery Charge: "}{deliveryPricing.standard.deliveryCharge}<br />
 				    	{"Free Delivery above: "}{deliveryPricing.standard.freeDeliveryAmount}
 				    </CardText>;
-			}else{
+			}else if(deliveryPricing.custom.customDeliveryPricing){
 				cardContent = <CardText>
 				    	<strong>PRICING</strong><br /><br />
 				    	{"Custom delivery: "}{deliveryPricing.custom.customDeliveryPricing}<br />
 				    </CardText>;
+			}else{
+				cardContent = '';
 			}
 		}
 		let serviceAreas='';
@@ -219,17 +221,8 @@ class BusinessDetail extends React.Component {
 			 	</Card>	
 			 	{paymentsCard}			 		
 			 	{serviceAreasCard}
-			 	<Card
-			 		style={styles.card_shadow}
-			 		className="business-card">				    
-				    <CardTitle
-				    className="business-cardHeader"
-				    title="Photos"/>				    
-				    <CardMedia>
-				    	<Gallery 
-			 				bData={this.props.bData} />
-				    </CardMedia>	   
-			 	</Card>			 	
+			 	<Gallery 
+			 		bData={this.props.bData} />				    			 	
 			</div>);
 	}
 }

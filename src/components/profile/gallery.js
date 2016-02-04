@@ -7,6 +7,11 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import SwipeableViews from 'react-swipeable-views';
 import objectAssign from 'object-assign';
 import Request from 'superagent';
+import Card from 'material-ui/lib/card/card';
+import CardActions from 'material-ui/lib/card/card-actions';
+import CardHeader from 'material-ui/lib/card/card-header';
+import CardMedia from 'material-ui/lib/card/card-media';
+import CardTitle from 'material-ui/lib/card/card-title';
 
 
 
@@ -118,16 +123,26 @@ class Gallery extends React.Component {
     let photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image.url  +")"})}>
         <div className="galleryDelete">{image.verified?'Approved':'Pending'}</div>
     </div>);
-    return (<div id="gallery">
-              <SwipeableViews
-                index={this.state.slideIndex}
-                onChangeIndex={this.handleChange.bind(this)}>
-                {photos}
-              </SwipeableViews>
-              <div style={styles.indicatorContainer}>
-                {photos.map((photo,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
-              </div>
-            </div>);
+    return (<Card
+          style={styles.card_shadow}
+          className="business-card">            
+            <CardTitle
+            className="business-cardHeader"
+            title="Photos"/>            
+            <CardMedia>
+              <div id="gallery">
+                  <SwipeableViews
+                    index={this.state.slideIndex}
+                    onChangeIndex={this.handleChange.bind(this)}>
+                    {photos}
+                  </SwipeableViews>
+                  <div style={styles.indicatorContainer}>
+                    {photos.map((photo,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
+                  </div>
+                </div>
+              </CardMedia>     
+        </Card>
+      );
   }
 }
 export default Gallery;

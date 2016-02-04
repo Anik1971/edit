@@ -86,7 +86,8 @@ class Delivery extends React.Component {
       serviceAreasObj:serviceAreasObj,
       geoInitialVal:'',
       errorText: errorText,
-      errorFlag: false
+      errorFlag: false,
+      disabled:false
     };  
     this.state.serviceClass[0] = '';
     for(let i=0;i<this.state.serviceLimit;i++){
@@ -254,7 +255,8 @@ class Delivery extends React.Component {
           homeDeliveryEnabled: true,
           serviceAreas:[],
           serviceAreasObj:[],
-          geoInitialVal:''
+          geoInitialVal:'',
+          toggleDisabled: true
         },function(){
           let uploadData = {};
           uploadData.standard = {};
@@ -271,7 +273,8 @@ class Delivery extends React.Component {
       }else{
         this.setState({
           homeDelivery: 'hidden',
-          homeDeliveryEnabled: false
+          homeDeliveryEnabled: false,
+          toggleDisabled:true
         },function(){
           let uploadData = {};
           uploadData.custom = {};
@@ -280,6 +283,12 @@ class Delivery extends React.Component {
           this.deliveryVaildation(this);
         });
       }
+      let _this = this;
+      setTimeout(function(){
+        _this.setState({
+          toggleDisabled:false
+        });
+      },1500);
   }
   onMinimumOrderChange(e){
     this.state.minimumOrder = e.target.value;
@@ -483,6 +492,7 @@ class Delivery extends React.Component {
                   label="Home Delivery"
                   defaultToggled={this.state.homeDeliveryEnabled}
                   onToggle={this.onDeliveryStatusToggle.bind(this)}
+                  disabled={this.state.toggleDisabled}
                   className="row"/>  
                 <div className={this.state.homeDelivery}>              
                   <SelectField value={this.state.deliveryPricing}
