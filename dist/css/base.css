@@ -93,12 +93,8 @@ table {
 .businessNameTag {
   font-size: 59px;
   text-align: center;
-  position: absolute;
-  transform: translateY(-50%);
-  position: relative;
   left: 0px;
-  width: 100%;
-  top: 50%; }
+  line-height: 96px; }
 
 #profile-detail {
   min-height: 100px;
