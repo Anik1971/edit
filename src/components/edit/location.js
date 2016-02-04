@@ -52,7 +52,7 @@ class Location extends React.Component {
         }
 	}	
     locationVaildation(){
-        console.log('locationVaildation');
+        //console.log('locationVaildation');
         let errorText = this.state.errorText;
         if(this.state.city.length == 0 || this.state.cityText.length == 0){
             errorText['city'] = 'City is required';
@@ -243,7 +243,11 @@ class Location extends React.Component {
         //console.log('skipLocalitySuggest',suggest);
         let city = '',termsLength = 0;
         termsLength = suggest.terms.length;
-        city = this.getCitySuggestLabel(suggest);  
+        if(this.state.selCity && 
+           this.state.selCity.label && this.state.selCity.label == 'Bangalore'){
+            this.state.selCity.label = 'Bengaluru'
+        }
+        city = this.getCitySuggestLabel(suggest);
         if(!this.state.selCity.label){
             return false; //if city not selected yet
         }
@@ -345,7 +349,6 @@ class Location extends React.Component {
         });
     }
     localityOnBlur(){
-        console.log('localityOnBlur');
         this.locationVaildation(this);
         if(this.state.localityText.length){
             this.setState({                
