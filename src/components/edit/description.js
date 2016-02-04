@@ -184,6 +184,7 @@ class Description extends React.Component {
         }
 	}	
 	languageTypeChange(e, index, languageType){
+		e.preventDefault()
 		this.setState({
 			languageType:languageType
 		},function(){

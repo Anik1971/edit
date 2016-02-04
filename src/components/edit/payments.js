@@ -39,6 +39,7 @@ class Payments extends React.Component {
     }
 
     businessTypeChange(e, index, businessType) {
+        e.preventDefault()
         this.setState({
             businessType: businessType
         }, function() {
