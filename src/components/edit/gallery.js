@@ -76,7 +76,7 @@ class Gallery extends React.Component {
     let _this = this;
     Request
     .post('http://testchat.tsepak.com/goodbox/get_business_photos')
-    .send('{"supplierLoggedInId": "a09bdcd8"}')
+    .send('{"supplierLoggedInId": "'+this.props.bData.supplierLoggedInId+'"}')
     .end(function(err, res){
       if(err || !res.ok){
           console.error(err)
@@ -112,7 +112,7 @@ class Gallery extends React.Component {
   handlePostImageUpload(value) {
     let _this = this
     let newSlideImages = this.state.slideImages.slice();
-    let body = {supplierLoggedInId: "a09bdcd8", url: value}
+    let body = {supplierLoggedInId: this.props.bData.supplierLoggedInId, url: value}
     Request
     .post('http://testchat.tsepak.com/goodbox/add_business_photo')
     .send(body)
@@ -232,6 +232,7 @@ class Gallery extends React.Component {
               </SwipeableViews>
               <div style={styles.indicatorContainer}>
                 {photos.map((photo,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
+                <div key={photos.length} style={this.getIndicatorStyle(photos.length)}></div>
               </div>
                <Dialog
                   title="Delete Photo"

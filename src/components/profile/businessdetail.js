@@ -209,7 +209,7 @@ class BusinessDetail extends React.Component {
 				    	className="business-cardHeader" 
 				    	title="Business Details"/>	
 				    <CardText>
-				    	<strong>{"FAVOURITES"}</strong><br/>{this.props.bData.totalFavouriteCount}
+				    	<strong>{"FAVOURITES"}</strong><br/>{this.props.bData.activeFavouriteCount}
 				    </CardText>			    
 				    {descriptionCard}
 				    {storeTimingsCard}

@@ -64,8 +64,25 @@ class Gallery extends React.Component {
     super(props);
     this.state = {
       slideIndex: 0,
+      slideImages: []
     };
 
+  }
+  componentWillMount(){
+    let _this = this;
+    Request
+    .post('http://testchat.tsepak.com/goodbox/get_business_photos')
+    .send('{"supplierLoggedInId": "'+this.props.bData.supplierLoggedInId+'"}')
+    .end(function(err, res){
+      if(err || !res.ok){
+          console.error(err)
+      }
+      else{
+        if (res && res.text){
+          _this.setState({slideImages: JSON.parse(res.text)});
+        }
+      }
+    });
   }
   getIndicatorStyle(index) {
     var indicatorStyle = {
@@ -85,8 +102,26 @@ class Gallery extends React.Component {
       slideIndex: value,
     });
   }
-
+  componentWillMount(){
+    let _this = this;
+    Request
+    .post('http://testchat.tsepak.com/goodbox/get_business_photos')
+    .send('{"supplierLoggedInId": "'+this.props.bData.supplierLoggedInId+'"}')
+    .end(function(err, res){
+      if(err || !res.ok){
+          console.error(err)
+      }
+      else{
+        if (res && res.text){
+          _this.setState({slideImages: JSON.parse(res.text)});
+        }
+      }
+    });
+  }
   render() {
+    let photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image.url  +")"})}>
+        <div className="galleryDelete">{image.verified?'Approved':'Pending'}</div>
+    </div>);
     return (<div id="gallery">
               <SwipeableViews
                 index={this.state.slideIndex}
@@ -94,7 +129,8 @@ class Gallery extends React.Component {
                 {photos}
               </SwipeableViews>
               <div style={styles.indicatorContainer}>
-                {tilesData.map((tile,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
+                {photos.map((photo,index)=> <div key={index} style={this.getIndicatorStyle(index)}></div>)}
+                <div key={photos.length} style={this.getIndicatorStyle(photos.length)}></div>
               </div>
             </div>);
   }
