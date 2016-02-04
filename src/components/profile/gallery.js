@@ -6,35 +6,9 @@ import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import SwipeableViews from 'react-swipeable-views';
 import objectAssign from 'object-assign';
+import Request from 'superagent';
 
 
-const tilesData = [{
-  img: 'http://lorempixel.com/600/337/nature/',
-  title: 'Breakfast',
-  author: 'jill111',
-  featured: true,
-}, {
-  img: 'http://lorempixel.com/500/337/nature/',
-  title: 'Tasty burger',
-  author: 'pashminu',
-}, {
-  img: 'http://lorempixel.com/400/300/nature/',
-  title: 'Camera',
-  author: 'Danson67',
-}, {
-  img: 'http://lorempixel.com/600/437/nature/',
-  title: 'Morning',
-  author: 'fancycrave1',
-  featured: true,
-}, {
-  img: 'http://lorempixel.com/600/300/nature/',
-  title: 'Hats',
-  author: 'Hans',
-}, {
-  img: 'http://lorempixel.com/300/300/nature/',
-  title: 'Hats',
-  author: 'Hans',
-}];
 
 const styles = {
   slide: {
@@ -58,31 +32,52 @@ const styles = {
     textAlign: 'center',
   }
 };
-const photos = tilesData.map((tile, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + tile.img  +")"})}></div>);
 class Gallery extends React.Component {
   constructor(props) {
     super(props);
+    let userData = {
+        userId: 'a09bdcd8',
+        app: 'com.tsepak.supplierchat.debug'
+    };
+    let url = 'http://testchat.tsepak.com/goodbox/';
+    try {
+      if (window.Android) {
+        userData = window.Android.getUserInfo();
+        if (userData.app == 'com.tsepak.supplierchat') {
+          url = 'http://chat.tsepak.com/goodbox/';
+        }
+
+      }
+    }
+    catch (e) {
+      console.log(e);
+    }
+
     this.state = {
+      supplierLoggedInId: userData.userId,
+      photoAPIurl: url,
       slideIndex: 0,
       slideImages: []
     };
 
   }
-  componentWillMount(){
+  componentWillMount() {
     let _this = this;
     Request
-    .post('http://testchat.tsepak.com/goodbox/get_business_photos')
-    .send('{"supplierLoggedInId": "'+this.props.bData.supplierLoggedInId+'"}')
-    .end(function(err, res){
-      if(err || !res.ok){
+    .post(this.state.photoAPIurl + 'get_business_photos')
+    .send('{"supplierLoggedInId": "'+ this.state.supplierLoggedInId + '"}')
+      .end(function(err, res) {
+        if (err || !res.ok) {
           console.error(err)
-      }
-      else{
-        if (res && res.text){
-          _this.setState({slideImages: JSON.parse(res.text)});
         }
-      }
-    });
+        else {
+          if (res && res.text) {
+            _this.setState({
+              slideImages: JSON.parse(res.text)
+            });
+          }
+        }
+      });
   }
   getIndicatorStyle(index) {
     var indicatorStyle = {
@@ -102,21 +97,23 @@ class Gallery extends React.Component {
       slideIndex: value,
     });
   }
-  componentWillMount(){
+  componentWillMount() {
     let _this = this;
     Request
-    .post('http://testchat.tsepak.com/goodbox/get_business_photos')
-    .send('{"supplierLoggedInId": "'+this.props.bData.supplierLoggedInId+'"}')
-    .end(function(err, res){
-      if(err || !res.ok){
+      .post('http://testchat.tsepak.com/goodbox/get_business_photos')
+      .send('{"supplierLoggedInId": "' + this.props.bData.supplierLoggedInId + '"}')
+      .end(function(err, res) {
+        if (err || !res.ok) {
           console.error(err)
-      }
-      else{
-        if (res && res.text){
-          _this.setState({slideImages: JSON.parse(res.text)});
         }
-      }
-    });
+        else {
+          if (res && res.text) {
+            _this.setState({
+              slideImages: JSON.parse(res.text)
+            });
+          }
+        }
+      });
   }
   render() {
     let photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image.url  +")"})}>
