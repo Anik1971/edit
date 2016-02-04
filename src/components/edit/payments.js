@@ -153,7 +153,7 @@ class Payments extends React.Component {
                         <PaymentUploader
                             image={this.state.panCard_image}                
                             postUpload={this.panCard_imageUpdate.bind(this)} 
-                            title={'PAN card'} />
+                            title={'PAN'} />
                     </div>
                     <div className="paymentRow">
                         <TextField 
@@ -182,7 +182,7 @@ class Payments extends React.Component {
                          <PaymentUploader
                              image={this.state.resAddr_image}                
                              postUpload={this.resAddr_imageUpdate.bind(this)} 
-                             title={'Bank Account'}/>
+                             title={'Residential Address'}/>
                     </div>
                     <div className={'paymentRow paymenthide-'+(this.state.businessType=='Individual')}>
                         <TextField
