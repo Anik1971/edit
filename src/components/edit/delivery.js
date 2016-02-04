@@ -220,6 +220,7 @@ class Delivery extends React.Component {
   }
   deliveryPricingChange(e, index, deliveryPricing){
     this.setState({deliveryPricing});
+    e.preventDefault()
     if(deliveryPricing == 'standard'){
       this.setState({
         deliveryPricingStandard : '',
