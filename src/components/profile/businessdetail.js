@@ -78,11 +78,11 @@ class BusinessDetail extends React.Component {
 				    <CardTitle
 				    className="business-cardHeader"
 				    title="Payments"/>				    
-				    <CardText>
-				    	{"VISA"}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				    	{"MASTER-CARD"}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				    	{"MAESTRO"}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				    	{"NET-BANKING"}
+				    <CardText className="paymentsCards">
+				    	<span>{"VISA"}</span>
+				    	<span>{"MASTER-CARD"}</span>
+				    	<span>{"MAESTRO"}</span>
+				    	<span>{"NET-BANKING"}</span>
 				    </CardText>	   
 			 	</Card>	;
 		}
