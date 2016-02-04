@@ -26,6 +26,13 @@ class App extends React.Component {
   }
   componentWillMount(){
     window.emitter = new EventEmitter();
+    window.ispopped = true;
+    window.onpopstate = function(event){
+      if(!window.ispopped)
+      {
+        window.emitter.emit('backclicked', null);
+      }
+    };
         
       try{
         let uData = {

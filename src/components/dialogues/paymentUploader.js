@@ -155,7 +155,11 @@ export default class PaymentUploader extends React.Component {
   cancelImageUpload(){
     console.log('Canceled Profile Pic Uploading');
     this.setState({open: false});
+    window.ispopped = true;
+    window.history.back();
+    console.log('called history back');
   };
+  
   updateImage(){
     console.log(this);
     let _this = this;
@@ -168,7 +172,25 @@ export default class PaymentUploader extends React.Component {
         console.error('Upload failure');
       }
     });
+    window.ispopped = true;
+    window.history.back();
+    console.log('called history back on update');
   };
+  
+  componentWillMount(){
+    let _this = this;
+    window.emitter.addListener('backclicked', function(){
+      if(_this.state.open)
+      {
+        window.ispopped = true;
+        console.log('back click emitted');
+        _this.setState({
+          open: false
+        });
+      }
+    });
+  }
+
   render() {
     let imageSrc = this.state.preview || this.state.image;
     let imageClass = ''; 
@@ -177,6 +199,13 @@ export default class PaymentUploader extends React.Component {
       dialogueImageTextClass = 'dialogueImageText'
       imageClass = 'hidden';
     }
+    if(window.history && window.ispopped && this.state.open)
+    {
+      console.log('pushing the state');
+      window.history.pushState({'x':'y'}, null);
+      window.ispopped = false;
+    }
+
     let actions = [
       <FlatButton
         label="Update"

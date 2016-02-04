@@ -52,6 +52,9 @@ export default class ProfilePic extends React.Component {
   cancelProfilePicUpload(){
     console.log('Canceled Profile Pic Uploading');
     this.setState({open: false});
+        window.ispopped = true;
+    window.history.back();
+
   }
   onNameChange(name){
     console.log('onChange',name.target.value);
@@ -68,7 +71,24 @@ export default class ProfilePic extends React.Component {
     this.setState({
       open: false
     });
+    window.ispopped = true;
+    window.history.back();
   }
+
+  componentWillMount(){
+    let _this = this;
+    window.emitter.addListener('backclicked', function(){
+      if(_this.state.open)
+      {
+        window.ispopped = true;
+        console.log('back click emitted');
+        _this.setState({
+          open: false
+        });
+      }
+    });
+  }
+
   render() {
     const actions = [
       <FlatButton
@@ -81,6 +101,12 @@ export default class ProfilePic extends React.Component {
         keyboardFocused={true}
         onTouchTap={this.updateProfile.bind(this)} />,
     ];
+    if(window.history && window.ispopped && this.state.open)
+    {
+      console.log('pushing the state');
+      window.history.pushState({'x':'y'}, null);
+      window.ispopped = false;
+    }
 
     return (
       <div>

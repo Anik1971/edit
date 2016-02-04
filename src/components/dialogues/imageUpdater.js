@@ -150,6 +150,9 @@ export default class ImageUpdater extends React.Component {
   cancelImageUpload(){
     console.log('Canceled Profile Pic Uploading');
     this.setState({open: false});
+    window.ispopped = true;
+    window.history.back();
+
   };
   updateImage(){
     console.log(this);
@@ -163,7 +166,23 @@ export default class ImageUpdater extends React.Component {
         console.error('Upload failure');
       }
     });
+    window.ispopped = true;
+    window.history.back();
+
   };
+  componentWillMount(){
+    let _this = this;
+    window.emitter.addListener('backclicked', function(){
+      if(_this.state.open)
+      {
+        window.ispopped = true;
+        console.log('back click emitted');
+        _this.setState({
+          open: false
+        });
+      }
+    });
+  }
   render() {
     let imageSrc = this.state.preview || this.state.image;
     let imageClass = ''; 
@@ -195,6 +214,13 @@ export default class ImageUpdater extends React.Component {
     {
       approvedDiv = <div className={'imageStatus'}>{this.props.approvedText}</div>;
     }
+    if(window.history && window.ispopped && this.state.open)
+    {
+      console.log('pushing the state');
+      window.history.pushState({'x':'y'}, null);
+      window.ispopped = false;
+    }
+    
     return (
       <div>
          <EditIcon 

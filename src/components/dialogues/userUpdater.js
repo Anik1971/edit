@@ -157,7 +157,20 @@ export default class UserUpdater extends React.Component {
   cancelImageUpload(){
     console.log('Canceled Profile Pic Uploading');
     this.setState({open: false});
+    window.ispopped = true;
+    window.history.back();
+
   };
+   componentWillMount(){
+    let _this = this;
+    window.emitter.addListener('backclicked', function(){
+      window.ispopped = true;
+      _this.setState({
+        open: false
+      });
+    });
+  }
+
   updateImage(){
     console.log(this);
     let _this = this;
@@ -170,6 +183,8 @@ export default class UserUpdater extends React.Component {
         //console.error('Upload failure');
       }
     });
+    window.ispopped = true;
+    window.history.back();
   };
   onNameChange(name){
     console.log('onChange',name.target.value);
@@ -206,6 +221,14 @@ export default class UserUpdater extends React.Component {
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
     ];    
+
+    if(window.history && window.ispopped && this.state.open)
+    {
+      console.log('pushing the state');
+      window.history.pushState({'x':'y'}, null);
+      window.ispopped = false;
+    }
+
     return (
       <div>
         <EditIcon 
@@ -217,7 +240,6 @@ export default class UserUpdater extends React.Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-          autoDetectWindowHeight={false}
           autoScrollBodyContent={true}
           repositionOnUpdate={false}
           style={styles.dialog}
