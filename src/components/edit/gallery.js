@@ -65,7 +65,7 @@ class Gallery extends React.Component {
   constructor(props) {
     super(props);
     let userData = {
-        userId: 'a09bdcd8',
+        userId: 'b2fda850',
         app: 'com.tsepak.supplierchat.debug'
     };
     let url = 'http://testchat.tsepak.com/goodbox/';

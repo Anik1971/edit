@@ -68,10 +68,16 @@ export default class UserUpdater extends React.Component {
   }
   loadUserData(){
     console.log('userUpdater loadUserData');
-    let url = 'http://testchat.tsepak.com/goodbox/get_details'
+    let url = 'http://testchat.tsepak.com/goodbox/get_details';
+    let userData = {
+        userId: 'b2fda850',
+        app: 'com.tsepak.supplierchat.debug',
+        authToken: '19C29BE487BD166AADBADC13BEE787A5ECBA934332126964DC7E5F8394CED26D',
+        clientId: 'sup_1454659467523pBBUYFWQX'
+    };
     try {
       if (window.Android) {
-        let userData = JSON.parse(window.Android.getUserInfo());
+        userData = JSON.parse(window.Android.getUserInfo());
         if (userData.app == 'com.tsepak.supplierchat') {
           url = 'http://chat.tsepak.com/goodbox/get_details';
         }
@@ -81,12 +87,11 @@ export default class UserUpdater extends React.Component {
     catch (e) {
       console.log(e);
     }
-    let user_info = JSON.parse(Android.getUserInfo());
     let _this = this;
     Request
     .get(url)
-    .set('AUTHTOKEN', user_info.authToken)
-    .set('CLIENTID', user_info.clientId)
+    .set('AUTHTOKEN', userData.authToken)
+    .set('CLIENTID', userData.clientId)
     .end(function(err, res){
         if(err || !res.ok){
             console.error("error occured")
@@ -128,32 +133,40 @@ export default class UserUpdater extends React.Component {
       });
       // this.props.manageSave('show','userName',userName);
     }
+    let userData = {
+        userId: 'b2fda850',
+        app: 'com.tsepak.supplierchat.debug',
+        authToken: '19C29BE487BD166AADBADC13BEE787A5ECBA934332126964DC7E5F8394CED26D',
+        clientId: 'sup_1454659467523pBBUYFWQX'
+    };
+    let url = 'http://testchat.tsepak.com/goodbox/set_details';
     try {
-        if (window.Android) {
-          let userData = JSON.parse(window.Android.getUserInfo());
-          let url = 'http://testchat.tsepak.com/goodbox/set_details';
-              if (userData.app == 'com.tsepak.supplierchat') {
-                url = 'http://chat.tsepak.com/goodbox/set_details';
-              }
-              let body = JSON.stringify({name: userName, profile_pic: userImage})
-          Request
-          .post(url)
-          .set('AUTHTOKEN', userData.authToken)
-          .set('CLIENTID', userData.clientId)
-          .send(body)
-          .end(function(err, res){
-            if(err || !res.ok){
-              console.error('Error Spotted');
-            }
-            else{
-              let response = JSON.parse(res.text);
-            }
-          });
+      if (window.Android) {
+        let userData = JSON.parse(window.Android.getUserInfo());
+        
+        if (userData.app == 'com.tsepak.supplierchat') {
+          url = 'http://chat.tsepak.com/goodbox/set_details';
         }
+        
       }
-      catch (e) {
-        console.log(e);
-      }   
+    }
+    catch (e) {
+      console.log(e);
+    }   
+    let body = JSON.stringify({name: userName, profile_pic: userImage})
+    Request
+    .post(url)
+    .set('AUTHTOKEN', userData.authToken)
+    .set('CLIENTID', userData.clientId)
+    .send(body)
+    .end(function(err, res){
+      if(err || !res.ok){
+        console.error('Error Spotted');
+      }
+      else{
+        let response = JSON.parse(res.text);
+      }
+    });
   }
   dataURItoBlob(dataURI) {
       // convert base64/URLEncoded data component to raw binary data held in a string

@@ -36,7 +36,7 @@ class App extends React.Component {
         
       try{
         let uData = {
-          userId: 'a09bdcd8',
+          userId: 'b2fda850',
           app: 'com.tsepak.supplierchat.debug'
         };
         if(window.Android){
@@ -414,7 +414,7 @@ class Index extends React.Component {
 /*mounting the routes to element with id app*/
 ReactDOM.render(
     <App>
-      <SupplierProfile></SupplierProfile>
+      <Index></Index>
     </App>,
     document.getElementById('app')
 );
