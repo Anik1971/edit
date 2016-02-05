@@ -24,6 +24,8 @@ import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
 import IconButton from 'material-ui/lib/icon-button';
 import ClearIcon from 'material-ui/lib/svg-icons/content/clear';
 const defaultUserIcon = 'https://cdn0.iconfinder.com/data/icons/users-android-l-lollipop-icon-pack/24/user-128.png';
+import List from 'material-ui/lib/lists/list';
+import ListItem from 'material-ui/lib/lists/list-item';
 
 const styles = {
   dialog : {
@@ -42,11 +44,15 @@ const styles = {
     display: 'block',
     margin: 'auto',
     marginTop: 10
+  },
+  dialogBody : {
+    minHeight : 250
   }
 }
 export default class UserUpdater extends React.Component {
   constructor(props) {
     super(props);
+    console.log('UserUpdater constructor');
     if(this.props.name){
       name = this.props.name;
     }
@@ -58,12 +64,97 @@ export default class UserUpdater extends React.Component {
       loader: 'hidden',
       name:name
     };
+    this.loadUserData(this);
+  }
+  loadUserData(){
+    console.log('userUpdater loadUserData');
+    let url = 'http://testchat.tsepak.com/goodbox/get_details'
+    try {
+      if (window.Android) {
+        let userData = JSON.parse(window.Android.getUserInfo());
+        if (userData.app == 'com.tsepak.supplierchat') {
+          url = 'http://chat.tsepak.com/goodbox/get_details';
+        }
+
+      }
+    }
+    catch (e) {
+      console.log(e);
+    }
+    let user_info = JSON.parse(Android.getUserInfo());
+    let _this = this;
+    Request
+    .get(url)
+    .set('AUTHTOKEN', user_info.authToken)
+    .set('CLIENTID', user_info.clientId)
+    .end(function(err, res){
+        if(err || !res.ok){
+            console.error("error occured")
+        }
+        else{
+            console.log(res.text);
+            let resp = JSON.parse(res.text);
+            _this.setState({
+                userName:resp.name,
+                userImage:resp.profile_pic,
+                prevName:resp.name,
+                prevImage:resp.profile_pic,
+                userDataLoaded:true
+            })   
+        }
+    })
   }
   editImage(){
     this.setState({
       open:true 
     });
   };
+
+  postUpload(){
+    console.info('userImageUpdate');
+    let userImage = this.state.userImage;
+    let userName = this.state.userName;
+    if(userImage.length){
+      console.log('imageurl');      
+      this.setState({
+        userImage: userImage,
+        prevImage: userImage
+      });
+    } 
+    if(userName){
+      this.setState({
+        userName:userName,
+        prevName:userName
+      });
+      // this.props.manageSave('show','userName',userName);
+    }
+    try {
+        if (window.Android) {
+          let userData = JSON.parse(window.Android.getUserInfo());
+          let url = 'http://testchat.tsepak.com/goodbox/set_details';
+              if (userData.app == 'com.tsepak.supplierchat') {
+                url = 'http://chat.tsepak.com/goodbox/set_details';
+              }
+              let body = JSON.stringify({name: userName, profile_pic: userImage})
+          Request
+          .post(url)
+          .set('AUTHTOKEN', userData.authToken)
+          .set('CLIENTID', userData.clientId)
+          .send(body)
+          .end(function(err, res){
+            if(err || !res.ok){
+              console.error('Error Spotted');
+            }
+            else{
+              let response = JSON.parse(res.text);
+            }
+          });
+        }
+      }
+      catch (e) {
+        console.log(e);
+      }   
+  }
   dataURItoBlob(dataURI) {
       // convert base64/URLEncoded data component to raw binary data held in a string
       let byteString;
@@ -143,7 +234,7 @@ export default class UserUpdater extends React.Component {
            if(response.status == 0){
             console.log('Image uploaded');                   
             _this.setState({
-              image: response.url,
+              userImage: response.url,
               loader:'hidden',
               uploadSuccess: true,
               change:true,
@@ -177,103 +268,127 @@ export default class UserUpdater extends React.Component {
     this.setState({
       open: false
     },function(){
-      if(_this.state.open == false && _this.state.uploadSuccess){
-        _this.props.postUpload(_this.state.image,_this.state.name);
+      if(this.state.open == false){
+        this.postUpload();
+        window.ispopped = true;
+        window.history.back();
       }else{
         //console.error('Upload failure');
       }
-    });
-    window.ispopped = true;
-    window.history.back();
+    });    
   };
   onNameChange(name){
-    console.log('onChange',name.target.value);
     this.setState({
       change: true,
-      name: name.target.value
+      userName: name.target.value
     });
   };
   render() {
-    let imageSrc = this.state.image;
-    let imageClass = ''; 
-    let dialogueImageTextClass = 'hidden';
-    if(!imageSrc){
-      dialogueImageTextClass = 'dialogueImageText';
-      imageClass = 'hidden';
-    }
-    let actions = [
-      <FlatButton
-        label="Update Photo"
-        secondary={true}>
-        <Dropzone 
-          className="imageUploadButton"
-          id="profilePicUploadButton"
-          onDrop={this.startImageUpload.bind(this)}>
-          <div>Try dropping some files here, or click to select files to upload.</div>
-        </Dropzone>
-      </FlatButton>,
-      <FlatButton
-        label="DONE"
-        primary={true}
-        disabled={!this.state.change}
-        keyboardFocused={true}
-        onTouchTap={this.updateImage.bind(this)} />,
-    ];    
+      let savedUserName = '';
+      let savedUserImage = '';
+      if(!this.state.userDataLoaded){
+        return(<List>
+                <ListItem
+                  className="profile-name">
+                  <CircularProgress size={.5} /> 
+                </ListItem>
+            </List>);
+      }else{
+        let userName = this.state.userName;
+        let userImage = this.state.userImage;        
+        savedUserName = this.state.prevName;
+        savedUserImage = this.state.prevImage;        
+        let imageSrc = userImage;
+        let imageClass = ''; 
+        let dialogueImageTextClass = 'hidden';
+        if(!imageSrc){
+          dialogueImageTextClass = 'dialogueImageText';
+          imageClass = 'hidden';
+        }
+        let actions = [
+          <FlatButton
+            label="Update Photo"
+            secondary={true}>
+            <Dropzone 
+              className="imageUploadButton"
+              id="profilePicUploadButton"
+              onDrop={this.startImageUpload.bind(this)}>
+              <div>Try dropping some files here, or click to select files to upload.</div>
+            </Dropzone>
+          </FlatButton>,
+          <FlatButton
+            label="DONE"
+            primary={true}
+            disabled={!this.state.change}
+            keyboardFocused={true}
+            onTouchTap={this.updateImage.bind(this)} />,
+        ];    
 
-    if(window.history && window.ispopped && this.state.open)
-    {
-      console.log('pushing the state');
-      window.history.pushState({'x':'y'}, null);
-      window.ispopped = false;
-    }
+        if(window.history && window.ispopped && this.state.open)
+        {
+          console.log('pushing the state');
+          window.history.pushState({'x':'y'}, null);
+          window.ispopped = false;
+        }
 
-    return (
-      <div>
-        <EditIcon 
-          className="editIcon userUpdater" 
-          color={Colors.black} 
-          onClick={this.editImage.bind(this)} />        
-        <Dialog
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-          autoScrollBodyContent={true}
-          repositionOnUpdate={false}
-          style={styles.dialog}
-          title={this.props.title}
-          titleClassName={'dialogTitle'}
-          contentStyle={styles.dialogContent}>
-          <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
-          <Card zDepth={0}>
-            <CardActions>
-              <div>
-                <TextField fullWidth={true}
-                  floatingLabelText="User Name" 
-                  defaultValue={this.state.name}
-                  onChange={this.onNameChange.bind(this)} />
-              </div>
-            </CardActions>
-            <CardMedia>      
-              <div className={dialogueImageTextClass} style={styles.img}>{"No Image"}</div>
-              <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
-            </CardMedia>
-            <CardActions>  
-              <div className={this.state.loader}>        
-                    <div className="loaderIcon">
-                      <CircularProgress  
-                        mode="indeterminate" 
-                        size={.5} />
-                    </div>
-                    <div className="loaderText">
-                      {" Uploading... Please wait"}
-                    </div>
-              </div>                 
-            </CardActions>
-          </Card>          
-        </Dialog>
-      </div>
-    );
+        return (
+          <div>
+            <List>
+                <ListItem
+                  className="profile-name"
+                  primaryText={savedUserName}
+                  leftAvatar={
+                    <Avatar src={savedUserImage} />
+                }>
+                  <EditIcon 
+                    className="editIcon userUpdater" 
+                    color={Colors.black} 
+                    onClick={this.editImage.bind(this)} />     
+                </ListItem>
+            </List>   
+            <Dialog
+              actions={actions}
+              modal={false}
+              open={this.state.open}
+              onRequestClose={this.handleClose}
+              autoScrollBodyContent={true}
+              repositionOnUpdate={false}
+              style={styles.dialog}
+              title={this.props.title}
+              bodyStyle={styles.dialogBody}
+              titleClassName={'dialogTitle'}
+              contentStyle={styles.dialogContent}>
+              <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
+              <Card zDepth={0}>
+                <CardActions>
+                  <div>
+                    <TextField fullWidth={true}
+                      floatingLabelText="User Name" 
+                      defaultValue={userName}
+                      onChange={this.onNameChange.bind(this)} />
+                  </div>
+                </CardActions>
+                <CardMedia>      
+                  <div className={dialogueImageTextClass} style={styles.img}>{"No Image"}</div>
+                  <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
+                </CardMedia>
+                <CardActions>  
+                  <div className={this.state.loader}>        
+                        <div className="loaderIcon">
+                          <CircularProgress  
+                            mode="indeterminate" 
+                            size={.5} />
+                        </div>
+                        <div className="loaderText">
+                          {" Uploading... Please wait"}
+                        </div>
+                  </div>                 
+                </CardActions>
+              </Card>          
+            </Dialog>
+          </div>
+      );
+    }
   }
 }
 export default UserUpdater;
