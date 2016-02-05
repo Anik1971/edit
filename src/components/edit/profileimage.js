@@ -8,15 +8,13 @@ import FloatingActionButton from 'material-ui/lib/floating-action-button';
 class ProfileImage extends React.Component {
 	constructor(props) {
 		super(props);
-		let approved = '';
         let pending = '';
     	let coverBg = '';
         let coverBgApproved = false;
         let businessImage = '';
         let businessImageApproved = false;
-        if(this.props.bData.newExtras && this.props.bData.newExtras.approved){
-            approved =  this.props.bData.newExtras.approved;
-        }
+        let approvedCoverImage = this.props.bData.coverImage;
+        let approvedBusinessImage = this.props.bData.profilePicUrl;
         if(this.props.bData.newExtras && this.props.bData.newExtras.pending){
             pending =  this.props.bData.newExtras.pending;
         }
@@ -25,8 +23,8 @@ class ProfileImage extends React.Component {
     		coverBg = pending.coverImage;
             coverBgApproved = false;
     	}else{
-            if(approved.coverImage){
-               coverBg = approved.coverImage; 
+            if(approvedCoverImage){
+               coverBg = approvedCoverImage; 
                coverBgApproved = true;
             }
         }
@@ -36,8 +34,8 @@ class ProfileImage extends React.Component {
             businessImage = pending.businessImage;
             businessImageApproved = false;
         }else{
-            if(approved.businessImage){
-               businessImage = approved.businessImage; 
+            if(approvedBusinessImage){
+               businessImage = approvedBusinessImage; 
                businessImageApproved = true;
             }
         }

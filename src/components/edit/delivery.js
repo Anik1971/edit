@@ -255,8 +255,6 @@ class Delivery extends React.Component {
         this.setState({
           homeDelivery: '',
           homeDeliveryEnabled: true,
-          serviceAreas:[],
-          serviceAreasObj:[],
           geoInitialVal:'',
           toggleDisabled: true
         },function(){
@@ -266,22 +264,24 @@ class Delivery extends React.Component {
           uploadData.standard.deliveryCharge = this.state.deliveryCharge;
           uploadData.standard.freeDeliveryAmount = this.state.freeDeliveryAbove;   
           this.props.manageSave('show','deliveryPricing',uploadData);
-          let tempServiceAreas = {};
-          tempServiceAreas.areas = [];
-          tempServiceAreas.areas = this.state.serviceAreasObj;
-          this.props.manageSave('show','serviceAreas',tempServiceAreas);
           this.deliveryVaildation(this);          
         });
       }else{
         this.setState({
           homeDelivery: 'hidden',
           homeDeliveryEnabled: false,
-          toggleDisabled:true
+          toggleDisabled:true,
+          serviceAreas:[],
+          serviceAreasObj:[]
         },function(){
           let uploadData = {};
           uploadData.custom = {};
           uploadData.custom.customDeliveryPricing = this.state.customDeliveryPricing; 
           this.props.manageSave('show','deliveryPricing',uploadData);
+          let tempServiceAreas = {};
+          tempServiceAreas.areas = [];
+          tempServiceAreas.areas = this.state.serviceAreasObj;
+          this.props.manageSave('show','serviceAreas',tempServiceAreas);
           this.deliveryVaildation(this);
         });
       }
@@ -572,6 +572,7 @@ class Delivery extends React.Component {
                         initialValue = {geoInitialVal} />
                     <div className="serviceError">{this.state.errorText['serviceAreas']}</div>
                   </div>
+                  <div style={{width:'100%',height:100}}></div>
                 </div>
               </div>
             );
