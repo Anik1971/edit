@@ -224,6 +224,8 @@ export default class PaymentUploader extends React.Component {
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
     ];    
+    if(this.props.paymentEnabled)
+      actions =[];
     return (
       <div>
          <EditIcon 

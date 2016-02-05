@@ -28,7 +28,7 @@ class ProfileDetail extends React.Component {
         <div id="profile-detail">
             <div className="business-name">{this.props.bData.businessName}</div>
 	        <div className="">
-        		<UserUpdater />
+        		<UserUpdater showEdit={true}/>
 			</div>
         </div>);
     }

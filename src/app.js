@@ -41,6 +41,7 @@ class App extends React.Component {
         };
         if(window.Android){
           uData = JSON.parse(window.Android.getUserInfo());
+          window.isCoSupplier = !!uData.isCoSupplier;
         }
         let supplierLoginID = uData.userId;
         let get_supplier_data_url = 'http://testchat.tsepak.com/goodbox/get_supplier_data';
@@ -412,12 +413,8 @@ class Index extends React.Component {
 
 /*mounting the routes to element with id app*/
 ReactDOM.render(
-    <Router history={browserHistory}>
-        <Route path="/" component={App}>
-          <IndexRoute component={Index}/>
-          <Route path="/timings" component={StoreTimings}/>
-          <Route path="/profile" component={SupplierProfile}/>
-        </Route>
-    </Router>,
+    <App>
+      <SupplierProfile></SupplierProfile>
+    </App>,
     document.getElementById('app')
 );

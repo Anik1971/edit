@@ -330,7 +330,14 @@ export default class UserUpdater extends React.Component {
           window.history.pushState({'x':'y'}, null);
           window.ispopped = false;
         }
-
+        let editIcon = "";
+        if (window.isCoSupplier || this.props.showEdit)
+        {
+          editIcon = (<EditIcon 
+                    className="editIcon userUpdater" 
+                    color={Colors.black} 
+                    onClick={this.editImage.bind(this)} /> );
+        }
         return (
           <div>
             <List>
@@ -340,10 +347,7 @@ export default class UserUpdater extends React.Component {
                   leftAvatar={
                     <Avatar src={savedUserImage} />
                 }>
-                  <EditIcon 
-                    className="editIcon userUpdater" 
-                    color={Colors.black} 
-                    onClick={this.editImage.bind(this)} />     
+                  {editIcon}    
                 </ListItem>
             </List>   
             <Dialog

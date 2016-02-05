@@ -3,7 +3,7 @@ import GridList from 'material-ui/lib/grid-list/grid-list';
 import GridTile from 'material-ui/lib/grid-list/grid-tile';
 import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
 import Colors from 'material-ui/lib/styles/colors';
-import DeleteIcon from 'material-ui/lib/svg-icons/content/clear';
+import DeleteIcon from 'material-ui/lib/svg-icons/action/delete';
 import IconButton from 'material-ui/lib/icon-button';
 
 import RaisedButton from 'material-ui/lib/raised-button';

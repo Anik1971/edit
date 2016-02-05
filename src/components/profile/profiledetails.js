@@ -19,7 +19,7 @@ class ProfileDetail extends React.Component {
             <div className="business-shortDescription">{this.props.bData.businessType}</div>
             <div className="business-bussinessID">{"GOODBOX ID: "+this.props.bData.businessHandle}</div>
 			<div className="">
-                <UserUpdater />
+                <UserUpdater showEdit={false}/>
             </div>
         </div>);
     }
