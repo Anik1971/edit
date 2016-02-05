@@ -170,10 +170,14 @@ class BusinessDetail extends React.Component {
 		if(areas && areas.length){
 			serviceAreas = 
 				<div>{  
-		            		areas.map((area, index) => {		            				            			
+		            		areas.map((area, index) => {	
+			            		let comma = ", ";
+			            		if(index==areas.length-1){
+			            			comma = "";
+			            		}            				            			
 		            			return (
 		            			<div key={index}>
-		            				{area.name}{", "}
+		            				{area.name+comma}
 		            			</div>);	 
 		            		})
 		            	}</div>;
