@@ -17,8 +17,8 @@ const styles = {
 }
 
 class Delivery extends React.Component {
-  constructor(props){
-    super(props); 
+	constructor(props){
+		super(props);	
     let homeDelivery = 'hidden';
     let homeDeliveryEnabled = false;
     let tempServiceAreas = [];
@@ -97,7 +97,7 @@ class Delivery extends React.Component {
       this.state.serviceClass.push('hidden');
     }
     this.deliveryVaildation(this);
-  } 
+	}	
   deliveryVaildation(){
     let errorText = this.state.errorText;
     if(this.state.homeDeliveryEnabled){
@@ -250,7 +250,7 @@ class Delivery extends React.Component {
       });
     }
   }
-  onDeliveryStatusToggle(e, deliveryStatus){
+  onDeliveryStatusToggle(deliveryStatus){
       if(deliveryStatus){
         this.setState({
           homeDelivery: '',
@@ -489,11 +489,14 @@ class Delivery extends React.Component {
   geoOnFocus(){
     this.props.manageSave('hidden');
   }
-  render(){
+	render(){
     let geoInitialVal = this.state.geoInitialVal;
-    return (
-            <div style={this.props.styles.slide}>
-                <Checkbox
+    let homeDeliveryChecked = '';
+    let homeDeliveryCheckBox = <div className="row"><label>{"Home Delivery "}<input onChange={this.onDeliveryStatusToggle.bind(this,true)} style={{float:'right'}} type="checkbox" value={false} /></label></div>;
+    if(this.state.homeDeliveryEnabled){
+      homeDeliveryCheckBox = <div className="row"><label>{"Home Delivery "}<input onChange={this.onDeliveryStatusToggle.bind(this,false)} style={{float:'right'}} type="checkbox" value={true} checked="checked" /></label></div>;
+    }
+    /*<Checkbox
                   name="deliveryStatus"
                   value="delivery"
                   label="Home Delivery"
@@ -501,7 +504,10 @@ class Delivery extends React.Component {
                   onCheck={this.onDeliveryStatusToggle.bind(this)}
                   disabled={this.state.toggleDisabled}
                   labelPosition="left"
-                  className="row"/>  
+                  className="row"/>*/
+		return (
+            <div style={this.props.styles.slide}>                
+                {homeDeliveryCheckBox}
                 <div className={this.state.homeDelivery}>              
                   <SelectField value={this.state.deliveryPricing}
                         floatingLabelText="Delivery Pricing"
@@ -577,6 +583,6 @@ class Delivery extends React.Component {
                 </div>
               </div>
             );
-  }
+	}
 }
 export default Delivery;

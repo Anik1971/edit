@@ -27,6 +27,7 @@ const defaultUserIcon = 'https://cdn0.iconfinder.com/data/icons/users-android-l-
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 
+
 const styles = {
   dialog : {
     padding:'0px',
@@ -362,6 +363,13 @@ export default class UserUpdater extends React.Component {
                     className="editIcon userUpdater" 
                     color={Colors.black} 
                     onClick={this.editImage.bind(this)} /> );
+        }
+
+        if(!savedUserName){
+          savedUserName = 'Your Name';
+        }
+        if(!savedUserImage){
+          savedUserImage = defaultUserIcon;
         }
         return (
           <div>
