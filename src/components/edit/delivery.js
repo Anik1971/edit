@@ -220,6 +220,7 @@ class Delivery extends React.Component {
   }
   deliveryPricingChange(e, index, deliveryPricing){
     this.setState({deliveryPricing});
+
     e.preventDefault()
     if(deliveryPricing == 'standard'){
       this.setState({
@@ -238,13 +239,14 @@ class Delivery extends React.Component {
     }else{
       this.setState({
         deliveryPricingStandard : 'hidden',
-        deliveryPricingCustom : ''
+        deliveryPricingCustom : '',
       },function(){
         let uploadData = {};
         uploadData.custom = {};
         uploadData.custom.customDeliveryPricing = this.state.customDeliveryPricing; 
         this.deliveryVaildation(this);
         this.props.manageSave('show','deliveryPricing',uploadData);
+        this.refs.customDeliveryPricing.value = this.state.customDeliveryPricing;
       });
     }
   }
@@ -291,22 +293,27 @@ class Delivery extends React.Component {
       },1500);
   }
   onMinimumOrderChange(e){
-    this.state.minimumOrder = e.target.value;
+    this.setState({
+      minimumOrder:e.target.value
+    });
     this.props.manageSave('updation');
   }
   onDeliveryChargeChange(e){
-    this.state.deliveryCharge = e.target.value;
+    this.setState({
+      deliveryCharge:e.target.value
+    });
     this.props.manageSave('updation');
   }
   onFreeDeliveryAboveChange(e){
-    this.state.freeDeliveryAbove = e.target.value;
+    this.setState({
+      freeDeliveryAbove:e.target.value
+    });
     this.props.manageSave('updation');
   }
   onCustomDeliveryPricingChange(e){
-    this.state.customDeliveryPricing = e.target.value;
-    this.state.minimumOrder = '';
-    this.state.deliveryCharge = '';
-    this.state.freeDeliveryAbove = '';
+    this.setState({
+      customDeliveryPricing:e.target.value
+    });
     this.props.manageSave('updation');
   }
 
@@ -503,24 +510,24 @@ class Delivery extends React.Component {
                   </SelectField>
                   <div className={this.state.deliveryPricingStandard} id="deliveryPricingStandard">
                     <div className="subContent">
-                      <TextField fullWidth={true}
+                      <TextField ref="minimumOrder" fullWidth={true}
                           type={"number"}
                           floatingLabelText={"Minimum Order"}
                           errorText={this.state.errorText['minimumOrder']}
-                          defaultValue={this.state.minimumOrder} 
+                          value={this.state.minimumOrder} 
                           onChange = {this.onMinimumOrderChange.bind(this)} 
                           onBlur = {this.onMinimumOrderBlur.bind(this)}/>
-                      <TextField fullWidth={true}
+                      <TextField ref="deliveryCharge" fullWidth={true}
                           floatingLabelText="Delivery Charge"                        
                           type={"number"}
-                          defaultValue={this.state.deliveryCharge} 
+                          value={this.state.deliveryCharge} 
                           errorText={this.state.errorText['deliveryCharge']}
                           onChange = {this.onDeliveryChargeChange.bind(this)} 
                           onBlur = {this.onDeliveryChargeBlur.bind(this)}/>
-                      <TextField fullWidth={true}
+                      <TextField ref="freeDeliveryAbove" fullWidth={true}
                           floatingLabelText="Free Delivery Above"                        
                           type={"number"}
-                          defaultValue={this.state.freeDeliveryAbove} 
+                          value={this.state.freeDeliveryAbove} 
                           errorText={this.state.errorText['freeDeliveryAbove']}
                           onChange = {this.onFreeDeliveryAboveChange.bind(this)} 
                           onBlur = {this.onFreeDeliveryAboveBlur.bind(this)}/>
@@ -528,9 +535,9 @@ class Delivery extends React.Component {
                   </div>
                   <div className={this.state.deliveryPricingCustom} id="deliveryPricingCustom">
                     <div className="subContent">
-                      <TextField fullWidth={true}
+                      <TextField ref="customDeliveryPricing" fullWidth={true}
                           floatingLabelText={"Custom delivery pricing"}
-                          defaultValue={this.state.customDeliveryPricing} 
+                          value={this.state.customDeliveryPricing} 
                           errorText={this.state.errorText['customDeliveryPricing']}
                           onChange = {this.onCustomDeliveryPricingChange.bind(this)} 
                           onBlur = {this.onCustomDeliveryPricingBlur.bind(this)}/>                    
