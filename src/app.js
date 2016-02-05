@@ -300,6 +300,9 @@ class Index extends React.Component {
         case "phoneNoForDisplay":
           exportData[key] = exportData[key]+'';
           break;
+        case "profileUsageStatus":
+          exportData[key] = exportData[key]+'';
+          break;
         default:
           break;
       }    
