@@ -1,6 +1,5 @@
 import React from 'react';
 import TextField from 'material-ui/lib/text-field';
-import Toggle from 'material-ui/lib/toggle';
 import RadioButton from 'material-ui/lib/radio-button';
 import RadioButtonGroup from 'material-ui/lib/radio-button-group';
 import SelectField from 'material-ui/lib/SelectField';
@@ -8,6 +7,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import Geosuggest from 'react-geosuggest';
 import ClearIcon from 'material-ui/lib/svg-icons/content/clear';
 import Colors from 'material-ui/lib/styles/colors';
+import Checkbox from 'material-ui/lib/checkbox';
 
 const styles = {
   closeIcon : {
@@ -290,7 +290,7 @@ class Delivery extends React.Component {
         _this.setState({
           toggleDisabled:false
         });
-      },1500);
+      },800);
   }
   onMinimumOrderChange(e){
     this.setState({
@@ -493,13 +493,14 @@ class Delivery extends React.Component {
     let geoInitialVal = this.state.geoInitialVal;
 		return (
             <div style={this.props.styles.slide}>
-                <Toggle
+                <Checkbox
                   name="deliveryStatus"
                   value="delivery"
                   label="Home Delivery"
-                  defaultToggled={this.state.homeDeliveryEnabled}
-                  onToggle={this.onDeliveryStatusToggle.bind(this)}
+                  defaultChecked={this.state.homeDeliveryEnabled}
+                  onCheck={this.onDeliveryStatusToggle.bind(this)}
                   disabled={this.state.toggleDisabled}
+                  labelPosition="left"
                   className="row"/>  
                 <div className={this.state.homeDelivery}>              
                   <SelectField value={this.state.deliveryPricing}
