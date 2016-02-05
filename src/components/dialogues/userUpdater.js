@@ -62,7 +62,8 @@ export default class UserUpdater extends React.Component {
       uploadSuccess: false,
       change: false,
       loader: 'hidden',
-      name:name
+      name:name,
+      errorText: ''
     };
     this.loadUserData(this);
   }
@@ -111,7 +112,8 @@ export default class UserUpdater extends React.Component {
   }
   editImage(){
     this.setState({
-      open:true 
+      open:true,
+      errorText: ''
     });
   };
 
@@ -259,8 +261,8 @@ export default class UserUpdater extends React.Component {
       });
   };
   cancelImageUpload(){
-    console.log('Canceled Profile Pic Uploading');
-    this.setState({open: false});
+    console.log('Canceled Profile Pic Uploading', this.state.prevName);
+    this.setState({open: false, userName: this.state.prevName});
     window.ispopped = true;
     window.history.back();
 
@@ -291,10 +293,20 @@ export default class UserUpdater extends React.Component {
     });    
   };
   onNameChange(name){
-    this.setState({
-      change: true,
-      userName: name.target.value
-    });
+    if (name.target.value){
+      this.setState({
+        change: true,
+        userName: name.target.value,
+        errorText: ''
+      });  
+    }
+    else{
+      this.setState({
+        change: false,
+        errorText: 'This is a required field',
+        userName: ''
+      });
+    };
   };
   render() {
       let savedUserName = '';
@@ -382,7 +394,8 @@ export default class UserUpdater extends React.Component {
                     <TextField fullWidth={true}
                       floatingLabelText="User Name" 
                       defaultValue={userName}
-                      onChange={this.onNameChange.bind(this)} />
+                      onChange={this.onNameChange.bind(this)} 
+                      errorText={this.state.errorText}/>
                   </div>
                 </CardActions>
                 <CardMedia>      
