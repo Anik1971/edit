@@ -119,6 +119,7 @@ class Payments extends React.Component {
         const styles = {
             panCard: {
                 width: 'calc(100% - 30px)',
+                minWidth: 260,
                 marginRight:4
             },
             upload: {
@@ -152,6 +153,7 @@ class Payments extends React.Component {
                             onChange={this.onPaymentChange.bind(this)}
                             onBlur={this.onPanBlur.bind(this)}/>
                         <PaymentUploader
+                            style={{float:'right'}}
                             image={this.state.panCard_image}                
                             postUpload={this.panCard_imageUpdate.bind(this)} 
                             title={'PAN'} 
