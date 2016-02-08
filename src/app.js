@@ -295,7 +295,7 @@ class Index extends React.Component {
       let _bData = exportData[key];    
       if(typeof _bData == 'object'){ //checks if the data going to be stored is a object
         exportData[key]=JSON.stringify(_bData); // goodbox compatible nested json
-      }     
+      }
       //some exceptions
       switch(key){
         case "businessHandle":
@@ -305,6 +305,9 @@ class Index extends React.Component {
           exportData[key] = exportData[key]+'';
           break;
         case "profileUsageStatus":
+          exportData[key] = exportData[key]+'';
+          break;
+        case "businessNameLookup":
           exportData[key] = exportData[key]+'';
           break;
         default:
@@ -434,7 +437,7 @@ class Index extends React.Component {
 /*mounting the routes to element with id app*/
 ReactDOM.render(
     <App>
-      <SupplierProfile></SupplierProfile>
+      <Index></Index>
     </App>,
     document.getElementById('app')
 );
