@@ -180,8 +180,7 @@ export default class UserUpdater extends React.Component {
     let url = 'http://testchat.tsepak.com/goodbox/set_details';
     try {
       if (window.Android) {
-        let userData = JSON.parse(window.Android.getUserInfo());
-        
+        userData = JSON.parse(window.Android.getUserInfo());        
         if (userData.app == 'com.tsepak.supplierchat') {
           url = 'http://chat.tsepak.com/goodbox/set_details';
         }
