@@ -48,6 +48,34 @@ const styles = {
   },
   dialogBody : {
     minHeight : 250
+  },
+  profileName:{
+    width:'100%',
+    height:'auto'
+  },
+  avatarName: {
+    float:'left',
+    marginLeft: 12
+  },
+  savedUserName: {
+    float:'left',
+    height:'100%',
+    marginTop: 9,
+    marginLeft: 12
+  },
+  editIcon: {
+    float:'right',
+    marginTop:5
+  },
+  profileWrapper:{
+    width:'100%',
+    height:50
+  },
+  loadIcon:{
+    float:'right'
+  },
+  loader:{
+    height:70
   }
 }
 export default class UserUpdater extends React.Component {
@@ -64,7 +92,8 @@ export default class UserUpdater extends React.Component {
       change: false,
       loader: 'hidden',
       name:name,
-      errorText: ''
+      errorText: '',
+      uNameDisabled: false
     };
     this.loadUserData(this);
   }
@@ -101,12 +130,18 @@ export default class UserUpdater extends React.Component {
         else{
             console.log(res.text);
             let resp = JSON.parse(res.text);
+            let uName = resp.name;
+            let uNameDisabled = false;
+            if(uName && uName.length){ 
+              uNameDisabled = true; //excluding username update option since its not the first time
+            }
             _this.setState({
-                userName:resp.name,
+                userName:uName,
                 userImage:resp.profile_pic,
-                prevName:resp.name,
+                prevName:uName,
                 prevImage:resp.profile_pic,
-                userDataLoaded:true
+                userDataLoaded:true,
+                uNameDisabled: uNameDisabled
             })   
         }
     })
@@ -156,7 +191,8 @@ export default class UserUpdater extends React.Component {
     catch (e) {
       console.log(e);
     }   
-    let body = JSON.stringify({name: userName, profile_pic: userImage})
+    let body = JSON.stringify({name: userName, profile_pic: userImage});
+    let _this = this;
     Request
     .post(url)
     .set('AUTHTOKEN', userData.authToken)
@@ -167,6 +203,9 @@ export default class UserUpdater extends React.Component {
         console.error('Error Spotted');
       }
       else{
+        _this.setState({
+          uploadSuccess: true
+        });
         let response = JSON.parse(res.text);
       }
     });
@@ -313,12 +352,19 @@ export default class UserUpdater extends React.Component {
       let savedUserName = '';
       let savedUserImage = '';
       if(!this.state.userDataLoaded){
-        return(<List>
-                <ListItem
-                  className="profile-name">
-                  <CircularProgress size={.5} /> 
-                </ListItem>
-            </List>);
+        return(<div style={styles.profileWrapper}>
+                 <div style={styles.profileName}>
+                    <div style={styles.avatarName}>
+                      <Avatar src={defaultUserIcon} />
+                    </div>
+                    <div style={styles.savedUserName}>
+                     {"Loading.."}
+                    </div>
+                    <div style={styles.loadIcon}>
+                      <CircularProgress size={.25} /> 
+                    </div>   
+                 </div>
+              </div>);
       }else{
         let userName = this.state.userName;
         let userImage = this.state.userImage;        
@@ -372,17 +418,18 @@ export default class UserUpdater extends React.Component {
           savedUserImage = defaultUserIcon;
         }
         return (
-          <div>
-            <List>
-                <ListItem
-                  className="profile-name"
-                  primaryText={savedUserName}
-                  leftAvatar={
-                    <Avatar src={savedUserImage} />
-                }>
-                  {editIcon}    
-                </ListItem>
-            </List>   
+          <div style={styles.profileWrapper}>
+           <div style={styles.profileName}>
+              <div style={styles.avatarName}>
+                <Avatar src={savedUserImage} />
+              </div>
+              <div style={styles.savedUserName}>
+               {savedUserName}
+              </div>
+              <div style={styles.editIcon}>
+                {editIcon} 
+              </div>   
+           </div>
             <Dialog
               actions={actions}
               modal={false}
@@ -403,25 +450,26 @@ export default class UserUpdater extends React.Component {
                       floatingLabelText="User Name" 
                       defaultValue={userName}
                       onChange={this.onNameChange.bind(this)} 
-                      errorText={this.state.errorText}/>
+                      errorText={this.state.errorText}
+                      disabled={this.state.uNameDisabled}/>
                   </div>
                 </CardActions>
-                <CardMedia>      
-                  <div className={dialogueImageTextClass} style={styles.img}>{"No Image"}</div>
-                  <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
-                </CardMedia>
-                <CardActions>  
+                <CardActions style={styles.loader} className={this.state.loader}>  
                   <div className={this.state.loader}>        
                         <div className="loaderIcon">
                           <CircularProgress  
                             mode="indeterminate" 
-                            size={.5} />
+                            size={.25} />
                         </div>
                         <div className="loaderText">
                           {" Uploading... Please wait"}
                         </div>
                   </div>                 
                 </CardActions>
+                <CardMedia>      
+                  <div className={dialogueImageTextClass} style={styles.img}>{"No Image"}</div>
+                  <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
+                </CardMedia>
               </Card>          
             </Dialog>
           </div>
