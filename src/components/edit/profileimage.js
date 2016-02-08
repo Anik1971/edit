@@ -50,7 +50,7 @@ class ProfileImage extends React.Component {
 		  profilePicDialogue: false,
 		  businessImageCover: {
 		    backgroundImage: 'url('+coverBg+')',
-		    backgroundColor: '#D8D4D4'
+		    backgroundColor: '#F7F3F3'
 		  },
 		  businessImage: {
 		    backgroundImage: 'url('+businessImage+')'
