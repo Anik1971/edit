@@ -246,7 +246,7 @@ class Description extends React.Component {
 			this.setState({
 				phoneClass : phoneClass
 			});
-		}else if(index>0 && textField.target.value.length == 0){
+		}else if(index>0 && this.state.businessPhone.indexOf('')>-1 && textField.target.value.length == 0){
 			let phoneClass = this.state.phoneClass;
 			phoneClass[index] = 'hidden';
 			this.setState({
@@ -291,7 +291,13 @@ class Description extends React.Component {
 		}else{
 			errorText['businessPhone'][index] = ''
 			delete window.errorStack['businessPhone'];
-			this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
+			let businessPhone = [];
+			if(this.props.bData.newExtras.businessPhone){
+				businessPhone = this.props.bData.newExtras.businessPhone.split(',');
+			}
+			if(businessPhone[index]){
+				this.props.manageSave('show','businessPhone',this.state.businessPhone.join());
+			}
 		}
 		this.setState({errorText: errorText});
 	}

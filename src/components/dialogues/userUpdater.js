@@ -128,7 +128,7 @@ export default class UserUpdater extends React.Component {
             console.error("error occured")
         }
         else{
-            console.log(res.text);
+            //console.log(res.text);
             let resp = JSON.parse(res.text);
             let uName = resp.name;
             let uNameDisabled = false;
@@ -158,7 +158,7 @@ export default class UserUpdater extends React.Component {
     let userImage = this.state.userImage;
     let userName = this.state.userName;
     if(userImage.length){
-      console.log('imageurl');      
+      //console.log('imageurl');      
       this.setState({
         userImage: userImage,
         prevImage: userImage
