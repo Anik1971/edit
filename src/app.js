@@ -297,22 +297,19 @@ class Index extends React.Component {
         exportData[key]=JSON.stringify(_bData); // goodbox compatible nested json
       }
       //some exceptions
-      switch(key){
-        case "businessHandle":
-          exportData[key] = exportData[key]+'';
-          break;
-        case "phoneNoForDisplay":
-          exportData[key] = exportData[key]+'';
-          break;
-        case "profileUsageStatus":
-          exportData[key] = exportData[key]+'';
-          break;
-        case "businessNameLookup":
-          exportData[key] = exportData[key]+'';
-          break;
-        default:
-          break;
-      }    
+      let exceptions = [
+        'businessHandle',
+        'phoneNoForDisplay',
+        'profileUsageStatus',
+        'businessNameLookup',
+        'phoneNo',
+        'profileUsageStatus',
+        'idAssignDate',
+        'seoPageCreationTime'
+      ];
+      if(exceptions.indexOf(key)>-1){
+        exportData[key] = exportData[key]+'';
+      }
     } 
     
 
