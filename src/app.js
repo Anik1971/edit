@@ -305,7 +305,10 @@ class Index extends React.Component {
         'phoneNo',
         'profileUsageStatus',
         'idAssignDate',
-        'seoPageCreationTime'
+        'seoPageCreationTime',
+        'businessAddressLine1',
+        'businessAddressLine2',
+        'businessAddressLine3'
       ];
       if(exceptions.indexOf(key)>-1){
         exportData[key] = exportData[key]+'';
@@ -434,7 +437,7 @@ class Index extends React.Component {
 /*mounting the routes to element with id app*/
 ReactDOM.render(
     <App>
-      <Index></Index>
+      <SupplierProfile></SupplierProfile>
     </App>,
     document.getElementById('app')
 );
