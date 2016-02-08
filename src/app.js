@@ -36,7 +36,7 @@ class App extends React.Component {
         
       try{
         let uData = {
-          userId: 'b2fda850',
+          userId: 'a09bdcd8',
           app: 'com.tsepak.supplierchat.debug'
         };
         if(window.Android){
@@ -117,6 +117,7 @@ class Index extends React.Component {
           saveData: {},
           snackbar: false,
           snackbarMsg: '',
+          snackbarDelay:4000,
           tab: 0,
           businessWrapperClass: '',
           bDataLoaded: false
@@ -198,7 +199,8 @@ class Index extends React.Component {
   toast(msg){
     this.setState({
       snackbar: true,
-      snackbarMsg: msg
+      snackbarMsg: msg,
+      snackbarDelay:4000
     });
   }
   manageSave(task,field,value,callback){
@@ -235,6 +237,7 @@ class Index extends React.Component {
         this.setState({
           snackbar: true,
           snackbarMsg:errorData.text,
+          snackbarDelay: 4000,
           tab:errorData.tab
         },function(){
           window.pageYOffset = 0;
@@ -249,7 +252,8 @@ class Index extends React.Component {
     }else{
       this.setState({
         snackbar: true,
-        snackbarMsg:'Please wait, saving...',
+        snackbarMsg:'Please Wait, Saving ...',
+        snackbarDelay:12000
       });
     }
     console.info('Execute Save');
@@ -334,15 +338,28 @@ class Index extends React.Component {
           _this.setState({
             snackbar: true,
             snackbarMsg:'Failed to save',
+            snackbarDelay:4000,
             saveBtn:''
           });
          }else {
           //converting level 1 nested json strings to Object
           console.log('Response',res);
+          if(_this.state.saveData.languageType){
+
+
+            try{
+              let prevData = JSON.parse(Android.getBusinessData());
+              prevData.languageType = _this.state.saveData.languageType;
+              Android.saveBusinessDataLocal(JSON.stringify(prevData));
+            }catch(e){
+
+            }
+           }
           _this.setState({
             snackbar: true,
             snackbarMsg:'Saved successfully',
             saveBtn:'hidden',
+            snackbarDelay:4000,
             saveData: {}
           });          
         }
@@ -404,7 +421,7 @@ class Index extends React.Component {
           <Snackbar
             open={this.state.snackbar}
             message={this.state.snackbarMsg}
-            autoHideDuration={4000}
+            autoHideDuration={this.state.snackbarDelay}
             onRequestClose={this.onSnackBarClose.bind(this)}/>       
       </div>
       );
@@ -417,7 +434,7 @@ class Index extends React.Component {
 /*mounting the routes to element with id app*/
 ReactDOM.render(
     <App>
-      <Index></Index>
+      <SupplierProfile></SupplierProfile>
     </App>,
     document.getElementById('app')
 );

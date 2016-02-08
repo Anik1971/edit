@@ -204,7 +204,7 @@ class Payments extends React.Component {
                             title={'VAT / CST / Trade license*'}
                             paymentEnabled = {this.props.bData.paymentEnabled}/>
                     </div>
-                    <div className={'paymentRow paymenthide-'+(this.state.businessType!='Individual')}
+                    <div className={'paymentRow paymenthide-'+(this.state.businessType=='Individual')}
                          style={styles.displayHint}>
                     * Or other business registration proof issued by Government
                     </div>
