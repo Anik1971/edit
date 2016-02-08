@@ -34,8 +34,8 @@ const styles = {
     width:'95%'
   },
   img : {
-    width: 'auto',
-    height: 250,
+    width: '100%',
+    height: 'auto',
     minWidth: 'inherit',
     maxWidth: '100%',
     display: 'block',

@@ -313,7 +313,7 @@ class Index extends React.Component {
     } 
     
 
-    console.log('ExportData data:',exportData);
+    console.log('ExportData data:',exportData, this.state.bData);
     let _this = this;      
       window.convertToStringBusinessProfileObj = JSON.stringify(exportData);
       let uData = {
@@ -434,7 +434,7 @@ class Index extends React.Component {
 /*mounting the routes to element with id app*/
 ReactDOM.render(
     <App>
-      <SupplierProfile></SupplierProfile>
+      <Index></Index>
     </App>,
     document.getElementById('app')
 );

@@ -38,8 +38,8 @@ const styles = {
     width:'95%'
   },
   img : {
-    width: 'auto',
-    height: 250,
+    width: '100%',
+    height: 'auto',
     minWidth: 'inherit',
     maxWidth: '100%',
     display: 'block',
@@ -354,7 +354,7 @@ export default class UserUpdater extends React.Component {
         return(<div style={styles.profileWrapper}>
                  <div style={styles.profileName}>
                     <div style={styles.avatarName}>
-                      <Avatar src={defaultUserIcon} />
+                      <Avatar size={70}  src={defaultUserIcon} />
                     </div>
                     <div style={styles.savedUserName}>
                      {"Loading.."}
