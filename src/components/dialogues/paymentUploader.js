@@ -41,6 +41,9 @@ const styles = {
     display: 'block',
     margin: 'auto',
     marginTop: 10
+  },
+  loader:{
+    height:70
   }
 }
 export default class PaymentUploader extends React.Component {
@@ -245,22 +248,22 @@ export default class PaymentUploader extends React.Component {
           contentStyle={styles.dialogContent}>
           <div className="dialogueCancel"><ClearIcon onClick={this.cancelImageUpload.bind(this)} /></div>
           <Card zDepth={0}>
-            <CardMedia>
-              <div className={dialogueImageTextClass} style={styles.img}>{"No Image"}</div>
-              <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
-            </CardMedia>
-            <CardActions>  
+            <CardActions style={styles.loader} className={this.state.loader}>  
               <div className={this.state.loader}>        
                     <div className="loaderIcon">
                       <CircularProgress  
                         mode="indeterminate" 
-                        size={.5} />
+                        size={.25} />
                     </div>
                     <div className="loaderText">
                       {" Uploading... Please wait"}
                     </div>
               </div>                 
             </CardActions>
+            <CardMedia>
+              <div className={dialogueImageTextClass} style={styles.img}>{"No Image"}</div>
+              <div className={imageClass}><img style={styles.img} src={imageSrc}/></div>
+            </CardMedia>            
           </Card>          
         </Dialog>
       </div>
