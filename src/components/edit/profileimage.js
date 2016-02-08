@@ -4,7 +4,13 @@ import ProfilePic from './../dialogues/profilePic';
 import ImageUpdater from './../dialogues/imageUpdater';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 
-
+const styles = {
+    coverImageText : {
+        textAlign: 'right',
+        paddingRight: 48,
+        paddingTop: 2
+    }
+}
 class ProfileImage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -104,7 +110,7 @@ class ProfileImage extends React.Component {
     	}
         return (
         <div style={this.state.businessImageCover} id="profile-image-cover">
-        	<div className={coverImageTextClass}><span className="coverImageText"><br />{"Upload Business Cover"}</span></div>
+        	<div className={coverImageTextClass}><span style={styles.coverImageText} className="coverImageText"><br />{"Upload Business Cover"}</span></div>
         	<div  className={"businessImageCoverIcon"}>
                 <ImageUpdater 
                     approvedClass={topPanel}
