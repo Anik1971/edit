@@ -316,6 +316,8 @@ class Description extends React.Component {
 		});
 	}
 	render(){
+		let languageType = this.state.languageType || "None";
+		console.log(languageType)
 		return (
 		    <div style={this.props.styles.slide}>
 	            <TextField fullWidth={true}
@@ -333,7 +335,7 @@ class Description extends React.Component {
 	                onChange={this.onBusinessLongDescUpdate.bind(this)}
 	                errorText={this.state.errorText['businessLongDescription']}
 	                maxLength={300}/> 
-			    <SelectField value={this.state.languageType}
+			    <SelectField value={languageType}
 			    	anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
           			targetOrigin={{horizontal: 'left', vertical: 'top'}}	
 	            	floatingLabelText="Language Translation Preference"
