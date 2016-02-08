@@ -339,14 +339,14 @@ class Description extends React.Component {
 	            	floatingLabelText="Language Translation Preference"
 	            	onChange={this.languageTypeChange.bind(this)}>
 	            	<MenuItem value={"None"} primaryText="None"/>
-	            	<MenuItem value={"bn"} primaryText="Bengali"/>
-	            	<MenuItem value={"gu"} primaryText="Gujarati"/>
-	            	<MenuItem value={"hi"} primaryText="Hindi"/>
-	            	<MenuItem value={"kn"} primaryText="Kannada"/>
-	            	<MenuItem value={"ta"} primaryText="Tamil"/>
-	            	<MenuItem value={"te"} primaryText="Telugu"/>
-	            	<MenuItem value={"ur"} primaryText="Urdu"/>
-	            	<MenuItem value={"ml"} primaryText="Malayalam"/>
+	            	<MenuItem value={"Bengali (bn)"} primaryText="Bengali"/>
+	            	<MenuItem value={"Gujarati (gu)"} primaryText="Gujarati"/>
+	            	<MenuItem value={"Hindi (hi)"} primaryText="Hindi"/>
+	            	<MenuItem value={"Kannada (kn)"} primaryText="Kannada"/>
+	            	<MenuItem value={"Tamil (ta)"} primaryText="Tamil"/>
+	            	<MenuItem value={"Telugu (te)"} primaryText="Telugu"/>
+	            	<MenuItem value={"Urdu (ur)"} primaryText="Urdu"/>
+	            	<MenuItem value={"Malayalam (ml)"} primaryText="Malayalam"/>
 			    </SelectField>
 			    <Category 
 			    	selectedCategory={this.state.selectedBusinessCategory} 
