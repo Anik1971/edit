@@ -241,6 +241,7 @@ export default class PaymentUploader extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
           autoDetectWindowHeight={false}
+          autoScrollBodyContent={true}
           repositionOnUpdate={false}
           style={styles.dialog } 
           title={this.props.title}
