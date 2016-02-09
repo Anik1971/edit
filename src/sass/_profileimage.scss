@@ -20,16 +20,21 @@ $profile-image-offset: 20px;
         width: $profile-image-size;
         height: $profile-image-size;
         min-width: $profile-image-size;
-        background-size: 150% auto;
+        background-size: contain;
         background-repeat:no-repeat;
-        background-position-x: 25%;
+        background-position:center;
         bottom: (-$profile-image-offset);
         border: 2px solid white;
         border-radius: 5px;
         margin: 0 auto;
         left: 0;
         right: 0;
-        background-color: #BF89BF;
+        &.white {
+            background-color: #fff;
+        }
+        &.non-white {
+            background-color: #bf89bf;
+        }
     }
     .topPanel{
         width: 100%;

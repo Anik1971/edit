@@ -52,7 +52,7 @@ class App extends React.Component {
         let supplierLoginID = uData.userId;
         let get_supplier_data_url = 'http://testchat.tsepak.com/goodbox/get_supplier_data';
         if(uData.app == 'com.tsepak.supplierchat'){
-          get_supplier_data_url = 'http://chat.tsepak.com/goodbox/get_supplier_data';
+          get_supplier_data_url = 'https://chat.tsepak.com/goodbox/get_supplier_data';
         }
         Request
          .post(get_supplier_data_url)
@@ -311,7 +311,10 @@ class Index extends React.Component {
         'phoneNo',
         'profileUsageStatus',
         'idAssignDate',
-        'seoPageCreationTime'
+        'seoPageCreationTime',
+        'businessAddressLine1',
+        'businessAddressLine2',
+        'businessAddressLine3'
       ];
       if(exceptions.indexOf(key)>-1){
         exportData[key] = exportData[key]+'';
@@ -332,7 +335,7 @@ class Index extends React.Component {
       let supplierLoginID = uData.userId;
       let set_supplier_data_url = 'http://testchat.tsepak.com/goodbox/set_supplier_data';
       if(uData.app == 'com.tsepak.supplierchat'){
-        set_supplier_data_url = 'http://chat.tsepak.com/goodbox/set_supplier_data';
+        set_supplier_data_url = 'https://chat.tsepak.com/goodbox/set_supplier_data';
       }
       Request
        .post(set_supplier_data_url)

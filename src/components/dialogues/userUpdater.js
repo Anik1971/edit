@@ -110,7 +110,7 @@ export default class UserUpdater extends React.Component {
       if (window.Android) {
         userData = JSON.parse(window.Android.getUserInfo());
         if (userData.app == 'com.tsepak.supplierchat') {
-          url = 'http://chat.tsepak.com/goodbox/get_details';
+          url = 'https://chat.tsepak.com/goodbox/get_details';
         }
 
       }
@@ -182,7 +182,7 @@ export default class UserUpdater extends React.Component {
       if (window.Android) {
         userData = JSON.parse(window.Android.getUserInfo());        
         if (userData.app == 'com.tsepak.supplierchat') {
-          url = 'http://chat.tsepak.com/goodbox/set_details';
+          url = 'https://chat.tsepak.com/goodbox/set_details';
         }
         
       }
