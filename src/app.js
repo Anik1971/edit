@@ -443,7 +443,7 @@ class Index extends React.Component {
 /*mounting the routes to element with id app*/
 ReactDOM.render(
     <App>
-      <Index></Index>
+      <SupplierProfile></SupplierProfile>
     </App>,
     document.getElementById('app')
 );

@@ -58,16 +58,19 @@ table {
     width: 100px;
     height: 100px;
     min-width: 100px;
-    background-size: 150% auto;
+    background-size: contain;
     background-repeat: no-repeat;
-    background-position-x: 25%;
+    background-position: center;
     bottom: -20px;
     border: 2px solid white;
     border-radius: 5px;
     margin: 0 auto;
     left: 0;
-    right: 0;
-    background-color: #BF89BF; }
+    right: 0; }
+    #profile-image-cover #profile-image.white {
+      background-color: #fff; }
+    #profile-image-cover #profile-image.non-white {
+      background-color: #bf89bf; }
   #profile-image-cover .topPanel {
     width: 100%;
     height: 42px;

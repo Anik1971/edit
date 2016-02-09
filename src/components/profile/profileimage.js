@@ -55,7 +55,7 @@ class ProfileImage extends React.Component {
     	}
         return (
         <div style={styles.profile_image_cover} id="profile-image-cover">
-            <div style={styles.profile_image} id="profile-image">
+            <div style={styles.profile_image} id="profile-image" className={this.state.businessImageUrl ? 'non-white' : 'white'}>
             	<div className="businessNameTag">
         			{businessNameTag}</div>
             </div>
