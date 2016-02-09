@@ -46,7 +46,7 @@ class App extends React.Component {
         let supplierLoginID = uData.userId;
         let get_supplier_data_url = 'http://testchat.tsepak.com/goodbox/get_supplier_data';
         if(uData.app == 'com.tsepak.supplierchat'){
-          get_supplier_data_url = 'http://chat.tsepak.com/goodbox/get_supplier_data';
+          get_supplier_data_url = 'https://chat.tsepak.com/goodbox/get_supplier_data';
         }
         Request
          .post(get_supplier_data_url)
@@ -329,7 +329,7 @@ class Index extends React.Component {
       let supplierLoginID = uData.userId;
       let set_supplier_data_url = 'http://testchat.tsepak.com/goodbox/set_supplier_data';
       if(uData.app == 'com.tsepak.supplierchat'){
-        set_supplier_data_url = 'http://chat.tsepak.com/goodbox/set_supplier_data';
+        set_supplier_data_url = 'https://chat.tsepak.com/goodbox/set_supplier_data';
       }
       Request
        .post(set_supplier_data_url)
@@ -437,7 +437,7 @@ class Index extends React.Component {
 /*mounting the routes to element with id app*/
 ReactDOM.render(
     <App>
-      <SupplierProfile></SupplierProfile>
+      <Index></Index>
     </App>,
     document.getElementById('app')
 );

@@ -49,7 +49,7 @@ class Gallery extends React.Component {
       if (window.Android) {
         userData = JSON.parse(window.Android.getUserInfo());
         if (userData.app == 'com.tsepak.supplierchat') {
-          url = 'http://chat.tsepak.com/goodbox/';
+          url = 'https://chat.tsepak.com/goodbox/';
         }
 
       }
