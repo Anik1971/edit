@@ -145,8 +145,13 @@ class BusinessDetail extends React.Component {
 			cardContent = <CardText>
 				    	DISABLED
 				    </CardText>;
-		}else if(deliveryPricing.standard){
-			if(deliveryPricing.standard.minimumOrderAmount || 
+		}else if(deliveryPricing.standard || deliveryPricing.custom){ 
+			if(deliveryPricing.custom && deliveryPricing.custom.customDeliveryPricing && deliveryPricing.custom.customDeliveryPricing.length){
+				cardContent = <CardText>
+				    	<strong>PRICING</strong><br /><br />
+				    	<pre style={{whiteSpace: 'pre-wrap'}}>{"Custom delivery: "}{deliveryPricing.custom.customDeliveryPricing}<br /></pre>
+				    </CardText>;
+			}else if(deliveryPricing.standard.minimumOrderAmount || 
 				deliveryPricing.standard.deliveryCharge || 
 				deliveryPricing.standard.freeDeliveryAmount){
 				cardContent = <CardText>
@@ -154,11 +159,6 @@ class BusinessDetail extends React.Component {
 				    	{"Minimum Order: "}{deliveryPricing.standard.minimumOrderAmount}<br />
 				    	{"Delivery Charge: "}{deliveryPricing.standard.deliveryCharge}<br />
 				    	{"Free Delivery above: "}{deliveryPricing.standard.freeDeliveryAmount}
-				    </CardText>;
-			}else if(deliveryPricing.custom.customDeliveryPricing){
-				cardContent = <CardText>
-				    	<strong>PRICING</strong><br /><br />
-				    	{"Custom delivery: "}{deliveryPricing.custom.customDeliveryPricing}<br />
 				    </CardText>;
 			}else{
 				cardContent = '';

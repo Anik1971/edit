@@ -540,6 +540,7 @@ class Delivery extends React.Component {
                           floatingLabelText={"Custom delivery pricing"}
                           value={this.state.customDeliveryPricing} 
                           errorText={this.state.errorText['customDeliveryPricing']}
+                          multiLine={true}
                           onChange = {this.onCustomDeliveryPricingChange.bind(this)} 
                           onBlur = {this.onCustomDeliveryPricingBlur.bind(this)}/>                    
                     </div>
