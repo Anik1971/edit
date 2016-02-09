@@ -229,7 +229,7 @@ export default class PaymentUploader extends React.Component {
     ];  
     let actions2 = [
           <span style={{fontSize: 10,display: 'block',marginBottom: 5,color: 'red',width: '100%',textAlign: 'center',padding: '0 20px'}}>
-            {"Uploading images is not supported. Please contact GoodBox support"}
+            {"Uploading images is not supported. Please contact GoodBox Support"}
           </span>,
         ];   
     if(this.props.paymentEnabled)

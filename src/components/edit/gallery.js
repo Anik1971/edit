@@ -237,7 +237,7 @@ class Gallery extends React.Component {
                     </DocumentUploader>;
             if(!window.showBrowse){
               documentUploaderBtn = <span style={{padding: '0 20px', paddingTop:'50%',fontSize: 12,lineHeight:'1.5em',display: 'block',color: 'red',width: '100%',textAlign: 'center'}}>
-            {"Uploading images is not supported. Please contact GoodBox support"}
+            {"Uploading images is not supported. Please contact GoodBox Support"}
           </span>;
             }
     return (<div id="gallery">
