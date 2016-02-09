@@ -27,6 +27,8 @@ class App extends React.Component {
   componentWillMount(){
     window.emitter = new EventEmitter();
     window.ispopped = true;
+    window.showBrowse = true;
+
     window.onpopstate = function(event){
       if(!window.ispopped)
       {
@@ -37,11 +39,15 @@ class App extends React.Component {
       try{
         let uData = {
           userId: 'a09bdcd8',
-          app: 'com.tsepak.supplierchat.debug'
+          app: 'com.tsepak.supplierchat.debug',
+          androidSdk: 22
         };
         if(window.Android){
           uData = JSON.parse(window.Android.getUserInfo());
           window.isCoSupplier = !!uData.isCoSupplier;
+        }
+        if(uData.androidSdk == 19){
+          window.showBrowse = false;
         }
         let supplierLoginID = uData.userId;
         let get_supplier_data_url = 'http://testchat.tsepak.com/goodbox/get_supplier_data';

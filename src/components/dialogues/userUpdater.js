@@ -60,16 +60,16 @@ const styles = {
   savedUserName: {
     float:'left',
     height:'100%',
-    marginTop: 9,
+    marginTop: 25,
     marginLeft: 12
   },
   editIcon: {
     float:'right',
-    marginTop:5
+    marginTop:22
   },
   profileWrapper:{
     width:'100%',
-    height:50
+    height:70
   },
   loadIcon:{
     float:'right'
@@ -393,6 +393,17 @@ export default class UserUpdater extends React.Component {
             disabled={!this.state.change}
             keyboardFocused={true}
             onTouchTap={this.updateImage.bind(this)} />,
+        ];
+        let actions2 = [
+          <span style={{ fontSize: 10,display: 'block',marginBottom: 5,color: 'red',width: '100%',textAlign: 'center',padding: '0 20px'}}>
+            {"Uploading images is not supported. Please contact GoodBox support"}
+          </span>,
+          <FlatButton
+            label="DONE"
+            primary={true}
+            disabled={!this.state.change}
+            keyboardFocused={true}
+            onTouchTap={this.updateImage.bind(this)} />,
         ];    
 
         if(window.history && window.ispopped && this.state.open)
@@ -420,7 +431,7 @@ export default class UserUpdater extends React.Component {
           <div style={styles.profileWrapper}>
            <div style={styles.profileName}>
               <div style={styles.avatarName}>
-                <Avatar src={savedUserImage} />
+                <Avatar size={70} src={savedUserImage} />
               </div>
               <div style={styles.savedUserName}>
                {savedUserName}
@@ -430,7 +441,7 @@ export default class UserUpdater extends React.Component {
               </div>   
            </div>
             <Dialog
-              actions={actions}
+              actions={(window.showBrowse) ? actions: actions2 }
               modal={false}
               open={this.state.open}
               onRequestClose={this.handleClose}

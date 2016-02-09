@@ -226,7 +226,12 @@ export default class PaymentUploader extends React.Component {
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
-    ];    
+    ];  
+    let actions2 = [
+          <span style={{fontSize: 10,display: 'block',marginBottom: 5,color: 'red',width: '100%',textAlign: 'center',padding: '0 20px'}}>
+            {"Uploading images is not supported. Please contact GoodBox support"}
+          </span>,
+        ];   
     if(this.props.paymentEnabled)
       actions =[];
     return (
@@ -236,7 +241,7 @@ export default class PaymentUploader extends React.Component {
             color={Colors.black} 
             onClick={this.editImage.bind(this)} />        
         <Dialog
-          actions={actions}
+          actions={(window.showBrowse) ? actions: actions2 }
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}

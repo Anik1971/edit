@@ -231,6 +231,15 @@ class Gallery extends React.Component {
     let photos = this.state.slideImages.map((image, index) => <div key={index} style={objectAssign({},styles.slide,{backgroundImage:"url(" + image.url  +")"})}>
         <div className="galleryDelete">{image.verified?'':'Pending Approval'} <DeleteIcon className="deleteIcon" onClick={this.deletePicPrompt.bind(this,index)} color={'rgba(255,255,255,0.85)'}/></div>
         </div>);
+    let documentUploaderBtn = <DocumentUploader 
+                      updateUploadingStatus={this.updateUploadingStatus.bind(this)}
+                      postUpload={this.handlePostImageUpload.bind(this)}>
+                    </DocumentUploader>;
+            if(!window.showBrowse){
+              documentUploaderBtn = <span style={{padding: '0 20px', paddingTop:'50%',fontSize: 12,lineHeight:'1.5em',display: 'block',color: 'red',width: '100%',textAlign: 'center'}}>
+            {"Uploading images is not supported. Please contact GoodBox support"}
+          </span>;
+            }
     return (<div id="gallery">
               <SwipeableViews
                 index={this.state.slideIndex}
@@ -244,10 +253,7 @@ class Gallery extends React.Component {
                     <div style={styles.progressText}>{"Please wait... Uploading Image"}</div>
                   </div>
                   <div className={addBtnClass}>
-                    <DocumentUploader 
-                      updateUploadingStatus={this.updateUploadingStatus.bind(this)}
-                      postUpload={this.handlePostImageUpload.bind(this)}>
-                    </DocumentUploader>
+                    {documentUploaderBtn}
                   </div>
                 </div>
               </SwipeableViews>

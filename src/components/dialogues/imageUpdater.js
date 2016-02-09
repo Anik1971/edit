@@ -211,7 +211,12 @@ export default class ImageUpdater extends React.Component {
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.updateImage.bind(this)} />,
-    ];   
+    ];  
+    let actions2 = [
+          <span style={{fontSize: 12,lineHeight:'1.5em',display: 'block',marginBottom: 5,color: 'red',width: '100%',textAlign: 'center',padding: '0 20px'}}>
+            {"Uploading images is not supported. Please contact GoodBox support"}
+          </span>,
+        ]; 
     let approvedDiv = '';
     if(this.props.approvedText)
     {
@@ -231,7 +236,7 @@ export default class ImageUpdater extends React.Component {
             color={Colors.black} 
             onClick={this.editImage.bind(this)} />        
         <Dialog
-          actions={actions}
+          actions={(window.showBrowse) ? actions: actions2 }
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
