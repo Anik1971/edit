@@ -114,7 +114,7 @@ class ProfileImage extends React.Component {
         	<div  className={"businessImageCoverIcon"}>
                 <ImageUpdater 
                     approvedClass={topPanel}
-                    approvedText={businessImageApproved?'':'Pending Approval'}
+                    approvedText={coverBgApproved?'':'Pending Approval'}
             		image={this.state.businessImageCoverUrl}        		
             		postUpload={this.coverImageUpdate.bind(this)} 
             		title={'Business Cover Image'} />
@@ -122,7 +122,7 @@ class ProfileImage extends React.Component {
             <div style={this.state.businessImage} id="profile-image" className={this.state.businessImageUrl ? 'white' : 'non-white'}>
             	<ImageUpdater 
             	    approved={bottomPanel}
-            	    approvedText={coverBgApproved?'':'Pending Approval'}
+            	    approvedText={businessImageApproved?'':'Pending Approval'}
         			image={this.state.businessImageUrl}         		
         			postUpload={this.businessImageUpdate.bind(this)} 
         			title={'Business Logo'} /> 	
