@@ -119,7 +119,7 @@ class ProfileImage extends React.Component {
             		postUpload={this.coverImageUpdate.bind(this)} 
             		title={'Business Cover Image'} />
             </div>
-            <div style={this.state.businessImage} id="profile-image" className={this.state.businessImage ? 'non-white' : 'white'}>
+            <div style={this.state.businessImage} id="profile-image" className={this.state.businessImageUrl ? 'white' : 'non-white'}>
             	<ImageUpdater 
             	    approved={bottomPanel}
             	    approvedText={coverBgApproved?'':'Pending Approval'}
