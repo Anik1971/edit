@@ -231,13 +231,14 @@ class Location extends React.Component {
     getLocatlitySuggestLabel(suggest){
         //console.log('locality Label:',suggest);
         let locality = [],termsLength = 0;
+        let localityLabel = locality.join();
         if(!this.state.localityText){
             termsLength = suggest.terms.length;
             suggest.terms.forEach(term => {
                 locality.push(term.value);
             });
             locality.splice(termsLength-3,termsLength);
-            let localityLabel = locality.join();
+            localityLabel = locality.join();
         }
         return localityLabel;
     }
